@@ -1,0 +1,34 @@
+{
+  "name": "Nexcess CLI",
+  "version": "0.1",
+  "description": "CLI SDK client for interacting with the nexcess.net / thermo.io client APIs",
+  "type": "library",
+  "homepage": "https://github.com/nexcess/nexcess-cli",
+  "license": "MIT",
+  "support": {},
+  "require": {
+    "php": "^7.1",
+    "nexcess/nexcess-php-sdk": "dev-master as 0.1",
+    "php-enspired/exceptable": "~1.2"
+  },
+  "autoload": {
+    "psr-4": { "Nexcess\\Sdk\\Cli\\": "src/" }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.0",
+    "phan/phan": "0.8.11",
+    "nocworx/phpcs": "^1.4"
+  },
+  "autoload-dev": {
+    "psr-4": { "Nexcess\\Sdk\\Cli\\Tests\\": "tests/" }
+  },
+  "scripts": {
+    "tests:unit": "vendor/bin/phpunit",
+    "tests:phan": "vendor/bin/phan",
+    "tests:phpcs": "vendor/bin/phpcs --standard=NocWorx src tests"
+  },
+  "repositories": [
+    { "type": "vcs", "url": "https://github.com/nexcess/nexcess-php-sdk" },
+    { "type": "vcs", "url": "https://github.com/nocworx/phpcs" }
+  ]
+}
