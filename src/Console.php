@@ -9,8 +9,7 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli;
 
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use at\exceptable\Handler;
 
 use Nexcess\Sdk\ {
   Util\Config,
@@ -18,8 +17,8 @@ use Nexcess\Sdk\ {
 };
 
 use Nexcess\Sdk\Cli\ {
-  Command,
-  Exception\ConsoleException
+  Exception\ConsoleException,
+  Util\CommandDiscoveryFactory as DiscoveryFactory
 };
 
 use Symfony\Component\Console\ {
@@ -53,9 +52,6 @@ class Console extends SymfonyApplication {
   /** @var Guzzle The guzzle http client. */
   protected $_client;
 
-  /** @var string[] FQCN's of available commands. */
-  protected $_commands = [];
-
   /** @var Config The SDK configuration object. */
   protected $_config;
 
@@ -72,19 +68,23 @@ class Console extends SymfonyApplication {
   protected $output;
 
   /**
-   * @param Config $config The SDK configuration object
+   * @param Config|null $config The SDK configuration object
    */
-  public function __construct(Config $config) {
+  public function __construct(Config $config = null) {
     // hide args from top/ps (ignore if fails)
-    @cli_set_process_title(static::NAME . ' v' . static::VERSION);
+    @cli_set_process_title(static::NAME . ' (' . static::VERSION . ')');
+
+    $this->_input = new ArgvInput();
+    $this->_output = new ConsoleOutput();
 
     $this->_config = $config;
     $this->_setErrorHandler();
-    $this->setLanguageHandler();
+    $this->_setLanguageHandler();
 
     parent::__construct(static::NAME, static::VERSION);
-
-    $this->_bootstrapCommands();
+    $this->setCommandLoader(
+      new DiscoveryFactory(static::DIR, static::NAMESPACE)
+    );
   }
 
   /**
@@ -109,7 +109,7 @@ class Console extends SymfonyApplication {
     return $helper->ask(
       $this->_input,
       $this->_output,
-      new Question($this->_translate($message, $context), $default)
+      new Question($this->translate($message, $context), $default)
     );
   }
 
@@ -138,7 +138,7 @@ class Console extends SymfonyApplication {
       $this->_input,
       $this->_output,
       new ChoiceQuestion(
-        $this->_translate($message, $context),
+        $this->translate($message, $context),
         $choices,
         $default
       )
@@ -168,7 +168,7 @@ class Console extends SymfonyApplication {
       $this->_input,
       $this->_output,
       new ConfirmationQuestion(
-        $this->_translate($message, $context),
+        $this->translate($message, $context),
         $default,
         '(^y)i'
       )
@@ -181,8 +181,8 @@ class Console extends SymfonyApplication {
    * Use our own i/o objects instead of letting run() create them.
    */
   public function run(Input $input = null, Output $output = null) {
-    $this->_input = $input ?? new ArgvInput();
-    $this->_output = $output ?? new ConsoleOutput();
+    $input = $input ?? $this->_input;
+    $output = $output ?? $this->_output;
 
     return parent::run($this->_input, $this->_output);
   }
@@ -195,10 +195,9 @@ class Console extends SymfonyApplication {
    *
    * @param string $message The message or message key to output
    * @param array $context Map of message placeholder:replacement pairs
-   * @param array $opts {
-   *    @var bool SAY_OPT_NEWLINE Add a newline at the end?
-   *    @var int SAY_OPT_OPTIONS @see OutputInterface::write() $options
-   *  }
+   * @param array $opts Map of output options:
+   *  - bool Console::SAY_OPT_NEWLINE Add a newline at the end?
+   *  - int Console::SAY_OPT_OPTIONS {@see OutputInterface::write $options}
    * @return Console $this
    */
   public function say(
@@ -206,7 +205,7 @@ class Console extends SymfonyApplication {
     array $context = [],
     array $options = []
   ) : Console {
-    $message = $this->_translate($message, $context);
+    $message = $this->translate($message, $context);
 
     $newline = $options[self::SAY_OPT_NEWLINE] ?? true;
     $opts = $options[self::SAY_OPT_OPTIONS] ?? 0;
@@ -221,92 +220,13 @@ class Console extends SymfonyApplication {
   }
 
   /**
-   * Looks for Command classes belonging to this application,
-   * and adds them to the $_commands array.
-   */
-  protected function _autodiscoverCommands() {
-    // make sure all php files below us are loaded
-    $iterator = new RecursiveIteratorIterator(
-      new RecursiveDirectoryIterator(static::DIR)
-    );
-    foreach ($iterator as $file => $info) {
-      if ($info->getExtension() === 'php') {
-        include_once $file;
-      }
-    }
-
-    // find commands and add them to the $_commands list
-    array_push(
-      $this->_commands,
-      ...array_filter(
-        array_map(
-          function (string $fqcn) {
-            $rc = new ReflectionClass($fqcn);
-            return (
-              $rc->isInstantiable() &&
-              $rc->isSubclassOf(Command::class)
-            ) ?
-              $fqcn :
-              null;
-          },
-          get_declared_classes()
-        )
-      )
-    );
-  }
-
-  /**
-   * Instantiates and adds Commands to this application.
-   *
-   * @throws Exception If unable to create/add a registered Command
-   */
-  protected function _bootstrapCommands() {
-    $this->_autodiscoverCommands();
-    $this->addCommands($this->_commands);
-  }
-
-  /**
-   * Are we debugging?
-   *
-   * @return boolean True if debugging; false otherwise
-   */
-  protected function _isDebug() : bool {
-    return in_array('-vvv', $GLOBALS['argv']);
-  }
-
-  /**
-   * Symfony/Console hides a lot of errors for some reason.
-   */
-  protected function _setErrorHandler() {
-    // @todo May need more/less depending on how symfony's handler works out.
-    $this->_error_handler = new Handler();
-    $this->_error_handler->throw(E_ALL)->register();
-  }
-
-  /**
-   * Sets the Language object for the application.
-   */
-  protected function _setLanguageHandler() {
-    $this->_language = Language::getInstance();
-
-    $lang = $this->_config->get('language.language');
-    if ($lang) {
-      $this->_language->setLanguage($lang);
-    }
-
-    $paths = $this->_config->get('language.paths') ?? [];
-    $paths[] = static::DIR . '/util/lang';
-    $this->_language->addPaths(...$paths);
-  }
-
-  /**
    * Translates and makes placeholder → context replacements in given message.
    *
    * @param string $message The string to make replacements on
    * @param array $context Map of message placeholder:replacement pairs
    * @return string Replaced message on success; original message otherwise
    */
-  protected function _translate(string $message, array $context) : string {
+  public function translate(string $message, array $context) : string {
     $message = $this->_language->getTranslation($message) ?? $message;
 
     if (empty($context)) {
@@ -331,5 +251,40 @@ class Console extends SymfonyApplication {
     }
 
     return strtr($message, $replacements);
+  }
+
+  /**
+   * Are we debugging?
+   *
+   * @return bool True if debugging; false otherwise
+   */
+  protected function _isDebug() : bool {
+    return $this->_config->get('debug');
+  }
+
+  /**
+   * Symfony/Console hides a lot of errors for some reason.
+   */
+  protected function _setErrorHandler() {
+    $this->_error_handler = new Handler();
+    $this->_error_handler
+      ->throw(E_ALL)
+      ->register();
+  }
+
+  /**
+   * Sets the Language object for the application.
+   */
+  protected function _setLanguageHandler() {
+    $this->_language = Language::getInstance();
+
+    $lang = $this->_config->get('language.language');
+    if ($lang) {
+      $this->_language->setLanguage($lang);
+    }
+
+    $paths = $this->_config->get('language.paths') ?? [];
+    $paths[] = static::DIR . '/util/lang';
+    $this->_language->addPaths(...$paths);
   }
 }

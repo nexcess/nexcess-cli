@@ -1,0 +1,9 @@
+{
+  "console": {
+    "exception": {
+      "invalid_config_type": "SDK configuration class must extend from Nexcess\\Sdk\\Util\\Config; {type} specified",
+      "missing_questionhelper": "Symfony's QuestionHelper is not available",
+      "unsupported_profile_type": "'{type}' is not a supported user profile format; must be one of {supported}"
+    }
+  }
+}
