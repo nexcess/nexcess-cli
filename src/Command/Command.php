@@ -7,7 +7,7 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli;
+namespace Nexcess\Sdk\Cli\Command;
 
 use Nexcess\Sdk\Cli\ {
   Console,
@@ -31,25 +31,28 @@ abstract class Command extends SymfonyCommand {
   /** @var array[] List of [name, mode] argument definitions. */
   const ARGS = [];
 
+  /** @var string Classname of Sdk Endpoint to use. */
+  const ENDPOINT = '';
+
   /** @var string Command name. */
   const NAME = '';
 
   /** @var array[] List of [name, mode, default] option definitions. */
   const OPTS = [];
 
-  /** @var string Base string for translation keys for this command. */
+  /** @var string Base part for translation keys for this command. */
   protected $_base_tr_key = '';
 
   /**
    * {@inheritDoc}
    */
   public function configure() {
-    $this->_base_tr_key = 'console.' . static::NAME;
+    $this->_base_tr_key = 'console.' . strtr(static::NAME, [':' => '.']);
 
     $this->setName(static::NAME);
     $this->setDescription($this->getPhrase('desc'));
     $this->setHelp($this->getPhrase('help'));
-    $this->setUsage($this->getPhrase('use'));
+    $this->setUsage($this->getPhrase('usage'));
     $this->setProcessTitle(
       Console::NAME . ' (' . Console::VERSION . ') > ' . static::NAME
     );
@@ -64,10 +67,13 @@ abstract class Command extends SymfonyCommand {
    * Gets a translated phrase for this command.
    *
    * @param string $key Translation key (without base part)
+   * @param array $context Map of parameter:replacement pairs
    * @return string Translated phrase on success; untranslated key otherwise
    */
-  public function getPhrase(string $key) : string {
-    return $this->getApplication()->translate("{$this->_base_tr_key}.{$key}");
+  public function getPhrase(string $key, array $context = []) : string {
+    return $this
+      ->getApplication()
+      ->translate("{$this->_trKey($key)}", $context);
   }
 
   /**
@@ -101,5 +107,27 @@ abstract class Command extends SymfonyCommand {
 
       $this->addOption($long, $short, $mode, $desc, $default);
     }
+  }
+
+  /**
+   * Gets an API Endpoint instance.
+   *
+   * @param string|null $endpoint Name of desired endpoint; omit for default
+   * @return Endpoint Requested endpoint on success
+   * @throw ConsoleException On failure
+   */
+  protected function _getEndpoint(string $endpoint = null) : Endpoint {
+    $endpoint = $endpoint ?? static::ENDPOINT;
+    return $this->getApplication()->getClient()->getEndpoint($endpoint);
+  }
+
+  /**
+   * Builds a translation key from given key.
+   *
+   * @param string $key Key
+   * @return string Command-namespaced key
+   */
+  protected function _trKey(string $key) : string {
+    return "{$this->_base_tr_key}.{$key}";
   }
 }

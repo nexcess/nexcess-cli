@@ -12,6 +12,8 @@ namespace Nexcess\Sdk\Cli;
 use at\exceptable\Handler;
 
 use Nexcess\Sdk\ {
+  Client,
+  Sandbox\Sandbox,
   Util\Config,
   Util\Language
 };
@@ -59,13 +61,13 @@ class Console extends SymfonyApplication {
   protected $_error_handler;
 
   /** @var Input Application input object. */
-  protected $input;
+  protected $_input;
 
   /** @var Language Language object. */
   protected $_language;
 
   /** @var Output Application output object. */
-  protected $output;
+  protected $_output;
 
   /**
    * @param Config|null $config The SDK configuration object
@@ -78,6 +80,7 @@ class Console extends SymfonyApplication {
     $this->_output = new ConsoleOutput();
 
     $this->_config = $config;
+    $this->_initializeClient($config);
     $this->_setErrorHandler();
     $this->_setLanguageHandler();
 
@@ -90,15 +93,13 @@ class Console extends SymfonyApplication {
   /**
    * Queries the user and gets response.
    *
-   * @param string $message The question (key) to ask
-   * @param array $context Map of question placeholder:replacement pairs
+   * @param string $message The question to ask
    * @param string $default A default answer
    * @return string The user's response
    * @throws ConsoleException If no QuestionHelper is available
    */
   public function ask(
     string $message,
-    array $context,
     string $default
   ) : string {
     $helper = $this->getHelperSet()->get('question');
@@ -109,23 +110,21 @@ class Console extends SymfonyApplication {
     return $helper->ask(
       $this->_input,
       $this->_output,
-      new Question($this->translate($message, $context), $default)
+      new Question($message, $default)
     );
   }
 
   /**
    * Asks the user to choose an option.
    *
-   * @param string $message The question (key) to ask
-   * @param array $context Map of question placeholder:replacement pairs
+   * @param string $message The question to ask
    * @param array $choices Options for user to choose from
    * @param int|string|null $default A default response
    * @return string The user's response
    * @throws ConsoleException If no QuestionHelper is available
    */
-  public function choice(
+  public function choose(
     string $message,
-    array $context,
     array $choices,
     $default = null
   ) : string {
@@ -137,26 +136,20 @@ class Console extends SymfonyApplication {
     return $helper->ask(
       $this->_input,
       $this->_output,
-      new ChoiceQuestion(
-        $this->translate($message, $context),
-        $choices,
-        $default
-      )
+      new ChoiceQuestion($message, $choices, $default)
     );
   }
 
   /**
    * Asks the user for a confirmation.
    *
-   * @param string $message The question (key) to ask
-   * @param array $context Map of question placeholder:replacement pairs
+   * @param string $message The question to ask
    * @param bool $default A default response
    * @return bool The user's response
    * @throws ConsoleException If no QuestionHelper is available
    */
   public function confirm(
     string $message,
-    array $context,
     bool $default = false
   ) {
     $helper = $this->getHelperSet()->get('question');
@@ -167,12 +160,17 @@ class Console extends SymfonyApplication {
     return $helper->ask(
       $this->_input,
       $this->_output,
-      new ConfirmationQuestion(
-        $this->translate($message, $context),
-        $default,
-        '(^y)i'
-      )
+      new ConfirmationQuestion($message, $default, '(^y)i')
     );
+  }
+
+  /**
+   * Gets the API Client.
+   *
+   * @return Client
+   */
+  public function getClient() : Client {
+    return $this->_client;
   }
 
   /**
@@ -194,7 +192,6 @@ class Console extends SymfonyApplication {
    * this method will attempt to simply echo to stdout.
    *
    * @param string $message The message or message key to output
-   * @param array $context Map of message placeholder:replacement pairs
    * @param array $opts Map of output options:
    *  - bool Console::SAY_OPT_NEWLINE Add a newline at the end?
    *  - int Console::SAY_OPT_OPTIONS {@see OutputInterface::write $options}
@@ -202,11 +199,8 @@ class Console extends SymfonyApplication {
    */
   public function say(
     string $message,
-    array $context = [],
     array $options = []
   ) : Console {
-    $message = $this->translate($message, $context);
-
     $newline = $options[self::SAY_OPT_NEWLINE] ?? true;
     $opts = $options[self::SAY_OPT_OPTIONS] ?? 0;
 
@@ -217,6 +211,15 @@ class Console extends SymfonyApplication {
     }
 
     return $this;
+  }
+
+  /**
+   * Should commands wait for long-running tasks to complete?
+   *
+   * @return bool True if should wait; false otherwise
+   */
+  public function shouldWait() : bool {
+    return $this->_config->get('wait.always') ?? false;
   }
 
   /**
@@ -246,11 +249,22 @@ class Console extends SymfonyApplication {
         $context[$placeholder] :
         json_encode(
           $context[$placeholder],
-          JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+          JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
         );
     }
 
     return strtr($message, $replacements);
+  }
+
+  /**
+   * Sets up the API Client for console use.
+   *
+   * @param Config $config Sdk configuration object
+   */
+  protected function _initializeClient(Config $config) {
+    $this->_client = ($config->get('sandboxed')) ?
+      (new Sandbox($config))->newClient():
+      new Client($config);
   }
 
   /**

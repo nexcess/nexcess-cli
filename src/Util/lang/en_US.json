@@ -1,9 +1,34 @@
 {
   "console": {
+    "cloud-account": {
+      "create": {
+        "arg_app": "Which Application do you want to create a Cloud Account for?",
+        "ask_domain": "What Domain Name do you want to use for your Cloud Account?",
+        "choose_app_id": "Select an Application Environment for your Cloud Account:",
+        "choose_cloud_id": "Choose which Cloud you want your Cloud Account to be hosted on:",
+        "choose_package_id": "Choose a Service Level for your Cloud Account:",
+        "cloud_desc": "{location} ({location_code})",
+        "create_done": "<info>Done!</info>",
+        "create_failed": "<error>Creating your new Cloud Account failed.</error> Please open a support ticket.",
+        "create_in_progress": "Your new Cloud Account is being created. <info>It may take a few moments until it is ready. Use</info> cloud-account {id} <info>to check on its status.</info>",
+        "create_timed_out": "<comment>Wait timeout exceeded:</comment> your new Cloud Account is still being set up. <info>Use</info> cloud-account {id} <info>to check on its status.</info>",
+        "create_waiting": "Your new Cloud Account is being created…",
+        "desc": "Creates a new Cloud Account.",
+        "help": "Any option may be omitted and you will be prompted to choose from a menu.\nProviding an application name (e.g., 'magento') will select that application for you.",
+        "opt_app_id": "Application Environment ID",
+        "opt_cloud_id": "Cloud location ID",
+        "opt_domain": "Domain Name",
+        "opt_install_app": "Install the Application to the new Cloud Account (currently, applies only to Magento and WordPress Application Environments)?",
+        "opt_package_id": "Service Level ID",
+        "package_desc": "{name}: {virt_disk} Storage, {bandwidth} Bandwidth; ${monthly_fee}/month",
+        "summary": "New Cloud Account summary:\n{data}",
+        "usage": "cloud-account:create --domain cloud.example.com\ncloud-account:create magento --domain magneto.example.com --install"
+      }
+    },
     "exception": {
-      "invalid_config_type": "SDK configuration class must extend from Nexcess\\Sdk\\Util\\Config; {type} specified",
-      "missing_questionhelper": "Symfony's QuestionHelper is not available",
-      "unsupported_profile_type": "'{type}' is not a supported user profile format; must be one of {supported}"
+      "invalid_config_type": "<error>SDK configuration class must extend from Nexcess\\Sdk\\Util\\Config; {type} specified</error>",
+      "missing_questionhelper": "<error>Symfony's QuestionHelper is not available</error>",
+      "unsupported_profile_type": "<error>user profile format must be one of {supported}; '{type}' is not a supported</error>"
     }
   }
 }

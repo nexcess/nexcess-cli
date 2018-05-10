@@ -75,12 +75,21 @@ class ConsoleBootstrapper {
       );
     }
 
-    return new $config([
-      'api_token' => $this->_input->getOption('api-token') ??
-        $this->_getEnv(self::ENV_API_TOKEN) ??
-        '',
-      'debug' => $this->_input->hasParameterOption('debug', true) ?? false
-    ]);
+    $profile['api_token'] = $this->_input->getOption('api-token') ??
+      $this->_getEnv(self::ENV_API_TOKEN) ??
+      $profile['api_token'] ??
+      '';
+    $profile['debug'] = $this->_input->getOption('debug') ??
+      $profile['debug'] ??
+      false;
+    $profile['sandboxed'] = $this->_input->getOption('sandboxed') ??
+      $profile['sandboxed'] ??
+      false;
+    $profile['wait']['always'] = $this->_input->getOption('wait') ??
+      $profile['wait']['always'] ??
+      false;
+
+    return new $config($profile);
   }
 
   /**
@@ -92,7 +101,9 @@ class ConsoleBootstrapper {
       new Definition([
         new Option('api-token', null, Option::VALUE_REQUIRED),
         new Option('debug', 'vvv', Option::VALUE_NONE),
-        new Option('profile', null, Option::VALUE_REQUIRED)
+        new Option('profile', null, Option::VALUE_REQUIRED),
+        new Option('sandboxed', null, Option::VALUE_NONE),
+        new Option('wait', null, Option::VALUE_NONE)
       ])
     );
   }
@@ -129,7 +140,10 @@ class ConsoleBootstrapper {
         ConsoleException::UNSUPPORTED_PROFILE_TYPE,
         [
           'type' => $type,
-          'supported' => implode('|', self::SUPPORTED_PROFILE_TYPES)
+          'supported' => implode(
+            '|',
+            array_keys(self::SUPPORTED_PROFILE_TYPES)
+          )
         ]
       );
     }
