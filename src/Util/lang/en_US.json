@@ -2,33 +2,66 @@
   "console": {
     "cloud-account": {
       "create": {
-        "arg_app": "Which Application do you want to create a Cloud Account for?",
+        "app_desc": "<question>{app}</question>",
+        "arg_app": "Application Environment name (used for app_id lookup)",
         "ask_domain": "What Domain Name do you want to use for your Cloud Account?",
         "choose_app_id": "Select an Application Environment for your Cloud Account:",
         "choose_cloud_id": "Choose which Cloud you want your Cloud Account to be hosted on:",
         "choose_package_id": "Choose a Service Level for your Cloud Account:",
-        "cloud_desc": "{location} ({location_code})",
-        "create_done": "<info>Done!</info>",
-        "create_failed": "<error>Creating your new Cloud Account failed.</error> Please open a support ticket.",
-        "create_in_progress": "Your new Cloud Account is being created. <info>It may take a few moments until it is ready. Use</info> cloud-account {id} <info>to check on its status.</info>",
-        "create_timed_out": "<comment>Wait timeout exceeded:</comment> your new Cloud Account is still being set up. <info>Use</info> cloud-account {id} <info>to check on its status.</info>",
-        "create_waiting": "Your new Cloud Account is being created…",
-        "desc": "Creates a new Cloud Account.",
+        "cloud_desc": "<question>{location}</question> ({location_code})",
+        "desc": "Creates a new Cloud Account",
+        "done": "\nDone.  <info>Use</info> cloud-account {id} <info>to check on your new Cloud Account!</info>\n",
+        "failed": "<error>Creating your new Cloud Account failed.</error> Please open a support ticket.",
+        "getting_ready": "\nYour new Cloud Account has been created and is being set up. <info>Use</info> cloud-account:show {id} <info>to check on its status!</info>",
         "help": "Any option may be omitted and you will be prompted to choose from a menu.\nProviding an application name (e.g., 'magento') will select that application for you.",
         "opt_app_id": "Application Environment ID",
         "opt_cloud_id": "Cloud location ID",
         "opt_domain": "Domain Name",
-        "opt_install_app": "Install the Application to the new Cloud Account (currently, applies only to Magento and WordPress Application Environments)?",
+        "opt_install_app": "Install the Application to the new Cloud Account?\n  (currently, this option applies only to Magento and WordPress Application Environments)",
         "opt_package_id": "Service Level ID",
-        "package_desc": "{name}: {virt_disk} Storage, {bandwidth} Bandwidth; ${monthly_fee}/month",
-        "summary": "New Cloud Account summary:\n{data}",
-        "usage": "cloud-account:create --domain cloud.example.com\ncloud-account:create magento --domain magneto.example.com --install"
+        "package_desc": "<question>{name}</question>: {virt_disk} GB Storage, {bandwidth} GB Bandwidth; ${monthly_fee}/month",
+        "summary_key": {
+          "app": "App Environment",
+          "cloud": "Cloud Location",
+          "domain": "Domain",
+          "service_level": "Service Level",
+          "status": "Status",
+          "temp_domain": "Temp Domain"
+        },
+        "timed_out": "<comment>Wait timeout exceeded:</comment> your new Cloud Account is still being set up. <info>Use</info> cloud-account:show {id} <info>to check on its status.</info>",
+        "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install",
+        "waiting": "Your new Cloud Account is being created. <info>This may take a few moments…</info>"
+      },
+      "show": {
+        "arg_id": "Cloud Account Service ID",
+        "choose_id": "Select a Cloud Account to view:",
+        "desc": "Shows details of an existing Cloud Account",
+        "help": "Provide a service id, or use the --domain or --ip options to look up the desired service.",
+        "opt_domain": "Cloud Account Domain Name (used for service_id lookup)",
+        "opt_ip": "Cloud Account IP Address (used for service_id lookup)",
+        "usage": "cloud-account:show 12345\n  cloud-account:show --domain cloud.example.com"
+      }
+    },
+    "command": {
+      "details": "Details:",
+      "exception": {
+        "no_lookup_match": "'{lookup}' does not match any {input}; please choose one of:\n {choices}",
+        "lookup_match_ambiguous": "'{lookup}' matches multiple choices for {input}:\n {matches}",
+        "missing_input": "Missing or invalid input for '{name}';\n see $ nexcess-cli {command} --help"
       }
     },
     "exception": {
-      "invalid_config_type": "<error>SDK configuration class must extend from Nexcess\\Sdk\\Util\\Config; {type} specified</error>",
-      "missing_questionhelper": "<error>Symfony's QuestionHelper is not available</error>",
-      "unsupported_profile_type": "<error>user profile format must be one of {supported}; '{type}' is not a supported</error>"
-    }
+      "invalid_config_type": "SDK configuration class must extend from Nexcess\\Sdk\\Util\\Config; {type} specified",
+      "missing_questionhelper": "Symfony's QuestionHelper is not available",
+      "not_sandboxed": "Sandbox mode is not enabled",
+      "profile_not_found": "Could not find profile '{profile}' in current directory or any parent directory",
+      "unsupported_profile_type": "user profile format must be one of {supported}; '{type}' is not a supported"
+    },
+    "opt_api_token": "Your API Token (log in to your portal to create one)",
+    "opt_json": "Display Command output as JSON?\n (this does not affect interactive output; see --no-interaction)",
+    "opt_language": "Specify preferred language",
+    "opt_profile": "Filename of the user profile to load; or one of 'nexcess'|'thermo' to use the default profiles",
+    "opt_sandboxed": "Do not send any API requests",
+    "opt_wait": "Wait for long-running commands to complete (this can block for a long time)?"
   }
 }

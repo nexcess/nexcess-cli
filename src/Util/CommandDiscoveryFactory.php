@@ -7,21 +7,25 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command;
+namespace Nexcess\Sdk\Cli\Util;
 
 use RecursiveDirectoryIterator,
   RecursiveIteratorIterator,
   ReflectionClass;
 
 use Symfony\Component\Console\ {
+  Application as SymfonyApplication,
   Command\Command as SymfonyCommand,
   CommandLoader\FactoryCommandLoader as Factory
 };
 
 /**
- * Auto-discovers and lazy-loads console command classes.
+ * Auto-discovers and lazy-instantiates console command classes.
  */
 class CommandDiscoveryFactory extends Factory {
+
+  /** @var SymfonyApplication The application we're loading commands for. */
+  protected $_app;
 
   /** @var string[] Map of available command:fqcn pairs. */
   protected $_commands = [];
@@ -33,15 +37,21 @@ class CommandDiscoveryFactory extends Factory {
   protected $_ns = '';
 
   /**
+   * @param SymfonyApplication $app The application we're loading commands for
    * @param string $dir Directory to load php files from
    * @param string $ns Root namespace to search for Commands under
    */
-  public function __construct(string $dir, string $ns) {
+  public function __construct(
+    SymfonyApplication $app,
+    string $dir,
+    string $ns
+  ) {
+    $this->_app = $app;
     $this->_dir = $dir;
     $this->_ns = $ns;
 
     $this->_discoverCommands();
-    parent::_construct($this->_commands);
+    parent::__construct($this->_commands);
   }
 
   /**
@@ -79,8 +89,8 @@ class CommandDiscoveryFactory extends Factory {
           $command::NAME :
           (new $command())->getName();
 
-        $this->_commands[$name] = function () {
-          return new $command();
+        $this->_commands[$name] = function () use ($command) {
+          return new $command($this->_app);
         };
       }
     }

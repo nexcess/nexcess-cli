@@ -25,4 +25,4 @@ use Nexcess\Sdk\Cli\ {
  */
 require __DIR__ . '/../vendor/autoload.php';
 
-(new Console((new Bootstrapper())->getConfig()))->run();
+(new Console())->run();

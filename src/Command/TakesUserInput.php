@@ -9,6 +9,13 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command;
 
+use Nexcess\Sdk\Cli\Exception\CommandException;
+
+use Symfony\Component\Console\ {
+  Input\InputInterface as Input,
+  Output\OutputInterface as Output
+};
+
 /**
  * Collects user input from console options and asks for missing values.
  *
@@ -29,11 +36,12 @@ trait TakesUserInput {
    * Collects user input from options.
    */
   public function initialize(Input $input, Output $output) {
-    $this->_initializeInput();
-    // grab data from any matching options
-    foreach ($this->_input as $param => $value) {
-      if ($input->hasOption($param)) {
-        $this->_input[$param] = $input->getOption($param) ?? $value;
+    // grab input from any matching args/options
+    foreach (array_keys($this->_input) as $name) {
+      if ($input->hasArgument($name)) {
+        $this->_input[$name] = $input->getArgument($name);
+      } elseif ($input->hasOption($name)) {
+        $this->_input[$name] = $input->getOption($name);
       }
     }
 
@@ -51,15 +59,19 @@ trait TakesUserInput {
       if ($value === null) {
         $choices = $this->_getChoices($name);
         if (! empty($choices)) {
-          $this->_input[$name] = $app->choose(
-            $this->_getPhrase("choose_{$name}"),
-            $choices,
-            key($choices)
+          $answer = $app->choose(
+            $this->getPhrase("choose_{$name}"),
+            array_values($choices),
+            0
           );
+          $this->_input[$name] = array_search($answer, $choices);
+
           continue;
         }
 
-        $this->_input[$name] = $app->ask($this->_getPhrase("ask_{$name}"));
+        $this->_input[$name] = $app->ask(
+          "{$this->getPhrase("ask_{$name}")}\n > "
+        );
       }
     }
 
@@ -80,9 +92,36 @@ trait TakesUserInput {
   }
 
   /**
-   * Override this method to define inputs for the command.
+   * Looks up an input option by search value.
+   *
+   * @param string $input Name of the input to lookup
+   * @param string $lookup The lookup value
    */
-  protected function _initializeInput() {
-    // no inputs defined by default
+  protected function _lookupChoice(string $input, string $lookup) {
+    $choices = $this->_getChoices($input, false);
+    $matches = preg_grep("({$lookup})iu", $choices);
+    switch (count($matches)) {
+      case 1:
+        $this->_input[$input] = array_search(reset($matches), $choices);
+        return;
+      case 0:
+        throw new CommandException(
+          CommandException::NO_LOOKUP_MATCH,
+          [
+            'input' => $input,
+            'lookup' => $lookup,
+            'choices' => implode('|', $choices)
+          ]
+        );
+      default:
+        throw new CommandException(
+          CommandException::LOOKUP_MATCH_AMBIGUOUS,
+          [
+            'input' => $input,
+            'lookup' => $lookup,
+            'matches' => implode(', ', $matches)
+          ]
+        );
+    }
   }
 }

@@ -236,16 +236,16 @@
         },
         {
             "name": "php-enspired/exceptable",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enspired/exceptable.git",
-                "reference": "376be21c9b056d3b4fa2698ec02a7731b35c6312"
+                "reference": "90a9ab03bfb6cddf90f87276dc762a15c98f7488"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enspired/exceptable/zipball/376be21c9b056d3b4fa2698ec02a7731b35c6312",
-                "reference": "376be21c9b056d3b4fa2698ec02a7731b35c6312",
+                "url": "https://api.github.com/repos/php-enspired/exceptable/zipball/90a9ab03bfb6cddf90f87276dc762a15c98f7488",
+                "reference": "90a9ab03bfb6cddf90f87276dc762a15c98f7488",
                 "shasum": ""
             },
             "require": {
@@ -273,7 +273,7 @@
             ],
             "description": "Augmented features for exceptions and exception handling.",
             "homepage": "http://php.enspi.red",
-            "time": "2018-04-19T00:52:35+00:00"
+            "time": "2018-05-16T14:25:58+00:00"
         },
         {
             "name": "psr/http-message",

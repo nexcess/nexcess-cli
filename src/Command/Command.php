@@ -9,6 +9,12 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command;
 
+use Nexcess\Sdk\ {
+  Endpoint\Readable as Endpoint,
+  Model\Modelable as Model,
+  Util\Util
+};
+
 use Nexcess\Sdk\Cli\ {
   Console,
   Exception\ConsoleException
@@ -43,6 +49,11 @@ abstract class Command extends SymfonyCommand {
   /** @var string Base part for translation keys for this command. */
   protected $_base_tr_key = '';
 
+  public function __construct(Console $console) {
+    $this->setApplication($console);
+    parent::__construct();
+  }
+
   /**
    * {@inheritDoc}
    */
@@ -52,7 +63,7 @@ abstract class Command extends SymfonyCommand {
     $this->setName(static::NAME);
     $this->setDescription($this->getPhrase('desc'));
     $this->setHelp($this->getPhrase('help'));
-    $this->setUsage($this->getPhrase('usage'));
+    $this->addUsage($this->getPhrase('usage'));
     $this->setProcessTitle(
       Console::NAME . ' (' . Console::VERSION . ') > ' . static::NAME
     );
@@ -71,9 +82,12 @@ abstract class Command extends SymfonyCommand {
    * @return string Translated phrase on success; untranslated key otherwise
    */
   public function getPhrase(string $key, array $context = []) : string {
-    return $this
-      ->getApplication()
-      ->translate("{$this->_trKey($key)}", $context);
+    $app = $this->getApplication();
+    if ($app === null) {
+      return $key;
+    }
+
+    return $app->translate("{$this->_trKey($key)}", $context);
   }
 
   /**
@@ -85,7 +99,7 @@ abstract class Command extends SymfonyCommand {
     foreach (static::ARGS as $arg) {
       $name = array_shift($arg);
       $mode = array_shift($arg) ?? Arg::OPTIONAL;
-      $desc = $this->getPhrase(".arg_{$name}");
+      $desc = $this->getPhrase("arg_{$name}");
 
       $this->addArgument($name, $mode, $desc);
     }
@@ -101,12 +115,51 @@ abstract class Command extends SymfonyCommand {
       $name = explode('|', array_shift($opt));
       $long = array_shift($name);
       $short = array_shift($name);
-      $mode = array_shift($opt) ?? Arg::VALUE_OPTIONAL;
+      $mode = array_shift($opt) ?? Opt::VALUE_OPTIONAL;
       $desc = $this->getPhrase("opt_{$long}");
       $default = array_shift($opt);
 
       $this->addOption($long, $short, $mode, $desc, $default);
     }
+  }
+
+  /**
+   * Default formatting for key:value pairs in a summary.
+   *
+   * @param array $summary Details
+   * @param int $depth Starting indent depth
+   * @return string Formatted details
+   */
+  protected function _formatSummary(array $summary, int $depth = 0) : string {
+    $depth += 1;
+    $details = [];
+    foreach ($summary as $key => $value) {
+      $translated_key = $this->getPhrase("summary_key.{$key}");
+      if (strpos($translated_key, "summary_key.{$key}") !== false) {
+        $translated_key = $key;
+      }
+      $details[$translated_key] = $value;
+    }
+    $indent = str_repeat(' ', $depth * 2);
+
+    $formatted = '';
+    foreach ($details as $key => $value) {
+      $formatted .= "\n<info>{$indent}{$key}</info>: ";
+
+      if ($value instanceof Model) {
+        $value = $value->toArray();
+      }
+      if (is_array($value)) {
+        $value = $this->_formatSummary($value, $depth);
+      }
+      if (is_string($value) || is_numeric($value)) {
+        $formatted .= $value;
+      } else {
+        $formatted .= Util::jsonEncode($value, Util::JSON_ENCODE_PRETTY);
+      }
+    }
+
+    return $formatted;
   }
 
   /**
@@ -119,6 +172,42 @@ abstract class Command extends SymfonyCommand {
   protected function _getEndpoint(string $endpoint = null) : Endpoint {
     $endpoint = $endpoint ?? static::ENDPOINT;
     return $this->getApplication()->getClient()->getEndpoint($endpoint);
+  }
+
+  /**
+   * Gets a summary of the command results.
+   *
+   * @param array $details Details of command results
+   * @return array Summary data (i.e., suitable for use as getPhrase $context)
+   */
+  protected function _getSummary(array $details) : array {
+    return $details;
+  }
+
+  /**
+   * Outputs a summary of the command results.
+   *
+   * Outputs as json if the "json" option is passed,
+   * or if no "summary" phrase is defined for this command.
+   *
+   * @param array $details Details of command results
+   * @param bool $json Output as json?
+   */
+  protected function _saySummary(array $details, bool $json = false) {
+    $app = $this->getApplication();
+    $summary = $this->_getSummary($details);
+
+    if ($json) {
+      $app->sayJson($summary);
+      return;
+    }
+
+    $summary_phrase = $this->getPhrase('summary', $summary);
+    $app->say(
+      ($summary_phrase === $this->_trKey('summary')) ?
+        "{$this->_formatSummary($summary)}\n" :
+        $summary_phrase
+    );
   }
 
   /**
