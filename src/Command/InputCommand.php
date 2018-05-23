@@ -9,7 +9,12 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command;
 
-use Nexcess\Sdk\Cli\Exception\CommandException;
+use Nexcess\Sdk\Util\Util;
+
+use Nexcess\Sdk\Cli\ {
+  Command\Command,
+  Exception\CommandException
+};
 
 use Symfony\Component\Console\ {
   Input\InputInterface as Input,
@@ -19,11 +24,18 @@ use Symfony\Component\Console\ {
 /**
  * Collects user input from console options and asks for missing values.
  *
- * Which values are collected depend on the keys of the $_data array:
+ * Which values are collected depend on the INPUTS array:
+ *  - each name in INPUTS will be initialized as null
+ *  - if an argument with the same name exists, its value will be assigned
  *  - if an option with the same name exists, its value will be assigned
- *  - if a value is null, the user will be asked to choose a value
+ *  - if a value is null, the user will be asked to choose a value:
+ *    - if _getChoices(name) returns a non-empty array, those choices are used
+ *    - otherwise the user will be asked to choose a value freely
  */
-trait TakesUserInput {
+class InputCommand extends Command {
+
+  /** @var array User input name:filter map. */
+  const INPUTS = [];
 
   /** @var array Map of option:choices pairs. */
   protected $_choices = [];
@@ -32,16 +44,65 @@ trait TakesUserInput {
   protected $_input = [];
 
   /**
+   * Gets user input and applies defined filters.
+   *
+   * Omit input name to get all non-empty inputs.
+   *
+   * @param string|null $name The input name to retrieve
+   * @param bool $optional Is value allowed to be empty?
+   * @return mixed The input value
+   * @throws CommandException If input does not exist,
+   *  or required value is missing
+   */
+  public function getInput(string $name = null, bool $optional = true) {
+    if ($name === null) {
+      $inputs = [];
+      foreach ($this->_input as $name => $value) {
+        $inputs[$name] = $this->getInput($name, $optional);
+      }
+      return array_filter(
+        $inputs,
+        function ($value) {
+          return $value !== null;
+        }
+      );
+    }
+
+    if (! array_key_exists($name, $this->_input)) {
+      throw new CommandException(
+        CommandException::NO_SUCH_INPUT,
+        ['command' => static::NAME, 'name' => $name]
+      );
+    }
+
+    if (! $optional && $this->_input[$name] === null) {
+      throw new CommandException(
+        CommandException::MISSING_INPUT,
+        ['command' => static::NAME, 'name' => 'id']
+      );
+    }
+
+    $filter = static::INPUTS[$name];
+    return ($filter === null) ?
+      $this->_input[$name] :
+      Util::filter($this->_input[$name], $filter);
+  }
+
+  /**
    * {@inheritDoc}
    * Collects user input from options.
    */
   public function initialize(Input $input, Output $output) {
+    // initialize empty inputs
+    $this->_input = array_fill_keys(array_keys(static::INPUTS), null);
+
     // grab input from any matching args/options
-    foreach (array_keys($this->_input) as $name) {
-      if ($input->hasArgument($name)) {
-        $this->_input[$name] = $input->getArgument($name);
-      } elseif ($input->hasOption($name)) {
-        $this->_input[$name] = $input->getOption($name);
+    foreach ($this->_input as $name => $value) {
+      $cli_name = strtr($name, ['_' => '-']);
+      if ($input->hasArgument($cli_name)) {
+        $this->_input[$name] = $input->getArgument($cli_name);
+      } elseif ($input->hasOption($cli_name)) {
+        $this->_input[$name] = $input->getOption($cli_name);
       }
     }
 

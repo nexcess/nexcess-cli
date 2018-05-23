@@ -9,10 +9,10 @@
         "choose_cloud_id": "Choose which Cloud you want your Cloud Account to be hosted on:",
         "choose_package_id": "Choose a Service Level for your Cloud Account:",
         "cloud_desc": "<question>{location}</question> ({location_code})",
+        "created": "\nYour new Cloud Account has been created. <info>Use</info> cloud-account:show {id} <info>to check on its status!</info>",
+        "creating": "Your new Cloud Account is being created. <info>This may take a few moments…</info>",
         "desc": "Creates a new Cloud Account",
-        "done": "\nDone.  <info>Use</info> cloud-account {id} <info>to check on your new Cloud Account!</info>\n",
         "failed": "<error>Creating your new Cloud Account failed.</error> Please open a support ticket.",
-        "getting_ready": "\nYour new Cloud Account has been created and is being set up. <info>Use</info> cloud-account:show {id} <info>to check on its status!</info>",
         "help": "Any option may be omitted and you will be prompted to choose from a menu.\nProviding an application name (e.g., 'magento') will select that application for you.",
         "opt_app_id": "Application Environment ID",
         "opt_cloud_id": "Cloud location ID",
@@ -29,8 +29,7 @@
           "temp_domain": "Temp Domain"
         },
         "timed_out": "<comment>Wait timeout exceeded:</comment> your new Cloud Account is still being set up. <info>Use</info> cloud-account:show {id} <info>to check on its status.</info>",
-        "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install",
-        "waiting": "Your new Cloud Account is being created. <info>This may take a few moments…</info>"
+        "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install"
       },
       "show": {
         "arg_id": "Cloud Account Service ID",
@@ -47,7 +46,8 @@
       "exception": {
         "no_lookup_match": "'{lookup}' does not match any {input}; please choose one of:\n {choices}",
         "lookup_match_ambiguous": "'{lookup}' matches multiple choices for {input}:\n {matches}",
-        "missing_input": "Missing or invalid input for '{name}';\n see $ nexcess-cli {command} --help"
+        "missing_input": "Missing or invalid input for '{name}';\n see $ nexcess-cli {command} --help",
+        "no_such_input": "No input '{name}' exists on {command}"
       }
     },
     "exception": {

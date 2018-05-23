@@ -146,7 +146,7 @@ abstract class Command extends SymfonyCommand {
     foreach ($details as $key => $value) {
       $formatted .= "\n<info>{$indent}{$key}</info>: ";
 
-      if ($value instanceof Model) {
+      if (method_exists($value, 'toArray')) {
         $value = $value->toArray();
       }
       if (is_array($value)) {

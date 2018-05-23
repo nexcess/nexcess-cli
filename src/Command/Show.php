@@ -29,38 +29,22 @@ use Symfony\Component\Console\ {
 /**
  * Base class for "show" commands.
  */
-abstract class Show extends Command {
-  use TakesUserInput {
-    initialize as _initialize;
-  }
+abstract class Show extends InputCommand {
 
   /** {@inheritDoc} */
   const ARGS = [['id', Arg::OPTIONAL]];
 
-  /**
-   * {@inheritDoc}
-   */
-  public function initialize(Input $input, Output $output) {
-    $this->_input['id'] = null;
-
-    $this->_initialize($input, $output);
-  }
+  /** {@inheritDoc} */
+  const INPUTS = ['id' => Util::FILTER_INT];
 
   /**
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $id = Util::filter($this->_input['id'], Util::FILTER_INT);
-    if ($id === null) {
-      throw new CommandException(
-        CommandException::MISSING_INPUT,
-        ['command' => static::NAME, 'name' => 'id']
-      );
-    }
-
-    $model = $this->_getEndpoint()->retrieve($id);
-
-    $this->_saySummary($model->toArray(), $input->getOption('json'));
+    $this->_saySummary(
+      $this->_getEndpoint()->retrieve($this->getInput('id', false))->toArray(),
+      $input->getOption('json')
+    );
     return Handler::EXIT_SUCCESS;
   }
 }

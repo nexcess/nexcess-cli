@@ -102,9 +102,9 @@ class Console extends SymfonyApplication {
   protected $_sandbox;
 
   /**
-   *
+   * @param array $options Console options (overrides any inputs)
    */
-  public function __construct() {
+  public function __construct(array $options = []) {
     // hide args from top/ps (ignore if fails)
     @cli_set_process_title(static::NAME . ' (' . static::VERSION . ')');
     parent::__construct(static::NAME, static::VERSION);
@@ -118,7 +118,7 @@ class Console extends SymfonyApplication {
     $this->_setErrorHandler();
     $this->_setLanguageHandler();
 
-    $this->_buildConfig();
+    $this->_buildConfig($options);
     $this->_initializeClient();
   }
 
@@ -196,7 +196,15 @@ class Console extends SymfonyApplication {
     );
   }
 
-  public function doRunCommand(SymfonyCommand $command, Input $input, Output $output) {
+  /**
+   * {@inheritDoc}
+   * Override to set application (console) early.
+   */
+  public function doRunCommand(
+    SymfonyCommand $command,
+    Input $input,
+    Output $output
+  ) {
     $command->setApplication($this);
     return parent::doRunCommand($command, $input, $output);
   }
@@ -351,15 +359,6 @@ class Console extends SymfonyApplication {
   }
 
   /**
-   * Should commands wait for long-running tasks to complete?
-   *
-   * @return bool True if should wait; false otherwise
-   */
-  public function shouldWait() : bool {
-    return $this->_config->get('wait.always') ?? false;
-  }
-
-  /**
    * Translates and makes placeholder → context replacements in given message.
    *
    * @param string $message The string to make replacements on
@@ -394,9 +393,20 @@ class Console extends SymfonyApplication {
   }
 
   /**
-   * Builds an Sdk configuration object based on provided options.
+   * Does the console wait for long-running tasks to complete?
+   *
+   * @return bool True if waits; false otherwise
    */
-  protected function _buildConfig() {
+  public function waits() : bool {
+    return $this->_config->get('wait.always') ?? false;
+  }
+
+  /**
+   * Builds an Sdk configuration object based on provided options.
+   *
+   * @param array $overrides Map of config options to forcibly override
+   */
+  protected function _buildConfig(array $overrides = []) {
     $input = $this->_input;
     $profile = $this->_loadProfile(
       $input->getParameterOption('--profile', null, true) ??
@@ -409,9 +419,8 @@ class Console extends SymfonyApplication {
       $this->_getEnv(self::ENV_API_TOKEN) ??
       $profile['api_token'] ??
       '';
-    $profile['debug'] = $this->isDebug() ?
-      true :
-      ($profile['debug'] ?? false);
+    $profile['debug'] =
+      ($this->isDebug() ? true : ($profile['debug'] ?? false));
     $profile['sandboxed'] =
       $input->getParameterOption('--sandboxed', null, true) ??
       $profile['sandboxed'] ??
@@ -420,6 +429,9 @@ class Console extends SymfonyApplication {
       $this->_input->getParameterOption('--wait', null, true) ??
       $profile['wait']['always'] ??
       false;
+
+    // apply overrides
+    $profile = $overrides + $profile;
 
     if (! is_a($profile['fqcn'], Config::class, true)) {
       throw new ConsoleException(

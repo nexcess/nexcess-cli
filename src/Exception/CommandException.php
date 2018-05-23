@@ -25,6 +25,9 @@ class CommandException extends Exception {
   /** @var int Missing argument or option. */
   const MISSING_INPUT = 3;
 
+  /** @var int Asked for an input that doesn't exist. */
+  const NO_SUCH_INPUT = 4;
+
   /** {@inheritDoc} */
   const INFO = [
     self::NO_LOOKUP_MATCH =>
@@ -32,6 +35,8 @@ class CommandException extends Exception {
     self::LOOKUP_MATCH_AMBIGUOUS =>
       ['message' => 'console.command.exception.lookup_match_ambiguous'],
     self::MISSING_INPUT =>
-      ['message' => 'console.command.exception.missing_input']
+      ['message' => 'console.command.exception.missing_input'],
+    self::NO_SUCH_INPUT =>
+      ['message' => 'console.command.exception.no_such_input']
   ];
 }

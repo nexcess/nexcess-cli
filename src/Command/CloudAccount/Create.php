@@ -11,7 +11,8 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\ {
   Endpoint\CloudAccount,
-  Model\Modelable as Model
+  Model\Modelable as Model,
+  Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
@@ -38,34 +39,36 @@ class Create extends CreateCommand {
   const ENDPOINT = CloudAccount::class;
 
   /** {@inheritDoc} */
+  const INPUTS = [
+    'app_id' => Util::FILTER_INT,
+    'cloud_id' => Util::FILTER_INT,
+    'domain' => null,
+    'install_app' => Util::FILTER_BOOL,
+    'package_id' => Util::FILTER_INT
+  ];
+
+  /** {@inheritDoc} */
   const NAME = 'cloud-account:create';
 
   /** {@inheritDoc} */
   const OPTS = [
-    ['app_id', OPT::VALUE_REQUIRED],
-    ['cloud_id', OPT::VALUE_REQUIRED],
+    ['app-id', OPT::VALUE_REQUIRED],
+    ['cloud-id', OPT::VALUE_REQUIRED],
     ['domain', OPT::VALUE_REQUIRED],
-    ['install_app', OPT::VALUE_NONE],
-    ['package_id', OPT::VALUE_REQUIRED]
+    ['install-app', OPT::VALUE_NONE],
+    ['package-id', OPT::VALUE_REQUIRED]
   ];
 
   /**
    * {@inheritDoc}
    */
   public function initialize(Input $input, Output $output) {
-    $this->_input = [
-      'app_id' => null,
-      'cloud_id' => null,
-      'domain' => null,
-      'package_id' => null
-    ];
+    parent::initialize($input, $output);
 
     $app = $input->getArgument('app');
     if ($app !== null) {
       $this->_lookupChoice('app_id', $app);
     }
-
-    parent::initialize($input, $output);
   }
 
   /**
