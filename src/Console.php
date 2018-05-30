@@ -219,6 +219,15 @@ class Console extends SymfonyApplication {
   }
 
   /**
+   * Gets the API configuration.
+   *
+   * @return Config
+   */
+  public function getConfig() : Config {
+    return $this->_config;
+  }
+
+  /**
    * {@inheritDoc}
    * Overridden to set up the input options needed for bootstrapping.
    */
@@ -232,10 +241,11 @@ class Console extends SymfonyApplication {
         $this->translate('console.opt_api_token')
       ),
       new Option(
-        'json',
-        null,
-        Option::VALUE_NONE,
-        $this->translate('console.opt_json')
+        'format',
+        'f',
+        Option::VALUE_REQUIRED,
+        $this->translate('console.opt_format'),
+        'text'
       ),
       new Option(
         'profile',
@@ -291,10 +301,7 @@ class Console extends SymfonyApplication {
    * Use our own i/o objects instead of letting run() create them.
    */
   public function run(Input $input = null, Output $output = null) {
-    $input = $input ?? $this->_input;
-    $output = $output ?? $this->_output;
-
-    return parent::run($this->_input, $this->_output);
+    return parent::run($input ?? $this->_input, $output ?? $this->_output);
   }
 
   /**
@@ -303,8 +310,8 @@ class Console extends SymfonyApplication {
    * If symfony's Output object is not yet available,
    * this method will attempt to simply echo to stdout.
    *
-   * This method does not output when only json output is expected;
-   * {@see Console::sayJson()} instead.
+   * This method only outputs when plain text output is expected.
+   * {@see Console::sayJson()}
    *
    * @param string $message The message or message key to output
    * @param array $opts Map of output options:
@@ -312,11 +319,10 @@ class Console extends SymfonyApplication {
    *  - int Console::SAY_OPT_OPTIONS {@see OutputInterface::write $options}
    * @return Console $this
    */
-  public function say(
-    string $message,
-    array $options = []
-  ) : Console {
-    if ($this->_input->getParameterOption('--json', null, true)) {
+  public function say(string $message, array $options = []) : Console {
+    if (
+      $this->_input->getParameterOption('--format', 'text', true) !== 'text'
+    ) {
       return $this;
     }
 

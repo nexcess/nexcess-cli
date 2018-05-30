@@ -62,7 +62,10 @@ abstract class Create extends InputCommand {
     }
 
     $app->say($this->getPhrase('created', ['id' => $model->getId()]));
-    $this->_saySummary($model->toArray(), $input->getOption('json'));
+    $this->_saySummary(
+      $model->toArray(),
+      ($input->getOption('format') === 'json')
+    );
     return Handler::EXIT_SUCCESS;
   }
 }

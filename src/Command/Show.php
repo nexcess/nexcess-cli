@@ -32,7 +32,7 @@ use Symfony\Component\Console\ {
 abstract class Show extends InputCommand {
 
   /** {@inheritDoc} */
-  const ARGS = [['id', Arg::OPTIONAL]];
+  const ARGS = ['id' => [Arg::OPTIONAL]];
 
   /** {@inheritDoc} */
   const INPUTS = ['id' => Util::FILTER_INT];
@@ -43,7 +43,7 @@ abstract class Show extends InputCommand {
   public function execute(Input $input, Output $output) {
     $this->_saySummary(
       $this->_getEndpoint()->retrieve($this->getInput('id', false))->toArray(),
-      $input->getOption('json')
+      ($input->getOption('format') === 'json')
     );
     return Handler::EXIT_SUCCESS;
   }

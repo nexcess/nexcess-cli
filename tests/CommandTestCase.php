@@ -9,13 +9,18 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Tests;
 
+use Nexcess\Sdk\Tests\TestCase;
+
 use Nexcess\Sdk\Cli\ {
   Console,
   Command\Command,
   Exception\CommandException
 };
 
-use PhpUnit\Framework\TestCase;
+use PhpUnit\Framework\ {
+  //TestCase,
+  ExpectationFailedException as PhpUnitException
+};
 
 use Symfony\Component\Console\ {
   Helper\QuestionHelper,
@@ -42,11 +47,11 @@ class CommandTestCase extends TestCase {
   }
 
   /**
-   * Intercepts and responds to questions during Command::interact.
+   * Intercepts, tests, and responds to questions during Command::interact.
    *
    * @param Command $command The command to mock interactions on
    * @param array[] $interactions List of expected interactions:
-   *  - string $0 PCRE to match asked question against
+   *  - string $0 Literal string or PCRE to match asked question against
    *  - string $1 Response to provide
    */
   protected function _mockInteractions(Command $command, array $interactions) {
@@ -66,11 +71,16 @@ class CommandTestCase extends TestCase {
           $this->_testcase->fail("Unexpected interaction: {$asked}");
         }
         [$expected, $response] = array_shift($this->_interactions);
-        $this->_testcase->assertRegExp(
-          "({$expected})",
-          $asked,
-          'Interaction must be correctly translated and formatted'
-        );
+
+        if (@preg_match($expected, '') !== false) {
+          $this->_testcase->assertRegExp(
+            $expected,
+            $asked,
+            'Asked question must be translated and formatted'
+          );
+        } else {
+          $this->_testcase->assertEquals($expected, $asked);
+        }
 
         // from here on is more-or-less what doAsk() normally does
         $this->writePrompt($output, $question);
@@ -89,8 +99,8 @@ class CommandTestCase extends TestCase {
    * Executes a command and returns the CommandTester for making assertions.
    *
    * @param Command $command The command to execute (use Console::find()!)
-   * @param array $invocation The args/opts to invoke the command with
-   * @param array $interactions Responses for interactions
+   * @param array $invocation Map of args/opts to invoke the command with
+   * @param array $interactions List of [expected, response]s for interactions
    * @return CommandTester The tester instance
    */
   protected function _testRun(
@@ -101,10 +111,6 @@ class CommandTestCase extends TestCase {
     $tester = new CommandTester($command);
 
     if (! empty($interactions)) {
-      // old and busted
-      //$tester->setInputs($interactions);
-
-      // new hotness
       $this->_mockInteractions($command, $interactions);
     }
 

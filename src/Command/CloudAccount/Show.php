@@ -11,7 +11,8 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\ {
   Endpoint\CloudAccount,
-  Model\Modelable as Model
+  Model\Modelable as Model,
+  Util\Config
 };
 
 use Nexcess\Sdk\Cli\ {
@@ -39,9 +40,12 @@ class Show extends ShowCommand {
 
   /** {@inheritDoc} */
   const OPTS = [
-    ['domain', OPT::VALUE_REQUIRED],
-    ['ip', Opt::VALUE_REQUIRED]
+    'domain' => [OPT::VALUE_REQUIRED],
+    'ip' => [Opt::VALUE_REQUIRED]
   ];
+
+  /** {@inheritDoc} */
+  const RESTRICT_TO = [Config::COMPANY_NEXCESS];
 
   /**
    * {@inheritDoc}

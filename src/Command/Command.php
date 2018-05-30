@@ -34,7 +34,7 @@ use Symfony\Component\Console\ {
  */
 abstract class Command extends SymfonyCommand {
 
-  /** @var array[] List of [name, mode] argument definitions. */
+  /** @var array[] Map of name:[mode, default] argument definitions. */
   const ARGS = [];
 
   /** @var string Classname of Sdk Endpoint to use. */
@@ -43,8 +43,11 @@ abstract class Command extends SymfonyCommand {
   /** @var string Command name. */
   const NAME = '';
 
-  /** @var array[] List of [name, mode, default] option definitions. */
+  /** @var array[] Map of name|n:[mode, default] option definitions. */
   const OPTS = [];
+
+  /** @var string[] Api types to restrict this command to. */
+  const RESTRICT_TO = [];
 
   /** @var string Base part for translation keys for this command. */
   protected $_base_tr_key = '';
@@ -58,7 +61,8 @@ abstract class Command extends SymfonyCommand {
    * {@inheritDoc}
    */
   public function configure() {
-    $this->_base_tr_key = 'console.' . strtr(static::NAME, [':' => '.']);
+    $this->_base_tr_key = 'console.' .
+      strtr(static::NAME, [':' => '.', '-' => '_']);
 
     $this->setName(static::NAME);
     $this->setDescription($this->getPhrase('desc'));
@@ -87,7 +91,21 @@ abstract class Command extends SymfonyCommand {
       return $key;
     }
 
-    return $app->translate("{$this->_trKey($key)}", $context);
+    $tr_key = $this->_trKey($key);
+    $tr = $app->translate($tr_key, $context);
+    return ($tr === $tr_key) ? $key : $tr;
+  }
+
+  /**
+   * {@inheritDoc}
+   * Some commands are restricted to one company or another.
+   */
+  public function isEnabled() {
+    return empty(static::RESTRICT_TO) ||
+      in_array(
+        $this->getApplication()->getConfig()::COMPANY,
+        static::RESTRICT_TO
+      );
   }
 
   /**
@@ -96,12 +114,38 @@ abstract class Command extends SymfonyCommand {
   protected function _bootstrapArguments() {
     $app = $this->getApplication();
 
-    foreach (static::ARGS as $arg) {
-      $name = array_shift($arg);
+    $args = static::ARGS;
+    // sort by required, optional, array
+    uasort(
+      $args,
+      function ($a, $b) {
+        $a = $a[0] ?? Arg::OPTIONAL;
+        $b = $b[0] ?? Arg::OPTIONAL;
+
+        if (($a & Arg::IS_ARRAY) === Arg::IS_ARRAY) {
+          return 1;
+        }
+        if (($b & Arg::IS_ARRAY) === Arg::IS_ARRAY) {
+          return -1;
+        }
+
+        if (($a & Arg::OPTIONAL) === Arg::OPTIONAL) {
+          return (($b & Arg::IS_ARRAY) === Arg::IS_ARRAY) ? -1 : 1;
+        }
+        if (($b & Arg::OPTIONAL) === Arg::OPTIONAL) {
+          return (($a & Arg::IS_ARRAY) === Arg::IS_ARRAY) ? 1 : -1;
+        }
+
+        return 0;
+      }
+    );
+
+    foreach ($args as $name => $arg) {
       $mode = array_shift($arg) ?? Arg::OPTIONAL;
+      $default = array_shift($arg);
       $desc = $this->getPhrase("arg_{$name}");
 
-      $this->addArgument($name, $mode, $desc);
+      $this->addArgument($name, $mode, $desc, $default);
     }
   }
 
@@ -111,8 +155,8 @@ abstract class Command extends SymfonyCommand {
   protected function _bootstrapOptions() {
     $app = $this->getApplication();
 
-    foreach (static::OPTS as $opt) {
-      $name = explode('|', array_shift($opt));
+    foreach (static::OPTS as $name => $opt) {
+      $name = explode('|', $name);
       $long = array_shift($name);
       $short = array_shift($name);
       $mode = array_shift($opt) ?? Opt::VALUE_OPTIONAL;
@@ -177,8 +221,11 @@ abstract class Command extends SymfonyCommand {
   /**
    * Gets a summary of the command results.
    *
+   * Override to provide custom summary details.
+   * The returned array must be suitable for use as $context with getPhrase()).
+   *
    * @param array $details Details of command results
-   * @return array Summary data (i.e., suitable for use as getPhrase $context)
+   * @return array Summary data
    */
   protected function _getSummary(array $details) : array {
     return $details;
@@ -186,9 +233,6 @@ abstract class Command extends SymfonyCommand {
 
   /**
    * Outputs a summary of the command results.
-   *
-   * Outputs as json if the "json" option is passed,
-   * or if no "summary" phrase is defined for this command.
    *
    * @param array $details Details of command results
    * @param bool $json Output as json?
@@ -204,7 +248,7 @@ abstract class Command extends SymfonyCommand {
 
     $summary_phrase = $this->getPhrase('summary', $summary);
     $app->say(
-      ($summary_phrase === $this->_trKey('summary')) ?
+      ($summary_phrase === 'summary') ?
         "{$this->_formatSummary($summary)}\n" :
         $summary_phrase
     );
@@ -217,6 +261,8 @@ abstract class Command extends SymfonyCommand {
    * @return string Command-namespaced key
    */
   protected function _trKey(string $key) : string {
-    return "{$this->_base_tr_key}.{$key}";
+    return (strpos($key, 'console.') === 0) ?
+      $key :
+      "{$this->_base_tr_key}.{$key}";
   }
 }

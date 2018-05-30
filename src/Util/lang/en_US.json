@@ -1,6 +1,6 @@
 {
   "console": {
-    "cloud-account": {
+    "cloud_account": {
       "create": {
         "app_desc": "<question>{app}</question>",
         "arg_app": "Application Environment name (used for app_id lookup)",
@@ -58,9 +58,9 @@
       "unsupported_profile_type": "user profile format must be one of {supported}; '{type}' is not a supported"
     },
     "opt_api_token": "Your API Token (log in to your portal to create one)",
-    "opt_json": "Display Command output as JSON?\n (this does not affect interactive output; see --no-interaction)",
-    "opt_language": "Specify preferred language",
-    "opt_profile": "Filename of the user profile to load; or one of 'nexcess'|'thermo' to use the default profiles",
+    "opt_format": "Format to display command output as; one of text|json\n (this does not affect interactive output; see --no-interaction)",
+    "opt_language": "Specify preferred language (currently, only en_US is supported)",
+    "opt_profile": "Filename of the user profile to load; or one of nexcess|thermo to use the default profiles",
     "opt_sandboxed": "Do not send any API requests",
     "opt_wait": "Wait for long-running commands to complete (this can block for a long time)?"
   }

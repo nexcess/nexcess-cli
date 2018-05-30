@@ -12,6 +12,7 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 use Nexcess\Sdk\ {
   Endpoint\CloudAccount,
   Model\Modelable as Model,
+  Util\Config,
   Util\Util
 };
 
@@ -33,7 +34,7 @@ use Symfony\Component\Console\ {
 class Create extends CreateCommand {
 
   /** {@inheritDoc} */
-  const ARGS = [['app', Arg::OPTIONAL]];
+  const ARGS = ['app' => [Arg::OPTIONAL]];
 
   /** {@inheritDoc} */
   const ENDPOINT = CloudAccount::class;
@@ -52,12 +53,15 @@ class Create extends CreateCommand {
 
   /** {@inheritDoc} */
   const OPTS = [
-    ['app-id', OPT::VALUE_REQUIRED],
-    ['cloud-id', OPT::VALUE_REQUIRED],
-    ['domain', OPT::VALUE_REQUIRED],
-    ['install-app', OPT::VALUE_NONE],
-    ['package-id', OPT::VALUE_REQUIRED]
+    'app-id' => [OPT::VALUE_REQUIRED],
+    'cloud-id' => [OPT::VALUE_REQUIRED],
+    'domain' => [OPT::VALUE_REQUIRED],
+    'install-app' => [OPT::VALUE_NONE],
+    'package-id' => [OPT::VALUE_REQUIRED]
   ];
+
+  /** {@inheritDoc} */
+  const RESTRICT_TO = [Config::COMPANY_NEXCESS];
 
   /**
    * {@inheritDoc}
