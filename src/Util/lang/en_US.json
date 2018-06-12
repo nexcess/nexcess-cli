@@ -1,5 +1,14 @@
 {
   "console": {
+    "api_token": {
+      "list": {
+        "desc": "Lists your API Tokens",
+        "help": "You may provide one or more filters like 'filter:value'",
+        "summary": "  #{token_id}: '{name}'",
+        "summary_title": "Api Tokens:",
+        "usage": "api-token:list"
+      }
+    },
     "cloud_account": {
       "create": {
         "app_desc": "<question>{app}</question>",
@@ -31,6 +40,11 @@
         "timed_out": "<comment>Wait timeout exceeded:</comment> your new Cloud Account is still being set up. <info>Use</info> cloud-account:show {id} <info>to check on its status.</info>",
         "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install"
       },
+      "list": {
+        "desc": "Lists your Cloud Accounts",
+        "help": "You may proivde one or more filters in the form 'filter:value'.",
+        "usage": "cloud-account:list\n  cloud-account:list service.status:active"
+      },
       "show": {
         "arg_id": "Cloud Account Service ID",
         "choose_id": "Select a Cloud Account to view:",
@@ -43,12 +57,11 @@
     },
     "command": {
       "details": "Details:",
-      "exception": {
-        "no_lookup_match": "'{lookup}' does not match any {input}; please choose one of:\n {choices}",
-        "lookup_match_ambiguous": "'{lookup}' matches multiple choices for {input}:\n {matches}",
-        "missing_input": "Missing or invalid input for '{name}';\n see $ nexcess-cli {command} --help",
-        "no_such_input": "No input '{name}' exists on {command}"
-      }
+      "invalid_list_filter": "List filters must be in the format 'property:value'; '{filter}' is invalid",
+      "lookup_match_ambiguous": "'{lookup}' matches multiple choices for {input}:\n {matches}",
+      "missing_input": "Missing or invalid input for '{name}';\n see $ nexcess-cli {command} --help",
+      "no_lookup_match": "'{lookup}' does not match any {input}; please choose one of:\n {choices}",
+      "no_such_input": "No input '{name}' exists on {command}"
     },
     "exception": {
       "invalid_config_type": "SDK configuration class must extend from Nexcess\\Sdk\\Util\\Config; {type} specified",

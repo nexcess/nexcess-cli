@@ -7,9 +7,9 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Exception;
+namespace Nexcess\Sdk\Cli;
 
-use Nexcess\Sdk\Exception\Exception;
+use Nexcess\Sdk\Exception;
 
 class ConsoleException extends Exception {
 

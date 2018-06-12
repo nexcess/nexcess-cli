@@ -10,13 +10,13 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command;
 
 use Nexcess\Sdk\ {
-  Model\Modelable as Model,
-  Util\Util
+  ApiException,
+  SdkException
 };
 
 use Nexcess\Sdk\Cli\ {
   Command\InputCommand,
-  Exception\Handler
+  Console
 };
 
 use Symfony\Component\Console\ {
@@ -39,15 +39,13 @@ abstract class Create extends InputCommand {
     $app->say($this->getPhrase('creating'));
 
     try {
-      //$model = $endpoint->create($this->getInput());
-      // @todo mock-a-doodle-doo
-      $model = $endpoint->retrieve(76492);
+      $model = $endpoint->create($this->getInput());
     } catch (ApiException $e) {
       switch ($e->getCode()) {
         case ApiException::CREATE_FAILED:
           // @todo Open a support ticket?
           $app->say($this->getPhrase('failed', ['id' => $model->getId()]));
-          return Handler::EXIT_API_ERROR;
+          return Console::EXIT_API_ERROR;
         default:
           throw $e;
       }
@@ -55,7 +53,7 @@ abstract class Create extends InputCommand {
       switch ($e->getCode()) {
         case SdkException::WAIT_TIMEOUT_EXCEEDED:
           $app->say($this->getPhrase('timed_out', ['id' => $model->getId()]));
-          return Handler::EXIT_SDK_ERROR;
+          return Console::EXIT_SDK_ERROR;
         default:
           throw $e;
       }
@@ -66,6 +64,6 @@ abstract class Create extends InputCommand {
       $model->toArray(),
       ($input->getOption('format') === 'json')
     );
-    return Handler::EXIT_SUCCESS;
+    return Console::EXIT_SUCCESS;
   }
 }

@@ -7,9 +7,9 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Exception;
+namespace Nexcess\Sdk\Cli\Command;
 
-use Nexcess\Sdk\Exception\Exception;
+use Nexcess\Sdk\Exception;
 
 /**
  * Generic/common Command-related errors.
@@ -28,15 +28,17 @@ class CommandException extends Exception {
   /** @var int Asked for an input that doesn't exist. */
   const NO_SUCH_INPUT = 4;
 
+  /** @var int Malformatted list filter input. */
+  const INVALID_LIST_FILTER = 5;
+
   /** {@inheritDoc} */
   const INFO = [
-    self::NO_LOOKUP_MATCH =>
-      ['message' => 'console.command.exception.no_lookup_match'],
+    self::NO_LOOKUP_MATCH => ['message' => 'console.command.no_lookup_match'],
     self::LOOKUP_MATCH_AMBIGUOUS =>
-      ['message' => 'console.command.exception.lookup_match_ambiguous'],
-    self::MISSING_INPUT =>
-      ['message' => 'console.command.exception.missing_input'],
-    self::NO_SUCH_INPUT =>
-      ['message' => 'console.command.exception.no_such_input']
+      ['message' => 'console.command.lookup_match_ambiguous'],
+    self::MISSING_INPUT => ['message' => 'console.command.missing_input'],
+    self::NO_SUCH_INPUT => ['message' => 'console.command.no_such_input'],
+    self::INVALID_LIST_FILTER =>
+      ['message' => 'console.command.invalid_list_filter']
   ];
 }

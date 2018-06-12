@@ -10,14 +10,14 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command;
 
 use Nexcess\Sdk\ {
-  Endpoint\Readable as Endpoint,
-  Model\Modelable as Model,
+  Resource\Endpoint,
+  Resource\Modelable as Model,
   Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
   Console,
-  Exception\ConsoleException
+  ConsoleException
 };
 
 use Symfony\Component\Console\ {
@@ -69,7 +69,7 @@ abstract class Command extends SymfonyCommand {
     $this->setHelp($this->getPhrase('help'));
     $this->addUsage($this->getPhrase('usage'));
     $this->setProcessTitle(
-      Console::NAME . ' (' . Console::VERSION . ') > ' . static::NAME
+      Console::NAME . ' (' . Console::VERSION . ') ' . static::NAME
     );
 
     $this->_bootstrapArguments();
@@ -86,13 +86,13 @@ abstract class Command extends SymfonyCommand {
    * @return string Translated phrase on success; untranslated key otherwise
    */
   public function getPhrase(string $key, array $context = []) : string {
-    $app = $this->getApplication();
-    if ($app === null) {
+    $console = $this->getApplication();
+    if ($console === null) {
       return $key;
     }
 
     $tr_key = $this->_trKey($key);
-    $tr = $app->translate($tr_key, $context);
+    $tr = $console->translate($tr_key, $context);
     return ($tr === $tr_key) ? $key : $tr;
   }
 
@@ -112,8 +112,6 @@ abstract class Command extends SymfonyCommand {
    * Sets up this command's arguments.
    */
   protected function _bootstrapArguments() {
-    $app = $this->getApplication();
-
     $args = static::ARGS;
     // sort by required, optional, array
     uasort(
@@ -153,8 +151,6 @@ abstract class Command extends SymfonyCommand {
    * Sets up this command's options.
    */
   protected function _bootstrapOptions() {
-    $app = $this->getApplication();
-
     foreach (static::OPTS as $name => $opt) {
       $name = explode('|', $name);
       $long = array_shift($name);
@@ -238,16 +234,16 @@ abstract class Command extends SymfonyCommand {
    * @param bool $json Output as json?
    */
   protected function _saySummary(array $details, bool $json = false) {
-    $app = $this->getApplication();
+    $console = $this->getApplication();
     $summary = $this->_getSummary($details);
 
     if ($json) {
-      $app->sayJson($summary);
+      $console->sayJson($summary);
       return;
     }
 
     $summary_phrase = $this->getPhrase('summary', $summary);
-    $app->say(
+    $console->say(
       ($summary_phrase === 'summary') ?
         "{$this->_formatSummary($summary)}\n" :
         $summary_phrase

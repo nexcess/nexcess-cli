@@ -23,9 +23,9 @@ use Nexcess\Sdk\ {
 };
 
 use Nexcess\Sdk\Cli\ {
-  Exception\ConsoleException,
-  Exception\Handler,
-  Util\CommandDiscoveryFactory as DiscoveryFactory
+  ConsoleException,
+  Util\CommandDiscoveryFactory as DiscoveryFactory,
+  Util\ErrorHandler
 };
 
 use Symfony\Component\Console\ {
@@ -64,6 +64,21 @@ class Console extends SymfonyApplication {
 
   /** @var string Env var name for api token. */
   const ENV_API_TOKEN = 'NEXCESS_API_TOKEN';
+
+  /** @var int Success exit code. */
+  const EXIT_SUCCESS = 0;
+
+  /** @var int Catch-all exit code. */
+  const EXIT_CATCHALL = 1;
+
+  /** @var int Uncaught ApiException. */
+  const EXIT_API_ERROR = 100;
+
+  /** @var int Uncaught ConsoleException. */
+  const EXIT_CONSOLE_ERROR = 101;
+
+  /** @var int Uncaught SdkException. */
+  const EXIT_SDK_ERROR = 102;
 
   /** @var string Name of application. */
   const NAME = 'Nexcess-CLI';
@@ -533,7 +548,8 @@ class Console extends SymfonyApplication {
    * Symfony/Console hides a lot of errors for some reason.
    */
   protected function _setErrorHandler() {
-    $this->_error_handler = new Handler($this, $this->_input, $this->_output);
+    $this->_error_handler =
+      new ErrorHandler($this, $this->_input, $this->_output);
     $this->_error_handler->register();
   }
 

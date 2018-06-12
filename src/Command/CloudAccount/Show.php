@@ -10,15 +10,11 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\ {
-  Endpoint\CloudAccount,
-  Model\Modelable as Model,
+  Resource\CloudAccount\Endpoint,
   Util\Config
 };
 
-use Nexcess\Sdk\Cli\ {
-  Command\Show as ShowCommand,
-  Exception\CloudAccountException
-};
+use Nexcess\Sdk\Cli\Command\Show as ShowCommand;
 
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
@@ -33,7 +29,7 @@ use Symfony\Component\Console\ {
 class Show extends ShowCommand {
 
   /** {@inheritDoc} */
-  const ENDPOINT = CloudAccount::class;
+  const ENDPOINT = Endpoint::class;
 
   /** {@inheritDoc} */
   const NAME = 'cloud-account:show';

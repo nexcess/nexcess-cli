@@ -13,7 +13,7 @@ use Nexcess\Sdk\Util\Util;
 
 use Nexcess\Sdk\Cli\ {
   Command\Command,
-  Exception\CommandException
+  Command\CommandException
 };
 
 use Symfony\Component\Console\ {

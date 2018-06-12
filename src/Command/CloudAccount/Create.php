@@ -10,16 +10,12 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\ {
-  Endpoint\CloudAccount,
-  Model\Modelable as Model,
+  Resource\CloudAccount\Endpoint,
   Util\Config,
   Util\Util
 };
 
-use Nexcess\Sdk\Cli\ {
-  Command\Create as CreateCommand,
-  Exception\CloudAccountException
-};
+use Nexcess\Sdk\Cli\Command\Create as CreateCommand;
 
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
@@ -37,7 +33,7 @@ class Create extends CreateCommand {
   const ARGS = ['app' => [Arg::OPTIONAL]];
 
   /** {@inheritDoc} */
-  const ENDPOINT = CloudAccount::class;
+  const ENDPOINT = Endpoint::class;
 
   /** {@inheritDoc} */
   const INPUTS = [

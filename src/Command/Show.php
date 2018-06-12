@@ -14,10 +14,8 @@ use Nexcess\Sdk\ {
 };
 
 use Nexcess\Sdk\Cli\ {
-  Command\Command,
-  Command\TakesUserInput,
-  Exception\CommandException,
-  Exception\Handler
+  Command\InputCommand,
+  Console
 };
 
 use Symfony\Component\Console\ {
@@ -45,6 +43,6 @@ abstract class Show extends InputCommand {
       $this->_getEndpoint()->retrieve($this->getInput('id', false))->toArray(),
       ($input->getOption('format') === 'json')
     );
-    return Handler::EXIT_SUCCESS;
+    return Console::EXIT_SUCCESS;
   }
 }

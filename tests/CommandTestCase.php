@@ -18,7 +18,6 @@ use Nexcess\Sdk\Cli\ {
 };
 
 use PhpUnit\Framework\ {
-  //TestCase,
   ExpectationFailedException as PhpUnitException
 };
 
@@ -72,14 +71,17 @@ class CommandTestCase extends TestCase {
         }
         [$expected, $response] = array_shift($this->_interactions);
 
-        if (@preg_match($expected, '') !== false) {
+        try {
+          $this->_testcase->assertEquals($expected, $asked);
+        } catch (PhpUnitException $e) {
+          if (@preg_match($expected, '') === false) {
+            throw $e;
+          }
           $this->_testcase->assertRegExp(
             $expected,
             $asked,
             'Asked question must be translated and formatted'
           );
-        } else {
-          $this->_testcase->assertEquals($expected, $asked);
         }
 
         // from here on is more-or-less what doAsk() normally does

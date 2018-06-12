@@ -7,14 +7,22 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Exception;
+namespace Nexcess\Sdk\Cli\Util;
 
 use Exception,
   Throwable;
 
 use at\exceptable\Handler as ExceptableHandler;
 
-use Nexcess\Sdk\Cli\Console;
+use Nexcess\Sdk\ {
+  ApiException,
+  SdkException
+};
+
+use Nexcess\Sdk\Cli\ {
+  Console,
+  ConsoleException
+};
 
 use Symfony\Component\Console\ {
   Input\InputInterface as Input,
@@ -26,22 +34,7 @@ use Symfony\Component\Console\ {
  *
  * @todo Untangle exception rendering from symfony application
  */
-class Handler extends ExceptableHandler {
-
-  /** @var int Success exit code. */
-  const EXIT_SUCCESS = 0;
-
-  /** @var int Catch-all exit code. */
-  const EXIT_CATCHALL = 1;
-
-  /** @var int Uncaught ApiException. */
-  const EXIT_API_ERROR = 100;
-
-  /** @var int Uncaught ConsoleException. */
-  const EXIT_CONSOLE_ERROR = 101;
-
-  /** @var int Uncaught SdkException. */
-  const EXIT_SDK_ERROR = 102;
+class ErrorHandler extends ExceptableHandler {
 
   /** @var Console The nexcess-cli console we're handling errors from. */
   protected $_console;
@@ -77,16 +70,16 @@ class Handler extends ExceptableHandler {
   public function handleException(Throwable $e) {
     switch (get_class($e)) {
       case ApiException::class:
-        $code = self::EXIT_API_ERROR;
+        $code = Console::EXIT_API_ERROR;
         break;
       case ConsoleException::class:
-        $code = self::EXIT_CONSOLE_ERROR;
+        $code = Console::EXIT_CONSOLE_ERROR;
         break;
       case SdkException::class:
-        $code = self::EXIT_SDK_ERROR;
+        $code = Console::EXIT_SDK_ERROR;
         break;
       default:
-        $code = self::EXIT_CATCHALL;
+        $code = Console::EXIT_CATCHALL;
         break;
     }
 
