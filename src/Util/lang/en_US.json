@@ -4,11 +4,12 @@
       "list": {
         "desc": "Lists your API Tokens",
         "help": "You may provide one or more filters like 'filter:value'",
-        "summary": "  #{token_id}: '{name}'",
+        "summary_item": "  <info>#{id}</info>: '{name}'",
         "summary_title": "Api Tokens:",
         "usage": "api-token:list"
       }
     },
+    "banner": "Command Line Interface for the Nexcess.net / Thermo.io API Client\nⓒ 2018 Nexcess.net, LLC\n",
     "cloud_account": {
       "create": {
         "app_desc": "<question>{app}</question>",
@@ -43,6 +44,8 @@
       "list": {
         "desc": "Lists your Cloud Accounts",
         "help": "You may proivde one or more filters in the form 'filter:value'.",
+        "summary_item": "  #{id}: {domain} ({ip})",
+        "summary_title": "Cloud Accounts:",
         "usage": "cloud-account:list\n  cloud-account:list service.status:active"
       },
       "show": {
@@ -52,6 +55,23 @@
         "help": "Provide a service id, or use the --domain or --ip options to look up the desired service.",
         "opt_domain": "Cloud Account Domain Name (used for service_id lookup)",
         "opt_ip": "Cloud Account IP Address (used for service_id lookup)",
+        "summary_app": "{identity}",
+        "summary_key": {
+          "app": "Application Environment",
+          "deploy_date": "Date Deployed",
+          "domain": "Domain",
+          "environment": "Environment Details",
+          "id": "ID",
+          "ip": "Primary IP Address",
+          "location": "Cloud",
+          "service": "Service",
+          "status": "Status",
+          "temp_domain": "Temporary Domain Name",
+          "unix_username": "Unix (login) Username"
+        },
+        "summary_location": "{location} ({identity})",
+        "summary_service": "#{id} {identity}",
+        "summary_title": "Cloud Account Details:",
         "usage": "cloud-account:show 12345\n  cloud-account:show --domain cloud.example.com"
       }
     },
@@ -71,10 +91,14 @@
       "unsupported_profile_type": "user profile format must be one of {supported}; '{type}' is not a supported"
     },
     "opt_api_token": "Your API Token (log in to your portal to create one)",
-    "opt_format": "Format to display command output as; one of text|json\n (this does not affect interactive output; see --no-interaction)",
+    "opt_json": "Display command output as json? (this does not affect interactive output; see --no-interaction)",
     "opt_language": "Specify preferred language (currently, only en_US is supported)",
     "opt_profile": "Filename of the user profile to load; or one of nexcess|thermo to use the default profiles",
     "opt_sandboxed": "Do not send any API requests",
-    "opt_wait": "Wait for long-running commands to complete (this can block for a long time)?"
+    "opt_wait": "Wait for long-running commands to complete (this can block for a long time)?",
+    "tests": {
+      "test_phrase": "This is a test",
+      "test_phrase_with_replacement": "This is a {test}"
+    }
   }
 }

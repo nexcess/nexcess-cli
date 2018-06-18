@@ -24,15 +24,13 @@
   },
   "scripts": {
     "dist:build": "bin/dist.php",
-    "tests:unit": "vendor/bin/phpunit",
+    "tests:unit": "vendor/bin/phpunit --exclude-group integration",
+    "tests:integration": "vendor/bin/phpunit --group integration",
     "tests:phan": "vendor/bin/phan",
     "tests:phpcs": "vendor/bin/phpcs --standard=NocWorx src tests"
   },
   "repositories": [
-
-    { "type": "path", "url": "../nexcess-php-sdk" },
-
-
+    { "type": "path", "url": "https://github.com/nexcess/nexcess-php-sdk" },
     { "type": "vcs", "url": "https://github.com/nocworx/phpcs" }
   ]
 }

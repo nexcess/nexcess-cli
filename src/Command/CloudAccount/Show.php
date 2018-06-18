@@ -43,6 +43,21 @@ class Show extends ShowCommand {
   /** {@inheritDoc} */
   const RESTRICT_TO = [Config::COMPANY_NEXCESS];
 
+  /** {@inheritDoc} */
+  const SUMMARY_KEYS = [
+    'id',
+    'app',
+    'deploy_date',
+    'domain',
+    'environment',
+    'ip',
+    'location',
+    'service',
+    'status',
+    'temp_domain',
+    'unix_username'
+  ];
+
   /**
    * {@inheritDoc}
    */
@@ -67,16 +82,34 @@ class Show extends ShowCommand {
           $this->_choices['id'] = array_column(
             $this->_getEndpoint()->list()->toArray(true),
             null,
-            'service_id'
+            'id'
           );
-          foreach ($this->_choices['id'] as $id => $service) {
-            $this->_choices['id'][$id] = $service['cloud_account_ip'] .
-              " {$service['cloud_account_domain']}";
+          foreach ($this->_choices['id'] as $id => $cloud) {
+            $this->_choices['id'][$id] = "{$cloud['ip']} {$cloud['domain']}";
           }
         }
         return $this->_choices['id'];
       default:
         return parent::_getChoices($name, $format);
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected function _getSummary(array $details) : array {
+    $details = parent::_getSummary($details);
+
+    $details['app'] = $this->getPhrase('summary_app', $details['app']);
+    $details['location'] = $this->getPhrase(
+      'summary_location',
+      $details['location']
+    );
+    $details['service'] = $this->getPhrase(
+      'summary_service',
+      $details['service']
+    );
+
+    return $details;
   }
 }

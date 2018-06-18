@@ -11,16 +11,19 @@ namespace Nexcess\Sdk\Cli\Command\ApiToken;
 
 use Nexcess\Sdk\Resource\ApiToken\Endpoint;
 
-use Nexcess\Sdk\Cli\Command\Find as FindCommand;
+use Nexcess\Sdk\Cli\Command\ShowList as ShowListCommand;
 
 /**
  * Lists Cloud Accounts.
  */
-class Find extends FindCommand {
+class ShowList extends ShowListCommand {
 
   /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;
 
   /** {@inheritDoc} */
   const NAME = 'api-token:list';
+
+  /** {@inheritDoc} */
+  const SUMMARY_KEYS = ['id', 'name'];
 }

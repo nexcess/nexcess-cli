@@ -14,6 +14,7 @@ use Exception,
 
 use Nexcess\Sdk\ {
   Client,
+  Sandbox\ResourceHandler,
   Sandbox\Sandbox,
   Util\Config,
   Util\Language,
@@ -59,6 +60,9 @@ class Console extends SymfonyApplication {
   /** @var string Default user profile name. */
   const DEFAULT_PROFILE = 'nexcess';
 
+  /** @var string Cli tool root directory. */
+  const DIR = __DIR__;
+
   /** @var string Env var name for user profile. */
   const ENV_PROFILE = 'NEXCESS_PROFILE';
 
@@ -79,6 +83,12 @@ class Console extends SymfonyApplication {
 
   /** @var int Uncaught SdkException. */
   const EXIT_SDK_ERROR = 102;
+
+  /** @var int Key for getIO() input. */
+  const GET_IO_INPUT = 0;
+
+  /** @var int Key for getIO() output. */
+  const GET_IO_OUTPUT = 1;
 
   /** @var string Name of application. */
   const NAME = 'Nexcess-CLI';
@@ -118,8 +128,14 @@ class Console extends SymfonyApplication {
 
   /**
    * @param array $options Console options (overrides any inputs)
+   * @param Input|null $input
+   * @param Output|null $output
    */
-  public function __construct(array $options = []) {
+  public function __construct(
+    array $options = [],
+    Input $input = null,
+    Output $output = null
+  ) {
     // hide args from top/ps (ignore if fails)
     @cli_set_process_title(static::NAME . ' (' . static::VERSION . ')');
     parent::__construct(static::NAME, static::VERSION);
@@ -127,8 +143,8 @@ class Console extends SymfonyApplication {
       new DiscoveryFactory($this, __DIR__, __NAMESPACE__)
     );
 
-    $this->_input = new ArgvInput();
-    $this->_output = new ConsoleOutput();
+    $this->_input = $input ?? new ArgvInput();
+    $this->_output = $output ?? new ConsoleOutput();
 
     $this->_setErrorHandler();
     $this->_setLanguageHandler();
@@ -220,8 +236,13 @@ class Console extends SymfonyApplication {
     Input $input,
     Output $output
   ) {
+    $this->setIO($input, $output);
     $command->setApplication($this);
-    return parent::doRunCommand($command, $input, $output);
+
+    $this->say(self::NAME . ' <info>' . self::VERSION . '</info>');
+    $this->say($this->translate('console.banner'));
+
+    return parent::doRunCommand($command, $this->_input, $this->_output);
   }
 
   /**
@@ -256,11 +277,10 @@ class Console extends SymfonyApplication {
         $this->translate('console.opt_api_token')
       ),
       new Option(
-        'format',
-        'f',
-        Option::VALUE_REQUIRED,
-        $this->translate('console.opt_format'),
-        'text'
+        'json',
+        'j',
+        Option::VALUE_NONE,
+        $this->translate('console.opt_json')
       ),
       new Option(
         'profile',
@@ -286,6 +306,18 @@ class Console extends SymfonyApplication {
   }
 
   /**
+   * Gets the console's current input and output objects as a tuple.
+   *
+   * @return array
+   */
+  public function getIO() : array {
+    return [
+      self::GET_IO_INPUT => $this->_input,
+      self::GET_IO_OUTPUT => $this->_output
+    ];
+  }
+
+  /**
    * Gets the sandbox (if it exists).
    *
    * This method exists mainly for use in the test suite.
@@ -307,7 +339,8 @@ class Console extends SymfonyApplication {
    * @return bool True if debug; false otherwise
    */
   public function isDebug() : bool {
-    return $this->_output->isDebug();
+    return $this->_output->isDebug() ||
+      $this->_input->hasParameterOption('-vvv', true);
   }
 
   /**
@@ -335,9 +368,7 @@ class Console extends SymfonyApplication {
    * @return Console $this
    */
   public function say(string $message, array $options = []) : Console {
-    if (
-      $this->_input->getParameterOption('--format', 'text', true) !== 'text'
-    ) {
+    if ($this->_input->hasParameterOption(['--json', '-j'], true)) {
       return $this;
     }
 
@@ -380,6 +411,19 @@ class Console extends SymfonyApplication {
   }
 
   /**
+   * Sets input and output objects for the application.
+   *
+   * @param Input $input
+   * @param Output $output
+   * @return Console $this
+   */
+  public function setIO(Input $input, Output $output) : Console {
+    $this->_input = $input;
+    $this->_output = $output;
+    return $this;
+  }
+
+  /**
    * Translates and makes placeholder → context replacements in given message.
    *
    * @param string $message The string to make replacements on
@@ -397,17 +441,15 @@ class Console extends SymfonyApplication {
     $placeholders = $matches[1];
     $replacements = [];
 
-    foreach ($placeholders as $placeholder) {
-      if (! isset($context[$placeholder])) {
+    foreach ($placeholders as $key) {
+      if (! isset($context[$key])) {
         return $message;
       }
 
-      $replacements["{{$placeholder}}"] = is_scalar($context[$placeholder]) ?
-        $context[$placeholder] :
-        json_encode(
-          $context[$placeholder],
-          JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
-        );
+      $replacements["{{$key}}"] =
+        (is_string($context[$key]) || is_numeric($context[$key])) ?
+        $context[$key] :
+        Util::jsonEncode($context[$key]);
     }
 
     return strtr($message, $replacements);
@@ -415,6 +457,9 @@ class Console extends SymfonyApplication {
 
   /**
    * Does the console wait for long-running tasks to complete?
+   *
+   * @todo we might not actually need this for anything;
+   *  config is passed along to client anyway and we probably don't care
    *
    * @return bool True if waits; false otherwise
    */
@@ -443,11 +488,11 @@ class Console extends SymfonyApplication {
     $profile['debug'] =
       ($this->isDebug() ? true : ($profile['debug'] ?? false));
     $profile['sandboxed'] =
-      $input->getParameterOption('--sandboxed', null, true) ??
+      $input->hasParameterOption('--sandboxed', true) ??
       $profile['sandboxed'] ??
       false;
     $profile['wait']['always'] =
-      $this->_input->getParameterOption('--wait', null, true) ??
+      $this->_input->hasParameterOption('--wait', true) ??
       $profile['wait']['always'] ??
       false;
 
@@ -482,7 +527,10 @@ class Console extends SymfonyApplication {
    */
   protected function _initializeClient() {
     if ($this->_config->get('sandboxed')) {
-      $this->_sandbox = new Sandbox($this->_config);
+      $this->_sandbox = new Sandbox(
+        $this->_config,
+        [new ResourceHandler(self::DIR, Client::DIR), 'handle']
+      );
       $this->_client = $this->_sandbox->newClient();
       return;
     }

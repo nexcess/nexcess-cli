@@ -11,16 +11,19 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\Resource\CloudAccount\Endpoint;
 
-use Nexcess\Sdk\Cli\Command\Find as FindCommand;
+use Nexcess\Sdk\Cli\Command\ShowList as ShowListCommand;
 
 /**
  * Lists Cloud Accounts.
  */
-class Find extends FindCommand {
+class ShowList extends ShowListCommand {
 
   /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;
 
   /** {@inheritDoc} */
   const NAME = 'cloud-account:list';
+
+  /** {@inheritDoc} */
+  const SUMMARY_KEYS = ['id', 'domain', 'ip'];
 }

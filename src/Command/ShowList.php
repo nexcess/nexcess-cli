@@ -29,7 +29,7 @@ use Symfony\Component\Console\ {
 /**
  * Base class for "list" commands.
  */
-abstract class Find extends Command {
+abstract class ShowList extends Command {
 
   /** {@inheritDoc} */
   const ARGS = ['filter' => [Arg::OPTIONAL | Arg::IS_ARRAY]];
@@ -61,14 +61,34 @@ abstract class Find extends Command {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $this->getApplication()->say($this->getPhrase('summary_title'));
-
-    $collection = $this->_getEndpoint()->list($this->_filter);
-    $json = $input->getOption('format') === 'json';
-    foreach ($collection as $token) {
-      $this->_saySummary($token->toArray(true), $json);
-    }
+    $this->_saySummary(
+      $this->_getEndpoint()->list($this->_filter)->toArray(true),
+      $input->getOption('json')
+    );
 
     return Console::EXIT_SUCCESS;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected function _formatSummary(array $summary, int $depth = 0) : string {
+    $formatted = $this->getPhrase('summary_title');
+    foreach ($summary as $item) {
+      $formatted .= "\n{$this->getPhrase('summary_item', $item)}";
+    }
+
+    return $formatted;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected function _getSummary(array $details) : array {
+    foreach ($details as $key => $item) {
+      $details[$key] = parent::_getSummary($item);
+    }
+
+    return $details;
   }
 }

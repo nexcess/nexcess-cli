@@ -49,6 +49,9 @@ abstract class Command extends SymfonyCommand {
   /** @var string[] Api types to restrict this command to. */
   const RESTRICT_TO = [];
 
+  /** @var string Whitelist of properties to include in summary. */
+  const SUMMARY_KEYS = [];
+
   /** @var string Base part for translation keys for this command. */
   protected $_base_tr_key = '';
 
@@ -109,6 +112,15 @@ abstract class Command extends SymfonyCommand {
   }
 
   /**
+   * {@inheritDoc}
+   * Ensure application has most recent I/O.
+   */
+  public function run(Input $input, Output $output) {
+    $this->getApplication()->setIO($input, $output);
+    return parent::run($input, $output);
+  }
+
+  /**
    * Sets up this command's arguments.
    */
   protected function _bootstrapArguments() {
@@ -164,7 +176,11 @@ abstract class Command extends SymfonyCommand {
   }
 
   /**
-   * Default formatting for key:value pairs in a summary.
+   * Default human-readable formatting for key:value pairs in a summary.
+   *
+   * Starts with the command's `summary_title` phrase, if exists.
+   * Looks for a `summary_key.{key}` for each item and falls back on plain key.
+   * Recurses on values and nested values are indented.
    *
    * @param array $summary Details
    * @param int $depth Starting indent depth
@@ -175,14 +191,21 @@ abstract class Command extends SymfonyCommand {
     $details = [];
     foreach ($summary as $key => $value) {
       $translated_key = $this->getPhrase("summary_key.{$key}");
-      if (strpos($translated_key, "summary_key.{$key}") !== false) {
+      if ($translated_key !== "summary_key.{$key}") {
         $translated_key = $key;
       }
       $details[$translated_key] = $value;
     }
-    $indent = str_repeat(' ', $depth * 2);
+    $indent = str_repeat('  ', $depth);
 
     $formatted = '';
+    if ($depth === 1) {
+      $title = $this->getPhrase('summary_title');
+      if ($title !== 'summary_title') {
+        $formatted = $title;
+      }
+    }
+
     foreach ($details as $key => $value) {
       $formatted .= "\n<info>{$indent}{$key}</info>: ";
 
@@ -224,6 +247,13 @@ abstract class Command extends SymfonyCommand {
    * @return array Summary data
    */
   protected function _getSummary(array $details) : array {
+    if (! empty(static::SUMMARY_KEYS)) {
+      $details = array_intersect_key(
+        $details,
+        array_flip(static::SUMMARY_KEYS)
+      );
+    }
+
     return $details;
   }
 

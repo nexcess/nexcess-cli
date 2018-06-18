@@ -41,8 +41,9 @@ abstract class Show extends InputCommand {
   public function execute(Input $input, Output $output) {
     $this->_saySummary(
       $this->_getEndpoint()->retrieve($this->getInput('id', false))->toArray(),
-      ($input->getOption('format') === 'json')
+      $input->getOption('json')
     );
+
     return Console::EXIT_SUCCESS;
   }
 }

@@ -32,7 +32,7 @@ use Symfony\Component\Console\ {
  *    - if _getChoices(name) returns a non-empty array, those choices are used
  *    - otherwise the user will be asked to choose a value freely
  */
-class InputCommand extends Command {
+abstract class InputCommand extends Command {
 
   /** @var array User input name:filter map. */
   const INPUTS = [];
@@ -126,7 +126,6 @@ class InputCommand extends Command {
             0
           );
           $this->_input[$name] = array_search($answer, $choices);
-
           continue;
         }
 
