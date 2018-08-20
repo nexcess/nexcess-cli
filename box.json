@@ -1,0 +1,65 @@
+{
+  "main": "bin/nexcess-cli",
+  "chmod": "0700",
+  "shebang": "#!/usr/bin/env php",
+  "directories": ["src"],
+  "files": ["LICENSE.md"],
+  "check-requirements": false,
+  "compression": "BZ2",
+  "compactors": [
+    "Herrera\\Box\\Compactor\\Php",
+    "Herrera\\Box\\Compactor\\Json"
+  ],
+  "replacements": {
+    "git-version": "1"
+  },
+  "git-commit": "git-commit",
+  "git-commit-short": "git-commit-short",
+
+  "git-version": "git-version",
+  "datetime": "release-date",
+  "finder": [
+    {
+      "name": "*.php",
+      "exclude": [
+        "felixfbecker",
+        "microsoft",
+        "myclabs",
+        "netresearch",
+        "nikic",
+        "nocworx",
+        "phan",
+        "phpdocumentor",
+        "phpspec",
+        "phpunit",
+        "sabre",
+        "sebastian",
+        "squizlabs",
+        "test",
+        "Test",
+        "tests",
+        "Tests",
+        "theseer",
+        "webmozart"
+      ],
+      "in": "vendor"
+    },
+    {
+      "name": "installed.json",
+      "in": "vendor/composer"
+    },
+    {
+      "name": "en_US.json",
+      "in": "./"
+    }
+  ],
+  "blacklist": ["Tests"],
+  "banner": [
+    "Nexcess-CLI",
+    "Command Line Interface for the Nexcess.net / Thermo.io API Client",
+    "",
+    "ⓒ 2018 Nexcess.net, LLC",
+    "Nexcess.net components released under the MIT License",
+    "Dependencies may have different licenses or terms"
+  ]
+}

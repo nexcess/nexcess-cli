@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @package Nexcess-CLI
+ * @license https://opensource.org/licenses/MIT
+ * @copyright 2018 Nexcess.net, LLC
+ */
+
+declare(strict_types = 1);
+
+namespace Nexcess\Sdk\Cli;
+
+use Nexcess\Sdk\Cli\Console;
+
+/**
+ * nexcess.net console.
+ */
+require __DIR__ . '/../vendor/autoload.php';
+
+(new Console())->run();
