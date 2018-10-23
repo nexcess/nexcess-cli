@@ -233,6 +233,7 @@ class ConsoleTest extends TestCase {
     );
     [$console_input, $console_output] = $console->getIO();
 
+    // phpcs:disable
     $command = $this->_makeCommand(
       $console,
       function ($input, $output)
@@ -247,6 +248,7 @@ class ConsoleTest extends TestCase {
         return 1;
       }
     );
+    // phpcs:enable
 
     $this->assertEquals(1, $console->run());
     $this->assertContains(
@@ -341,6 +343,7 @@ class ConsoleTest extends TestCase {
     Console $application,
     callable $execute = null
   ) {
+    // phpcs:disable
     $execute = $execute ?? function () { return 0; };
     $command = new class($execute) extends SymfonyCommand {
       protected $_execute;
@@ -357,6 +360,7 @@ class ConsoleTest extends TestCase {
         return ($this->_execute)($input, $output);
       }
     };
+    // phpcs:enable
 
     $application->add($command);
   }
