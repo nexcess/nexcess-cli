@@ -90,7 +90,7 @@ class Create extends CreateCommand {
       $this->_choices['app_id'] = array_column(
         $this->_getEndpoint('App')->list()->toArray(true),
         'name',
-        'app_id'
+        'id'
       );
       // @todo this is hacky
       uasort(
@@ -122,7 +122,7 @@ class Create extends CreateCommand {
           ->list(['status' => 'active'])
           ->toArray(true),
         null,
-        'cloud_id'
+        'id'
       );
     }
     $clouds = $this->_choices['cloud_id'];
@@ -152,7 +152,7 @@ class Create extends CreateCommand {
           ])
           ->toArray(true),
         null,
-        'package_id'
+        'id'
       );
     }
     $packages = $this->_choices['package_id'];

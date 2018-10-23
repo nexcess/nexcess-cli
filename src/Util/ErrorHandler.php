@@ -12,6 +12,7 @@ namespace Nexcess\Sdk\Cli\Util;
 use Exception,
   Throwable;
 use at\exceptable\Handler as ExceptableHandler;
+use GuzzleHttp\MessageFormatter as GuzzleFormatter;
 use Nexcess\Sdk\ {
   ApiException,
   SdkException
@@ -31,6 +32,9 @@ use Symfony\Component\Console\ {
  * @todo Untangle exception rendering from symfony application
  */
 class ErrorHandler extends ExceptableHandler {
+
+  /** @var string Logging format for request/responses. */
+  const GUZZLE_FORMAT = "{request}\n\n{response}";
 
   /** @var Console The nexcess-cli console we're handling errors from. */
   protected $_console;
@@ -84,6 +88,22 @@ class ErrorHandler extends ExceptableHandler {
       $e = new Exception($e->getMessage(), $e->getCode(), $e);
     }
     $this->_console->renderException($e, $this->_output);
+
+    if ($this->_console->getConfig()->get('debug')) {
+      if ($e instanceof ApiException) {
+        $last = $this->_console->getClient()->getRequestLog();
+        $last = array_pop($last);
+        $this->_console->say(
+          (new GuzzleFormatter(self::GUZZLE_FORMAT))
+            ->format($last['request'], $last['response'])
+        );
+      } else {
+        do {
+          $this->_console->say("{$e->getTraceAsString()}\n");
+        } while ($e = $e->getPrevious());
+      }
+    }
+
     exit($code);
   }
 

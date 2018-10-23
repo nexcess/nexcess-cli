@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "bff2939324136fbea9f59832e663f2a7",
@@ -193,12 +193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nexcess/nexcess-php-sdk.git",
-                "reference": "4de2509c50c4f22b7c82a717dfc53ba7978e391d"
+                "reference": "8c9186c6c954cc43203f5161622feb42a23554ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nexcess/nexcess-php-sdk/zipball/4de2509c50c4f22b7c82a717dfc53ba7978e391d",
-                "reference": "4de2509c50c4f22b7c82a717dfc53ba7978e391d",
+                "url": "https://api.github.com/repos/nexcess/nexcess-php-sdk/zipball/8c9186c6c954cc43203f5161622feb42a23554ef",
+                "reference": "8c9186c6c954cc43203f5161622feb42a23554ef",
                 "shasum": ""
             },
             "require": {
@@ -238,7 +238,7 @@
                 "source": "https://github.com/nexcess/nexcess-php-sdk/tree/master",
                 "issues": "https://github.com/nexcess/nexcess-php-sdk/issues"
             },
-            "time": "2018-10-23T12:18:35+00:00"
+            "time": "2018-10-23T17:05:31+00:00"
         },
         {
             "name": "php-enspired/exceptable",
