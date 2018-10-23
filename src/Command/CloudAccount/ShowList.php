@@ -10,7 +10,6 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\Resource\CloudAccount\Endpoint;
-
 use Nexcess\Sdk\Cli\Command\ShowList as ShowListCommand;
 
 /**

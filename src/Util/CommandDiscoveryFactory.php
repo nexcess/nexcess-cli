@@ -12,7 +12,6 @@ namespace Nexcess\Sdk\Cli\Util;
 use RecursiveDirectoryIterator,
   RecursiveIteratorIterator,
   ReflectionClass;
-
 use Symfony\Component\Console\ {
   Application as SymfonyApplication,
   Command\Command as SymfonyCommand,

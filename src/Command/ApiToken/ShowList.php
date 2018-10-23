@@ -10,7 +10,6 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\ApiToken;
 
 use Nexcess\Sdk\Resource\ApiToken\Endpoint;
-
 use Nexcess\Sdk\Cli\Command\ShowList as ShowListCommand;
 
 /**

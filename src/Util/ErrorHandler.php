@@ -11,19 +11,15 @@ namespace Nexcess\Sdk\Cli\Util;
 
 use Exception,
   Throwable;
-
 use at\exceptable\Handler as ExceptableHandler;
-
 use Nexcess\Sdk\ {
   ApiException,
   SdkException
 };
-
 use Nexcess\Sdk\Cli\ {
   Console,
   ConsoleException
 };
-
 use Symfony\Component\Console\ {
   Input\InputInterface as Input,
   Output\OutputInterface as Output

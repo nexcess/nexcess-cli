@@ -9,15 +9,11 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command;
 
-use Nexcess\Sdk\ {
-  Util\Util
-};
-
+use Nexcess\Sdk\Util\Util;
 use Nexcess\Sdk\Cli\ {
   Command\InputCommand,
   Console
 };
-
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,

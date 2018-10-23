@@ -13,12 +13,10 @@ use Nexcess\Sdk\ {
   ApiException,
   SdkException
 };
-
 use Nexcess\Sdk\Cli\ {
   Command\InputCommand,
   Console
 };
-
 use Symfony\Component\Console\ {
   Input\InputInterface as Input,
   Output\OutputInterface as Output
