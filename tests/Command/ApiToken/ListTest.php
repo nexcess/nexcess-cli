@@ -11,7 +11,7 @@ namespace Nexcess\Sdk\Cli\Tests\Command\ApiToken;
 
 use Nexcess\Sdk\Cli\ {
   Command\ApiToken\ShowList,
-  Command\Tests\ListTestCase
+  Tests\Command\ListTestCase
 };
 
 /**

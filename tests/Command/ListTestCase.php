@@ -15,7 +15,7 @@ use Nexcess\Sdk\ {
 };
 use Nexcess\Sdk\Cli\ {
   Command\CommandException,
-  Command\Tests\CommandTestCase
+  Tests\Command\CommandTestCase
 };
 
 /**
