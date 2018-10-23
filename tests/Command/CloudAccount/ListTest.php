@@ -7,7 +7,7 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command\CloudAccount\Tests;
+namespace Nexcess\Sdk\Cli\Tests\Command\CloudAccount;
 
 use Nexcess\Sdk\Cli\ {
   Command\CloudAccount\ShowList,

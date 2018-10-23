@@ -10,11 +10,7 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Tests;
 
 use Nexcess\Sdk\Tests\TestCase as SdkTestCase;
-
-use PhpUnit\Framework\ {
-  ExpectationFailedException as PhpUnitException
-};
-
+use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
 use Symfony\Component\Console\ {
   Helper\QuestionHelper,
   Input\InputInterface as Input,

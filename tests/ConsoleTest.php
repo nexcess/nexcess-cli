@@ -7,24 +7,18 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command\Tests;
+namespace Nexcess\Sdk\Cli\Tests;
 
 use Closure,
   Throwable;
-
 use Nexcess\Sdk\SandBox\Sandbox;
-
 use Nexcess\Sdk\Cli\ {
   Console,
   ConsoleException,
   Command\Command,
   Tests\TestCase
 };
-
-use PhpUnit\Framework\ {
-  ExpectationFailedException as PhpUnitException
-};
-
+use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
 use Symfony\Component\Console\ {
   Command\Command as SymfonyCommand,
   Input\ArrayInput,

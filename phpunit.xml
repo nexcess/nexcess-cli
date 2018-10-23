@@ -4,13 +4,13 @@
   colors="true">
   <testsuites>
     <testsuite name="api-token">
-      <directory>./src/Command/ApiToken/Tests</directory>
+      <directory>./tests/Command/ApiToken</directory>
     </testsuite>
     <testsuite name="cloud-account">
-      <directory>./src/Command/CloudAccount/Tests</directory>
+      <directory>./tests/Command/CloudAccount</directory>
     </testsuite>
     <testsuite name="console">
-      <directory>./src/Tests</directory>
+      <file>./tests/ConsoleTest.php</file>
     </testsuite>
   </testsuites>
   <filter>

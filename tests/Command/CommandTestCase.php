@@ -7,25 +7,19 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command\Tests;
+namespace Nexcess\Sdk\Cli\Tests\Command;
 
 use Throwable;
-
 use Nexcess\Sdk\ {
   Client,
   Sandbox\ResourceHandler
 };
-
 use Nexcess\Sdk\Cli\ {
   Console,
   Command\Command,
   Tests\TestCase
 };
-
-use PhpUnit\Framework\ {
-  ExpectationFailedException as PhpUnitException
-};
-
+use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
 use Symfony\Component\Console\ {
   Helper\QuestionHelper,
   Input\InputInterface as Input,

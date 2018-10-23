@@ -7,13 +7,12 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command\Tests;
+namespace Nexcess\Sdk\Cli\Tests\Command;
 
 use Nexcess\Sdk\ {
   ApiException,
   SdkException
 };
-
 use Nexcess\Sdk\Cli\ {
   Command\CommandException,
   Command\Tests\CommandTestCase
