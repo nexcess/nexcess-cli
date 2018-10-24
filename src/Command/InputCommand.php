@@ -10,12 +10,10 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command;
 
 use Nexcess\Sdk\Util\Util;
-
 use Nexcess\Sdk\Cli\ {
   Command\Command,
   Command\CommandException
 };
-
 use Symfony\Component\Console\ {
   Input\InputInterface as Input,
   Output\OutputInterface as Output

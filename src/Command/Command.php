@@ -10,16 +10,14 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command;
 
 use Nexcess\Sdk\ {
-  Resource\Endpoint,
+  Resource\Readable as Endpoint,
   Resource\Modelable as Model,
   Util\Util
 };
-
 use Nexcess\Sdk\Cli\ {
   Console,
   ConsoleException
 };
-
 use Symfony\Component\Console\ {
   Command\Command as SymfonyCommand,
   Helper\QuestionHelper,

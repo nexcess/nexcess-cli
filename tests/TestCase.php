@@ -10,11 +10,7 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Tests;
 
 use Nexcess\Sdk\Tests\TestCase as SdkTestCase;
-
-use PhpUnit\Framework\ {
-  ExpectationFailedException as PhpUnitException
-};
-
+use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
 use Symfony\Component\Console\ {
   Helper\QuestionHelper,
   Input\InputInterface as Input,
@@ -41,6 +37,7 @@ abstract class TestCase extends SdkTestCase {
    *  - string $1 Response to provide
    */
   protected function _mockInteractions($on, array $interactions) {
+    // phpcs:disable
     $interactor = new class ($this, $interactions) extends QuestionHelper {
       protected $_interactions = [];
       protected $_testcase;
@@ -75,6 +72,7 @@ abstract class TestCase extends SdkTestCase {
         return is_callable($normalizer) ? $normalizer($response) : $response;
       }
     };
+    // phpcs:enable
 
     $on->getHelperSet()->set($interactor, 'question');
   }

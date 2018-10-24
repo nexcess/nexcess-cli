@@ -8,7 +8,7 @@
   "support": {},
   "require": {
     "php": "^7.1",
-    "nexcess/nexcess-php-sdk": "0.1",
+    "nexcess/nexcess-php-sdk": "@dev",
     "symfony/console": "^4.0"
   },
   "autoload": {
@@ -30,7 +30,7 @@
     "tests:phpcs": "vendor/bin/phpcs --standard=NocWorx src tests"
   },
   "repositories": [
-    { "type": "path", "url": "https://github.com/nexcess/nexcess-php-sdk" },
+    { "type": "vcs", "url": "https://github.com/nexcess/nexcess-php-sdk" },
     { "type": "vcs", "url": "https://github.com/nocworx/phpcs" }
   ]
 }

@@ -7,25 +7,19 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command\Tests;
+namespace Nexcess\Sdk\Cli\Tests\Command;
 
 use Throwable;
-
 use Nexcess\Sdk\ {
   Client,
   Sandbox\ResourceHandler
 };
-
 use Nexcess\Sdk\Cli\ {
   Console,
   Command\Command,
   Tests\TestCase
 };
-
-use PhpUnit\Framework\ {
-  ExpectationFailedException as PhpUnitException
-};
-
+use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
 use Symfony\Component\Console\ {
   Helper\QuestionHelper,
   Input\InputInterface as Input,
@@ -39,6 +33,9 @@ use Symfony\Component\Console\ {
  */
 abstract class CommandTestCase extends TestCase {
 
+  /** @var string Path to test resources. */
+  const RESOURCE_PATH = __DIR__ . '/../resources';
+
   /**
    * @group integration
    * @dataProvider runProvider
@@ -48,6 +45,11 @@ abstract class CommandTestCase extends TestCase {
    * @param array|Throwable $expected Expected [exit_code, [output]] or exception
    */
   public function testRun(array $invocation, array $interactions, $expected) {
+
+    // @todo re-enable integration tests once NSD-12252 is resolved
+    $this->markTestIncomplete();
+    return;
+
     if ($expected instanceof Throwable) {
       $this->setExpectedException($expected);
     }
@@ -85,7 +87,8 @@ abstract class CommandTestCase extends TestCase {
     $options['sandboxed'] = true;
     $console = new Console($options);
     $console->getSandbox()->setRequestHandler([
-      new ResourceHandler(Console::DIR, Client::DIR),
+      //new ResourceHandler(Console::DIR, Client::DIR),
+      new ResourceHandler(self::RESOURCE_PATH),
       'handle'
     ]);
     return $console;

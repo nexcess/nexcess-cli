@@ -13,9 +13,7 @@ use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
   Util\Config
 };
-
 use Nexcess\Sdk\Cli\Command\Show as ShowCommand;
-
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,

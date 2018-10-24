@@ -11,7 +11,6 @@ namespace Nexcess\Sdk\Cli;
 
 use Exception,
   SplFileInfo as FileInfo;
-
 use Nexcess\Sdk\ {
   Client,
   Sandbox\ResourceHandler,
@@ -22,13 +21,11 @@ use Nexcess\Sdk\ {
   Util\ThermoConfig,
   Util\Util
 };
-
 use Nexcess\Sdk\Cli\ {
   ConsoleException,
   Util\CommandDiscoveryFactory as DiscoveryFactory,
   Util\ErrorHandler
 };
-
 use Symfony\Component\Console\ {
   Application as SymfonyApplication,
   Command\Command as SymfonyCommand,

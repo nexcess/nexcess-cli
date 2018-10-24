@@ -7,24 +7,18 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command\Tests;
+namespace Nexcess\Sdk\Cli\Tests;
 
 use Closure,
   Throwable;
-
 use Nexcess\Sdk\SandBox\Sandbox;
-
 use Nexcess\Sdk\Cli\ {
   Console,
   ConsoleException,
   Command\Command,
   Tests\TestCase
 };
-
-use PhpUnit\Framework\ {
-  ExpectationFailedException as PhpUnitException
-};
-
+use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
 use Symfony\Component\Console\ {
   Command\Command as SymfonyCommand,
   Input\ArrayInput,
@@ -239,6 +233,7 @@ class ConsoleTest extends TestCase {
     );
     [$console_input, $console_output] = $console->getIO();
 
+    // phpcs:disable
     $command = $this->_makeCommand(
       $console,
       function ($input, $output)
@@ -253,6 +248,7 @@ class ConsoleTest extends TestCase {
         return 1;
       }
     );
+    // phpcs:enable
 
     $this->assertEquals(1, $console->run());
     $this->assertContains(
@@ -347,6 +343,7 @@ class ConsoleTest extends TestCase {
     Console $application,
     callable $execute = null
   ) {
+    // phpcs:disable
     $execute = $execute ?? function () { return 0; };
     $command = new class($execute) extends SymfonyCommand {
       protected $_execute;
@@ -363,6 +360,7 @@ class ConsoleTest extends TestCase {
         return ($this->_execute)($input, $output);
       }
     };
+    // phpcs:enable
 
     $application->add($command);
   }

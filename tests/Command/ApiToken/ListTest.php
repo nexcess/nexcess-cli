@@ -7,11 +7,11 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command\ApiToken\Tests;
+namespace Nexcess\Sdk\Cli\Tests\Command\ApiToken;
 
 use Nexcess\Sdk\Cli\ {
   Command\ApiToken\ShowList,
-  Command\Tests\ListTestCase
+  Tests\Command\ListTestCase
 };
 
 /**
