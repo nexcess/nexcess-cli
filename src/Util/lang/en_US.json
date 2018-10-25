@@ -11,6 +11,15 @@
     },
     "banner": "Command Line Interface for the Nexcess.net / Thermo.io API Client\nⓒ 2018 Nexcess.net, LLC\n",
     "cloud_account": {
+      "backup" : {
+        "list": {
+          "desc" : "List all backups for a given cloud account.",
+          "summary_item": "  #{filedate}: {filesize} {filename}",
+          "summary_title": "Backups",
+          "usage": "cloud-account:backup:list --cloud_account_id=XXX",
+          "help": "this is the help string"
+        }
+      },
       "create": {
         "app_desc": "<question>{app}</question>",
         "arg_app": "Application Environment name (used for app_id lookup)",
