@@ -11,7 +11,12 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\Resource\CloudAccount\Endpoint;
 use Nexcess\Sdk\Resource\CloudAccount\Backup;
-use Nexcess\Sdk\Cli\Command\ShowList as ShowListCommand;
+use Nexcess\Sdk\Cli\ {
+  Console,
+  ConsoleException,
+  Command\ShowList as ShowListCommand
+};
+use Nexcess\Sdk\Util\Util;
 
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
@@ -41,12 +46,28 @@ class ShowList extends ShowListCommand {
   const ARGS = [];
 
   public function execute( $input,  $output) {
-   // $cloud = // make your CloudAccount Entity somehow
-    $cloudAccountEndpoint = $this->_getEndpoint();
-    $cloudAccount = $cloudAccountEndpoint->retrieve(1642);
+    
+    $cloud_id = Util::filter($input->getOption('cloud_account_id'), Util::FILTER_INT);
 
-      $this->_saySummary(
-        $this->_getEndpoint()->getBackups($cloudAccount)->toArray(true),
+    $cloudAccountEndpoint = $this->_getEndpoint();
+    $cloudAccount = $cloudAccountEndpoint->retrieve($cloud_id);
+
+      $backup_list = $this->_getEndpoint()->getBackups($cloudAccount)->toArray(true);
+
+      $backup_list = array_map(
+        function($backup_array) {
+          $timestamp = Util::filter(
+            $backup_array['filedate'], Util::FILTER_INT
+          );
+          $new_file_date = new \DateTimeImmutable();
+          $new_file_date = $new_file_date->setTimestamp($timestamp);
+          $backup_array['filedate'] = $new_file_date->format('Y-m-d h:i:s');
+          return $backup_array;
+        },
+        $backup_list
+      );
+
+      $this->_saySummary($backup_list,
         $input->getOption('json')
       );
 
