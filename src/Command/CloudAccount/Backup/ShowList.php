@@ -26,7 +26,7 @@ use Symfony\Component\Console\ {
 };
 
 /**
- * Lists backups.
+ * Show a list of backups for a given cloud account
  */
 class ShowList extends ShowListCommand {
 
@@ -37,7 +37,7 @@ class ShowList extends ShowListCommand {
   const NAME = 'cloud-account:backup:list';
 
   /** {@inheritDoc} */
-  const SUMMARY_KEYS = ['filename', 'filesize', 'filedate'];
+  const SUMMARY_KEYS = ['filename', 'filedate', 'complete'];
 
   /** {@inheritDoc} */
   const OPTS = ['cloud_account_id' => [Opt::VALUE_REQUIRED]];
@@ -45,8 +45,8 @@ class ShowList extends ShowListCommand {
   /** {@inheritDoc} */
   const ARGS = [];
 
-  public function execute( $input,  $output) {
-    
+  /** {@inheritDoc} */
+  public function execute(Input $input,  Output $output) {
     $cloud_id = Util::filter(
       $input->getOption('cloud_account_id'),
       Util::FILTER_INT
@@ -62,6 +62,7 @@ class ShowList extends ShowListCommand {
     return Console::EXIT_SUCCESS;
   }
 
+  /** {@inheritDoc} */
   protected function _getSummary(array $details) : array {
     return array_map(
         function($backup_array) {
@@ -71,6 +72,7 @@ class ShowList extends ShowListCommand {
           $new_file_date = new \DateTimeImmutable();
           $new_file_date = $new_file_date->setTimestamp($timestamp);
           $backup_array['filedate'] = $new_file_date->format('Y-m-d h:i:s');
+          $backup_array['complete'] = ($backup_array['filedate']?'YES':'NO');
           return $backup_array;
         },
         $details
