@@ -45,11 +45,6 @@ abstract class CommandTestCase extends TestCase {
    * @param array|Throwable $expected Expected [exit_code, [output]] or exception
    */
   public function testRun(array $invocation, array $interactions, $expected) {
-
-    // @todo re-enable integration tests once NSD-12252 is resolved
-    $this->markTestIncomplete();
-    return;
-
     if ($expected instanceof Throwable) {
       $this->setExpectedException($expected);
     }
