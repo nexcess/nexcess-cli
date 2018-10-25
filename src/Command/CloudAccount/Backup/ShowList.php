@@ -64,19 +64,21 @@ class ShowList extends ShowListCommand {
 
   /** {@inheritDoc} */
   protected function _getSummary(array $details) : array {
-    return array_map(
-        function($backup_array) {
-          $timestamp = Util::filter(
-            $backup_array['filedate'], Util::FILTER_INT
-          );
-          $new_file_date = new \DateTimeImmutable();
-          $new_file_date = $new_file_date->setTimestamp($timestamp);
-          $backup_array['filedate'] = $new_file_date->format('Y-m-d h:i:s');
-          $backup_array['complete'] = ($backup_array['filedate']?'YES':'NO');
-          return $backup_array;
-        },
-        $details
-      );
+    $details =  array_map(
+      function($backup_array) {
+        $timestamp = Util::filter(
+          $backup_array['filedate'], Util::FILTER_INT
+        );
+        $new_file_date = new \DateTimeImmutable();
+        $new_file_date = $new_file_date->setTimestamp($timestamp);
+        $backup_array['filedate'] = $new_file_date->format('Y-m-d h:i:s');
+        $backup_array['complete'] = ($backup_array['filedate']?'YES':'NO');
+        return $backup_array;
+      },
+      $details
+    );
+
+    return parent::_getSummary($details);
   }
 
 }
