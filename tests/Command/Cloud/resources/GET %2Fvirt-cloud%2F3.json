@@ -1,0 +1,13 @@
+{
+  "id": 3,
+  "identity": "us-midwest-1",
+  "is_real": true,
+  "meta": {
+    "scope": "virt-cloud"
+  },
+  "type": "openstack",
+  "status": "active",
+  "location": "Southfield, MI",
+  "location_code": "us-midwest-1",
+  "country": "US"
+}
