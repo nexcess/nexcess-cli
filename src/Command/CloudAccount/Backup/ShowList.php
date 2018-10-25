@@ -52,16 +52,15 @@ class ShowList extends ShowListCommand {
       Util::FILTER_INT
     );
 
-    $cloudAccountEndpoint = $this->_getEndpoint();
-    $cloudAccount = $cloudAccountEndpoint->retrieve($cloud_id);
+    $this->_saySummary(
+      $this->_getEndpoint()->getBackups(
+        $this->_getEndpoint()->retrieve($cloud_id)
+      )->toArray(true),
+      $input->getOption('json')
+    );
 
-      $this->_saySummary(
-        $this->_getEndpoint()->getBackups($cloudAccount)->toArray(true),
-        $input->getOption('json')
-      );
-
-      return Console::EXIT_SUCCESS;
-    }
+    return Console::EXIT_SUCCESS;
+  }
 
   protected function _getSummary(array $details) : array {
     return array_map(
