@@ -47,14 +47,24 @@ class ShowList extends ShowListCommand {
 
   public function execute( $input,  $output) {
     
-    $cloud_id = Util::filter($input->getOption('cloud_account_id'), Util::FILTER_INT);
+    $cloud_id = Util::filter(
+      $input->getOption('cloud_account_id'),
+      Util::FILTER_INT
+    );
 
     $cloudAccountEndpoint = $this->_getEndpoint();
     $cloudAccount = $cloudAccountEndpoint->retrieve($cloud_id);
 
-      $backup_list = $this->_getEndpoint()->getBackups($cloudAccount)->toArray(true);
+      $this->_saySummary(
+        $this->_getEndpoint()->getBackups($cloudAccount)->toArray(true),
+        $input->getOption('json')
+      );
 
-      $backup_list = array_map(
+      return Console::EXIT_SUCCESS;
+    }
+
+  protected function _getSummary(array $details) : array {
+    return array_map(
         function($backup_array) {
           $timestamp = Util::filter(
             $backup_array['filedate'], Util::FILTER_INT
@@ -64,14 +74,8 @@ class ShowList extends ShowListCommand {
           $backup_array['filedate'] = $new_file_date->format('Y-m-d h:i:s');
           return $backup_array;
         },
-        $backup_list
+        $details
       );
-
-      $this->_saySummary($backup_list,
-        $input->getOption('json')
-      );
-
-      return Console::EXIT_SUCCESS;
-    }
+  }
 
 }
