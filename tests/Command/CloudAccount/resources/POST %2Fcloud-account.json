@@ -1,0 +1,187 @@
+{
+	"account_id": 1,
+	"host_id": 1,
+	"domain": "dev.cloudy.example.com",
+	"status": "used",
+	"deploy_date": 1539284428,
+	"deploy_complete_date": 0,
+	"project_id": 1,
+	"parent_account_id": 0,
+	"reference_account_id": 1,
+	"ssl_cert_id": 0,
+	"state": "creating",
+	"id": 1,
+	"identity": "dev.cloudy.example.com",
+	"is_real": true,
+	"meta": {
+		"scope": "virt-guest-cloudaccount"
+	},
+	"ip": "203.0.113.1",
+	"ipv4": "203.0.113.1",
+	"is_dev_account": true,
+	"temp_domain": "1234abcd.nxcli.net",
+	"cloudhost_hostname": "cloudhost-1234abcd.us-midwest-1.nxcli.net",
+	"unix_username": "1234abcd",
+	"app": {
+		"id": 1,
+		"identity": "Example",
+		"is_real": true,
+		"meta": {
+			"scope": "app-app"
+		},
+		"type": "example",
+		"status": "active",
+		"name": "Example",
+		"version": "1",
+		"is_wordpress_based": false,
+		"is_installable": true
+	},
+	"service": {
+		"id": 2,
+		"identity": "dev.cloudy.example.com - nc.small-dev",
+		"is_real": true,
+		"meta": {
+			"scope": "service"
+		},
+		"type": "virt-guest-cloud",
+		"status": "enabled",
+		"description": "nc.small-dev",
+		"nickname": "",
+		"next_bill_date": 1541912400,
+		"host": "dev.cloudy.example.com",
+		"cloud_account": {
+			"account_id": 2,
+			"host_id": 1,
+			"domain": "dev.cloudy.example.com",
+			"status": "used",
+			"deploy_date": 1539284428,
+			"deploy_complete_date": 0,
+			"project_id": 1,
+			"parent_account_id": 0,
+			"reference_account_id": 1,
+			"ssl_cert_id": 0,
+			"state": "creating",
+			"id": 2,
+			"identity": "dev.cloudy.example.com",
+			"is_real": true,
+			"meta": {
+				"scope": "virt-guest-cloudaccount"
+			},
+			"ip": "203.0.113.1",
+			"ipv4": "203.0.113.1",
+			"is_dev_account": true,
+			"temp_domain": "abcd1234.nxcli.net",
+			"cloudhost_hostname": "cloudhost-abcd1234.us-midwest-1.nxcli.net",
+			"unix_username": "abcd1234",
+			"app": {
+				"id": 1,
+				"identity": "Example",
+				"is_real": true,
+				"meta": {
+					"scope": "app-app"
+				},
+				"type": "example",
+				"status": "active",
+				"name": "Example",
+				"version": "1",
+				"is_wordpress_based": false,
+				"is_installable": true
+			},
+			"environment": {
+				"software": {
+					"php": {
+						"version": "7.1",
+						"path": "\/opt\/remi\/php71",
+						"cli": "\/opt\/remi\/php71\/root\/usr\/bin\/php"
+					},
+					"redis": {
+						"host": "",
+						"port": "",
+						"socket": "\/var\/run\/redis-multi-a5fbe924.redis\/redis.sock",
+						"version": "3.2"
+					}
+				},
+				"options": {
+					"nxcache_nocache": false,
+					"nxcache_varnish": false,
+					"nxcache_varnish_static": false,
+					"nxcache_varnish_ttl": 120,
+					"autoscale_enabled": true
+				},
+				"access": []
+			}
+		},
+		"environment_type": "development",
+		"isolation_zone": {
+			"id": 1,
+			"identity": "Southfield, MI",
+			"is_real": true,
+			"meta": {
+				"scope": "isolation-zone"
+			}
+		},
+		"location": {
+			"id": 1,
+			"identity": "us-midwest-1",
+			"is_real": true,
+			"meta": {
+				"scope": "virt-cloud"
+			},
+			"type": "openstack",
+			"status": "active",
+			"location": "Southfield, MI",
+			"location_code": "us-midwest-1",
+			"country": "US"
+		},
+		"order": {
+			"id": 1,
+			"identity": "(1) Alice McAllison",
+			"is_real": true,
+			"meta": {
+				"scope": "order"
+			},
+			"type": "virt-guest-cloud",
+			"status": "allocated",
+			"months": 1,
+			"location": {
+				"id": 1,
+				"identity": "us-midwest-1",
+				"is_real": true,
+				"meta": {
+					"scope": "virt-cloud"
+				},
+				"type": "openstack",
+				"status": "active",
+				"location": "Southfield, MI",
+				"location_code": "us-midwest-1",
+				"country": "US"
+			}
+		},
+		"dev_account_count": 0,
+		"state": "creating",
+		"child_cloud_accounts": []
+	},
+	"environment": {
+		"software": {
+			"php": {
+				"version": "7.1",
+				"path": "\/opt\/remi\/php71",
+				"cli": "\/opt\/remi\/php71\/root\/usr\/bin\/php"
+			},
+			"redis": {
+				"host": "",
+				"port": "",
+				"socket": "\/var\/run\/redis-multi-a5fbe924.redis\/redis.sock",
+				"version": "3.2"
+			}
+		},
+		"options": {
+			"nxcache_nocache": false,
+			"nxcache_varnish": false,
+			"nxcache_varnish_static": false,
+			"nxcache_varnish_ttl": 120,
+			"autoscale_enabled": true
+		},
+		"access": []
+	}
+}

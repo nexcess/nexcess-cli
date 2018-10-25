@@ -1,0 +1,560 @@
+[
+  {
+    "package_id": 681,
+    "name": "n5s.tiny",
+    "bandwidth": 1024,
+    "monthly_fee": 5,
+    "setup_fee": 0,
+    "overage_fee": 0.5,
+    "bandwidth_profile_id": 2,
+    "type": "virt-guest",
+    "cpu_used": 0,
+    "ip_num": 1,
+    "form_id": 0,
+    "auto_renew": "yes",
+    "virt_cpu": 1,
+    "virt_ram": 1024,
+    "virt_disk": 20480,
+    "default_term": 0,
+    "ssl_product_code": "",
+    "app_id": 0,
+    "virt_dedicated_guest": 0,
+    "virt_cloud_host_type_id": 0,
+    "company_id": 4,
+    "user_concurrency": 0,
+    "user_autoscale_concurrency": 0,
+    "environment_type": "production",
+    "child_accounts": 0,
+    "id": 681,
+    "identity": "n5s.tiny",
+    "is_real": true,
+    "meta": {
+      "scope": "package"
+    },
+    "ram": 1024,
+    "cpu": 1,
+    "disk": 20480,
+    "description": "",
+    "term_fee": {
+      "1": 5
+    },
+    "effective_monthly_fee": {
+      "1": 5
+    },
+    "terms": {
+      "1": 1
+    },
+    "hdd_count": 0,
+    "addons": [{
+      "addon_id": 2630,
+      "name": "cPanel",
+      "description": "",
+      "type": "virt-guest",
+      "class": "system",
+      "class_id": 17,
+      "class_type": "control-panel",
+      "setup_fee": 0,
+      "bandwidth": 0,
+      "qty_min": 1,
+      "qty_max": 1,
+      "management": "no",
+      "id": 2630,
+      "identity": "cPanel",
+      "is_real": true,
+      "meta": {
+        "scope": "package-addon"
+      },
+      "terms": {
+        "1": 1
+      },
+      "term_fee": {
+        "1": 14
+      },
+      "effective_monthly_fee": {
+        "1": 14
+      },
+      "component": {
+        "control_panel_id": 17,
+        "name": "cPanel",
+        "version": "",
+        "monthly_fee": 14,
+        "status": "active",
+        "type": "virt-guest",
+        "api_package_id": 0,
+        "id": 17,
+        "identity": "cPanel ()",
+        "is_real": true,
+        "meta": {
+          "scope": "control-panel"
+        },
+        "system_ids": [29, 30]
+      }
+    }],
+    "restricted": false
+  },
+  {
+    "package_id": 680,
+    "name": "n5s.small",
+    "bandwidth": 2048,
+    "monthly_fee": 10,
+    "setup_fee": 0,
+    "overage_fee": 0.5,
+    "bandwidth_profile_id": 2,
+    "type": "virt-guest",
+    "cpu_used": 0,
+    "ip_num": 2,
+    "form_id": 0,
+    "auto_renew": "yes",
+    "virt_cpu": 2,
+    "virt_ram": 2048,
+    "virt_disk": 30720,
+    "default_term": 0,
+    "ssl_product_code": "",
+    "app_id": 0,
+    "virt_dedicated_guest": 0,
+    "virt_cloud_host_type_id": 0,
+    "company_id": 4,
+    "user_concurrency": 0,
+    "user_autoscale_concurrency": 0,
+    "environment_type": "production",
+    "child_accounts": 0,
+    "id": 680,
+    "identity": "n5s.small",
+    "is_real": true,
+    "meta": {
+      "scope": "package"
+    },
+    "ram": 2048,
+    "cpu": 2,
+    "disk": 30720,
+    "description": "",
+    "term_fee": {
+      "1": 10
+    },
+    "effective_monthly_fee": {
+      "1": 10
+    },
+    "terms": {
+      "1": 1
+    },
+    "hdd_count": 0,
+    "addons": [{
+      "addon_id": 2630,
+      "name": "cPanel",
+      "description": "",
+      "type": "virt-guest",
+      "class": "system",
+      "class_id": 17,
+      "class_type": "control-panel",
+      "setup_fee": 0,
+      "bandwidth": 0,
+      "qty_min": 1,
+      "qty_max": 1,
+      "management": "no",
+      "id": 2630,
+      "identity": "cPanel",
+      "is_real": true,
+      "meta": {
+        "scope": "package-addon"
+      },
+      "terms": {
+        "1": 1
+      },
+      "term_fee": {
+        "1": 14
+      },
+      "effective_monthly_fee": {
+        "1": 14
+      },
+      "component": {
+        "control_panel_id": 17,
+        "name": "cPanel",
+        "version": "",
+        "monthly_fee": 14,
+        "status": "active",
+        "type": "virt-guest",
+        "api_package_id": 0,
+        "id": 17,
+        "identity": "cPanel ()",
+        "is_real": true,
+        "meta": {
+          "scope": "control-panel"
+        },
+        "system_ids": [29, 30]
+      }
+    }],
+    "restricted": false
+  },
+  {
+    "package_id": 682,
+    "name": "n5s.medium",
+    "bandwidth": 4096,
+    "monthly_fee": 15,
+    "setup_fee": 0,
+    "overage_fee": 0.5,
+    "bandwidth_profile_id": 2,
+    "type": "virt-guest",
+    "cpu_used": 0,
+    "ip_num": 1,
+    "form_id": 0,
+    "auto_renew": "yes",
+    "virt_cpu": 4,
+    "virt_ram": 4096,
+    "virt_disk": 40960,
+    "default_term": 0,
+    "ssl_product_code": "",
+    "app_id": 0,
+    "virt_dedicated_guest": 0,
+    "virt_cloud_host_type_id": 0,
+    "company_id": 4,
+    "user_concurrency": 0,
+    "user_autoscale_concurrency": 0,
+    "environment_type": "production",
+    "child_accounts": 0,
+    "id": 682,
+    "identity": "n5s.medium",
+    "is_real": true,
+    "meta": {
+      "scope": "package"
+    },
+    "ram": 4096,
+    "cpu": 4,
+    "disk": 40960,
+    "description": "",
+    "term_fee": {
+      "1": 15
+    },
+    "effective_monthly_fee": {
+      "1": 15
+    },
+    "terms": {
+      "1": 1
+    },
+    "hdd_count": 0,
+    "addons": [{
+      "addon_id": 2630,
+      "name": "cPanel",
+      "description": "",
+      "type": "virt-guest",
+      "class": "system",
+      "class_id": 17,
+      "class_type": "control-panel",
+      "setup_fee": 0,
+      "bandwidth": 0,
+      "qty_min": 1,
+      "qty_max": 1,
+      "management": "no",
+      "id": 2630,
+      "identity": "cPanel",
+      "is_real": true,
+      "meta": {
+        "scope": "package-addon"
+      },
+      "terms": {
+        "1": 1
+      },
+      "term_fee": {
+        "1": 14
+      },
+      "effective_monthly_fee": {
+        "1": 14
+      },
+      "component": {
+        "control_panel_id": 17,
+        "name": "cPanel",
+        "version": "",
+        "monthly_fee": 14,
+        "status": "active",
+        "type": "virt-guest",
+        "api_package_id": 0,
+        "id": 17,
+        "identity": "cPanel ()",
+        "is_real": true,
+        "meta": {
+          "scope": "control-panel"
+        },
+        "system_ids": [29, 30]
+      }
+    }],
+    "restricted": false
+  },
+  {
+    "package_id": 685,
+    "name": "n5s.large",
+    "bandwidth": 4096,
+    "monthly_fee": 20,
+    "setup_fee": 0,
+    "overage_fee": 0.5,
+    "bandwidth_profile_id": 2,
+    "type": "virt-guest",
+    "cpu_used": 0,
+    "ip_num": 1,
+    "form_id": 0,
+    "auto_renew": "yes",
+    "virt_cpu": 6,
+    "virt_ram": 8192,
+    "virt_disk": 81920,
+    "default_term": 0,
+    "ssl_product_code": "",
+    "app_id": 0,
+    "virt_dedicated_guest": 0,
+    "virt_cloud_host_type_id": 0,
+    "company_id": 4,
+    "user_concurrency": 0,
+    "user_autoscale_concurrency": 0,
+    "environment_type": "production",
+    "child_accounts": 0,
+    "id": 685,
+    "identity": "n5s.large",
+    "is_real": true,
+    "meta": {
+      "scope": "package"
+    },
+    "ram": 8192,
+    "cpu": 6,
+    "disk": 81920,
+    "description": "",
+    "term_fee": {
+      "1": 20
+    },
+    "effective_monthly_fee": {
+      "1": 20
+    },
+    "terms": {
+      "1": 1
+    },
+    "hdd_count": 0,
+    "addons": [{
+      "addon_id": 2630,
+      "name": "cPanel",
+      "description": "",
+      "type": "virt-guest",
+      "class": "system",
+      "class_id": 17,
+      "class_type": "control-panel",
+      "setup_fee": 0,
+      "bandwidth": 0,
+      "qty_min": 1,
+      "qty_max": 1,
+      "management": "no",
+      "id": 2630,
+      "identity": "cPanel",
+      "is_real": true,
+      "meta": {
+        "scope": "package-addon"
+      },
+      "terms": {
+        "1": 1
+      },
+      "term_fee": {
+        "1": 14
+      },
+      "effective_monthly_fee": {
+        "1": 14
+      },
+      "component": {
+        "control_panel_id": 17,
+        "name": "cPanel",
+        "version": "",
+        "monthly_fee": 14,
+        "status": "active",
+        "type": "virt-guest",
+        "api_package_id": 0,
+        "id": 17,
+        "identity": "cPanel ()",
+        "is_real": true,
+        "meta": {
+          "scope": "control-panel"
+        },
+        "system_ids": [29, 30]
+      }
+    }],
+    "restricted": false
+  },
+  {
+    "package_id": 684,
+    "name": "n5s.xlarge",
+    "bandwidth": 4096,
+    "monthly_fee": 25,
+    "setup_fee": 0,
+    "overage_fee": 0.5,
+    "bandwidth_profile_id": 2,
+    "type": "virt-guest",
+    "cpu_used": 0,
+    "ip_num": 1,
+    "form_id": 0,
+    "auto_renew": "yes",
+    "virt_cpu": 8,
+    "virt_ram": 16384,
+    "virt_disk": 163840,
+    "default_term": 0,
+    "ssl_product_code": "",
+    "app_id": 0,
+    "virt_dedicated_guest": 0,
+    "virt_cloud_host_type_id": 0,
+    "company_id": 4,
+    "user_concurrency": 0,
+    "user_autoscale_concurrency": 0,
+    "environment_type": "production",
+    "child_accounts": 0,
+    "id": 684,
+    "identity": "n5s.xlarge",
+    "is_real": true,
+    "meta": {
+      "scope": "package"
+    },
+    "ram": 16384,
+    "cpu": 8,
+    "disk": 163840,
+    "description": "",
+    "term_fee": {
+      "1": 25
+    },
+    "effective_monthly_fee": {
+      "1": 25
+    },
+    "terms": {
+      "1": 1
+    },
+    "hdd_count": 0,
+    "addons": [{
+      "addon_id": 2630,
+      "name": "cPanel",
+      "description": "",
+      "type": "virt-guest",
+      "class": "system",
+      "class_id": 17,
+      "class_type": "control-panel",
+      "setup_fee": 0,
+      "bandwidth": 0,
+      "qty_min": 1,
+      "qty_max": 1,
+      "management": "no",
+      "id": 2630,
+      "identity": "cPanel",
+      "is_real": true,
+      "meta": {
+        "scope": "package-addon"
+      },
+      "terms": {
+        "1": 1
+      },
+      "term_fee": {
+        "1": 14
+      },
+      "effective_monthly_fee": {
+        "1": 14
+      },
+      "component": {
+        "control_panel_id": 17,
+        "name": "cPanel",
+        "version": "",
+        "monthly_fee": 14,
+        "status": "active",
+        "type": "virt-guest",
+        "api_package_id": 0,
+        "id": 17,
+        "identity": "cPanel ()",
+        "is_real": true,
+        "meta": {
+          "scope": "control-panel"
+        },
+        "system_ids": [29, 30]
+      }
+    }],
+    "restricted": false
+  },
+  {
+    "package_id": 686,
+    "name": "n5s.2xlarge",
+    "bandwidth": 4096,
+    "monthly_fee": 30,
+    "setup_fee": 0,
+    "overage_fee": 0.5,
+    "bandwidth_profile_id": 2,
+    "type": "virt-guest",
+    "cpu_used": 0,
+    "ip_num": 1,
+    "form_id": 0,
+    "auto_renew": "yes",
+    "virt_cpu": 12,
+    "virt_ram": 24576,
+    "virt_disk": 327680,
+    "default_term": 0,
+    "ssl_product_code": "",
+    "app_id": 0,
+    "virt_dedicated_guest": 0,
+    "virt_cloud_host_type_id": 0,
+    "company_id": 4,
+    "user_concurrency": 0,
+    "user_autoscale_concurrency": 0,
+    "environment_type": "production",
+    "child_accounts": 0,
+    "id": 686,
+    "identity": "n5s.2xlarge",
+    "is_real": true,
+    "meta": {
+      "scope": "package"
+    },
+    "ram": 24576,
+    "cpu": 12,
+    "disk": 327680,
+    "description": "",
+    "term_fee": {
+      "1": 30
+    },
+    "effective_monthly_fee": {
+      "1": 30
+    },
+    "terms": {
+      "1": 1
+    },
+    "hdd_count": 0,
+    "addons": [{
+      "addon_id": 2630,
+      "name": "cPanel",
+      "description": "",
+      "type": "virt-guest",
+      "class": "system",
+      "class_id": 17,
+      "class_type": "control-panel",
+      "setup_fee": 0,
+      "bandwidth": 0,
+      "qty_min": 1,
+      "qty_max": 1,
+      "management": "no",
+      "id": 2630,
+      "identity": "cPanel",
+      "is_real": true,
+      "meta": {
+        "scope": "package-addon"
+      },
+      "terms": {
+        "1": 1
+      },
+      "term_fee": {
+        "1": 14
+      },
+      "effective_monthly_fee": {
+        "1": 14
+      },
+      "component": {
+        "control_panel_id": 17,
+        "name": "cPanel",
+        "version": "",
+        "monthly_fee": 14,
+        "status": "active",
+        "type": "virt-guest",
+        "api_package_id": 0,
+        "id": 17,
+        "identity": "cPanel ()",
+        "is_real": true,
+        "meta": {
+          "scope": "control-panel"
+        },
+        "system_ids": [29, 30]
+      }
+    }],
+    "restricted": false
+  }
+]

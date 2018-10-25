@@ -1,0 +1,158 @@
+{
+	"account_id": 971,
+	"host_id": 600,
+	"domain": "nexcess-cli.example.com",
+	"status": "used",
+	"deploy_date": 1526046176,
+	"deploy_complete_date": 1526046240,
+	"project_id": 577,
+	"parent_account_id": 0,
+	"reference_account_id": 0,
+	"ssl_cert_id": 0,
+	"id": 971,
+	"identity": "nexcess-cli.example.com",
+	"is_real": true,
+	"meta": {
+		"scope": "virt-guest-cloudaccount"
+	},
+	"ip": "209.126.30.56",
+	"ipv4": "209.126.30.56",
+	"is_dev_account": false,
+	"temp_domain": "e8103e956e.nxcli.net",
+	"cloudhost_hostname": "cloudhost-61809.us-midwest-1.nxcli.net",
+	"unix_username": "ab6bce01",
+	"app": {
+		"id": 13,
+		"identity": "Flexible ",
+		"is_real": true,
+		"meta": {
+			"scope": "app-app"
+		},
+		"type": "generic",
+		"status": "active",
+		"name": "Flexible",
+		"version": "",
+		"is_installable": false
+	},
+	"environment": {
+		"software": {
+			"php": {
+				"version": "7.1",
+				"path": "\/opt\/remi\/php71",
+				"cli": "\/opt\/remi\/php71\/root\/usr\/bin\/php"
+			},
+			"redis": {
+				"host": "",
+				"port": "",
+				"socket": "\/var\/run\/redis-multi-ab6bce01.redis\/redis.sock",
+				"version": "3.2"
+			}
+		},
+		"options": {
+			"nxcache_nocache": false,
+			"nxcache_varnish": false,
+			"nxcache_varnish_static": false,
+			"nxcache_varnish_ttl": 120,
+			"autoscale_enabled": true
+		}
+	},
+	"service": {
+		"id": 76492,
+		"identity": "nexcess-cli.example.com - nc.xsmall-test",
+		"is_real": true,
+		"meta": {
+			"scope": "service"
+		},
+		"type": "virt-guest-cloud",
+		"status": "enabled",
+		"description": "nc.xsmall-test",
+		"nickname": "",
+		"host": "nexcess-cli.example.com",
+		"cloud_account": {
+			"id": 971,
+			"identity": "nexcess-cli.example.com",
+			"is_real": true,
+			"meta": {
+				"scope": "virt-guest-cloudaccount"
+			},
+			"status": "used",
+			"ip": "209.126.30.56",
+			"ipv4": "209.126.30.56",
+			"domain": "nexcess-cli.example.com",
+			"is_dev_account": false,
+			"temp_domain": "e8103e956e.nxcli.net",
+			"cloudhost_hostname": "cloudhost-61809.us-midwest-1.nxcli.net",
+			"unix_username": "ab6bce01",
+			"app": {
+				"id": 13,
+				"identity": "Flexible ",
+				"is_real": true,
+				"meta": {
+					"scope": "app-app"
+				},
+				"type": "generic",
+				"status": "active",
+				"name": "Flexible",
+				"version": "",
+				"is_installable": false
+			},
+			"environment": {
+				"software": {
+					"php": {
+						"version": "7.1",
+						"path": "\/opt\/remi\/php71",
+						"cli": "\/opt\/remi\/php71\/root\/usr\/bin\/php"
+					},
+					"redis": {
+						"host": "",
+						"port": "",
+						"socket": "\/var\/run\/redis-multi-ab6bce01.redis\/redis.sock",
+						"version": "3.2"
+					}
+				},
+				"options": {
+					"nxcache_nocache": false,
+					"nxcache_varnish": false,
+					"nxcache_varnish_static": false,
+					"nxcache_varnish_ttl": 120,
+					"autoscale_enabled": true
+				}
+			}
+		},
+		"isolation_zone": {
+			"id": 1,
+			"identity": "Southfield, MI",
+			"is_real": true,
+			"meta": {
+				"scope": "isolation-zone"
+			}
+		},
+		"location": {
+			"id": 3,
+			"identity": "us-midwest-1",
+			"is_real": true,
+			"meta": {
+				"scope": "virt-cloud"
+			},
+			"type": "openstack",
+			"status": "active",
+			"location": "Southfield, MI",
+			"location_code": "us-midwest-1",
+			"country": "US"
+		},
+		"order": {
+			"id": 55119,
+			"identity": "(55119) Adrian Testa-avila",
+			"is_real": true,
+			"meta": {
+				"scope": "order"
+			},
+			"type": "virt-guest-cloud",
+			"status": "completed",
+			"months": 1
+		},
+		"dev_account_count": 0,
+		"state": "stable",
+		"child_cloud_accounts": []
+	}
+}

@@ -58,8 +58,7 @@ class ErrorHandler extends ExceptableHandler {
     $this->_input = $input;
     $this->_output = $output;
     $this
-      // @todo https://github.com/php-enspired/exceptable/issues/15
-      //->throw(E_ALL)
+      ->throw(E_ALL)
       ->onException([$this, 'handleException']);
   }
 

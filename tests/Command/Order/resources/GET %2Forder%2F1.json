@@ -1,0 +1,145 @@
+{
+  "order_id": 1,
+  "order_date": 1526046167,
+  "package_id": 700,
+  "client_id": 1,
+  "service_id": 1,
+  "invoice_id": 1,
+  "facility_id": 0,
+  "cloud_id": 3,
+  "months": 1,
+  "status": "completed",
+  "type": "virt-guest-cloud",
+  "configuration_id": 0,
+  "id": 1,
+  "identity": "#1 nc.xsmall-test",
+  "is_real": true,
+  "meta": {
+    "scope": "order"
+  },
+  "total": 50,
+  "package": {
+    "id": 700,
+    "identity": "nc.xsmall-test",
+    "meta": {
+      "scope": "package"
+    },
+    "type": "virt-guest-cloud",
+    "virt_dedicated_guest": 0
+  },
+  "setup_fee": 0,
+  "recurring_total": 50,
+  "service": {
+    "id": 1,
+    "identity": "nexcess-cli.example.com - nc.xsmall-test",
+    "is_real": true,
+    "meta": {
+      "scope": "service"
+    },
+    "type": "virt-guest-cloud",
+    "status": "enabled",
+    "description": "nc.xsmall-test",
+    "nickname": "",
+    "host": "nexcess-cli.example.com",
+    "cloud_account": {
+      "id": 1,
+      "identity": "nexcess-cli.example.com",
+      "is_real": true,
+      "meta": {
+        "scope": "virt-guest-cloudaccount"
+      },
+      "status": "used",
+      "ip": "203.0.113.1",
+      "ipv4": "203.0.113.1",
+      "domain": "nexcess-cli.example.com",
+      "is_dev_account": false,
+      "temp_domain": "example.nxcli.net",
+      "cloudhost_hostname": "cloudhost-example.us-midwest-1.nxcli.net",
+      "unix_username": "abcd1234",
+      "app": {
+        "id": 13,
+        "identity": "Flexible ",
+        "is_real": true,
+        "meta": {
+          "scope": "app-app"
+        },
+        "type": "generic",
+        "status": "active",
+        "name": "Flexible",
+        "version": "",
+        "is_installable": false
+      },
+      "environment": {
+        "software": {
+          "php": {
+            "version": "7.1",
+            "path": "\/opt\/remi\/php71",
+            "cli": "\/opt\/remi\/php71\/root\/usr\/bin\/php"
+          },
+          "redis": {
+            "host": "",
+            "port": "",
+            "socket": "\/var\/run\/redis-multi-example.redis\/redis.sock",
+            "version": "3.2"
+          }
+        },
+        "options": {
+          "nxcache_nocache": false,
+          "nxcache_varnish": false,
+          "nxcache_varnish_static": false,
+          "nxcache_varnish_ttl": 120,
+          "autoscale_enabled": true
+        }
+      }
+    },
+    "isolation_zone": {
+      "id": 1,
+      "identity": "Southfield, MI",
+      "is_real": true,
+      "meta": {
+        "scope": "isolation-zone"
+      }
+    },
+    "location": {
+      "id": 3,
+      "identity": "us-midwest-1",
+      "is_real": true,
+      "meta": {
+        "scope": "virt-cloud"
+      },
+      "type": "openstack",
+      "status": "active",
+      "location": "Southfield, MI",
+      "location_code": "us-midwest-1",
+      "country": "US"
+    },
+    "order": {
+      "id": 1,
+      "identity": "(1) Alice McAllison",
+      "is_real": true,
+      "meta": {
+        "scope": "order"
+      },
+      "type": "virt-guest-cloud",
+      "status": "completed",
+      "months": 1
+    },
+    "dev_account_count": 0,
+    "state": "stable",
+    "child_cloud_accounts": []
+  },
+  "invoice": {
+    "id": 1,
+    "identity": "Alice McAllison - #1",
+    "is_real": true,
+    "meta": {
+      "scope": "invoice"
+    },
+    "type": "pre-billed",
+    "status": "paid",
+    "description": "nc.xsmall-test",
+    "full_id": "1-P",
+    "total": 50,
+    "is_payable": false
+  }
+}
