@@ -17,7 +17,11 @@
           "summary_item": "{filedate} | {filename} | {complete}",
           "summary_title": "Backups",
           "usage": "cloud-account:backup:list --cloud_account_id=XXX",
-          "help": "This function outputs a list of all the backups for a given Cloud Account"
+          "help": "This function outputs a list of all the backups for a given Cloud Account",
+          "filename": "File Name",
+          "filedate": "File Date",
+          "filesize": "File Size",
+          "complete": "Complete"
         }
       },
       "create": {

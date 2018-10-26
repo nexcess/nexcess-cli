@@ -16,6 +16,7 @@ use Nexcess\Sdk\Cli\ {
   ConsoleException,
   Command\ShowList as ShowListCommand
 };
+
 use Nexcess\Sdk\Util\Util;
 
 use Symfony\Component\Console\ {
@@ -23,6 +24,7 @@ use Symfony\Component\Console\ {
   Input\InputInterface as Input,
   Input\InputOption as Opt,
   Output\OutputInterface as Output,
+  Helper\Table
 };
 
 /**
@@ -37,7 +39,7 @@ class ShowList extends ShowListCommand {
   const NAME = 'cloud-account:backup:list';
 
   /** {@inheritDoc} */
-  const SUMMARY_KEYS = ['filename', 'filedate', 'complete'];
+  const SUMMARY_KEYS = ['filename', 'filedate', 'complete','filesize'];
 
   /** {@inheritDoc} */
   const OPTS = ['cloud_account_id' => [Opt::VALUE_REQUIRED]];
@@ -56,7 +58,8 @@ class ShowList extends ShowListCommand {
       $this->_getEndpoint()->getBackups(
         $this->_getEndpoint()->retrieve($cloud_id)
       )->toArray(true),
-      $input->getOption('json')
+      $input->getOption('json'),
+      $output
     );
 
     return Console::EXIT_SUCCESS;
@@ -64,6 +67,7 @@ class ShowList extends ShowListCommand {
 
   /** {@inheritDoc} */
   protected function _getSummary(array $details) : array {
+
     $details = array_map(
       function ($backup_array) {
         $timestamp = Util::filter(

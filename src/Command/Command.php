@@ -251,8 +251,15 @@ abstract class Command extends SymfonyCommand {
         array_flip(static::SUMMARY_KEYS)
       );
     }
+    return $this->_orderDetails($details);
+  }
 
-    return $details;
+  protected function _orderDetails(array $details) : array {
+    $return_value = [];
+    foreach(static::SUMMARY_KEYS as $key) {
+      $return_value[$key] = $details[$key];
+    }
+    return $return_value;
   }
 
   /**

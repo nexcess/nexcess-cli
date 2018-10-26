@@ -23,7 +23,9 @@ use Nexcess\Sdk\Cli\ {
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,
-  Output\OutputInterface as Output
+  Output\OutputInterface as Output,
+  Helper\TableStyle,
+  Helper\Table
 };
 
 /**
@@ -90,5 +92,39 @@ abstract class ShowList extends Command {
     }
 
     return $details;
+  }
+
+  protected function _saySummary(array $details, bool $json = false) {
+    $console = $this->getApplication();
+    $details = $this->_getSummary($details);
+    
+    if ($json) {
+      $console->sayJson($details);
+      return;
+    }
+
+    $console->say($this->getPhrase('summary_title'));
+    
+    $table = new Table($console->getIo()[Console::GET_IO_OUTPUT]);
+    $table->setStyle($this->_setupTableStyle());
+    $table->setHeaders($this->_sayHeader());
+    $table->setRows($details);
+    $table->render();
+  }
+
+  protected function _sayHeader() : array {
+    $returnValue = [];
+    foreach(static::SUMMARY_KEYS as $header) {
+      $returnValue[] = $this->getPhrase($header);
+    }
+    return $returnValue;
+  }
+
+  protected function _setupTableStyle() : TableStyle {
+    $tableStyle = new TableStyle();
+    $tableStyle
+      ->setCellRowFormat('<fg=white;options=bold>%s</>')
+      ->setCellHeaderFormat('<fg=yellow;options=bold>%s</>');
+      return $tableStyle;
   }
 }
