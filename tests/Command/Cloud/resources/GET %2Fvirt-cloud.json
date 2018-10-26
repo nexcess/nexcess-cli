@@ -1,0 +1,41 @@
+[
+  {
+    "id": 3,
+    "identity": "us-midwest-1",
+    "is_real": true,
+    "meta": {
+      "scope": "virt-cloud"
+    },
+    "type": "openstack",
+    "status": "active",
+    "location": "Southfield, MI",
+    "location_code": "us-midwest-1",
+    "country": "US"
+  },
+  {
+    "id": 4,
+    "identity": "uk-south-2",
+    "is_real": true,
+    "meta": {
+      "scope": "virt-cloud"
+    },
+    "type": "openstack",
+    "status": "active",
+    "location": "London, UK",
+    "location_code": "uk-south-2",
+    "country": "UK"
+  },
+  {
+    "id": 8,
+    "identity": "au-south-1",
+    "is_real": true,
+    "meta": {
+      "scope": "virt-cloud"
+    },
+    "type": "openstack",
+    "status": "inactive",
+    "location": "Sydney, NSW",
+    "location_code": "au-south-1",
+    "country": "AU"
+  }
+]

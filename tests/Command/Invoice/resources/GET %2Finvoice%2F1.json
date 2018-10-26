@@ -1,0 +1,17 @@
+{
+  "note": "",
+  "invoice_date": 1527486175,
+  "due_date": 1528775999,
+  "paid_date": 1527871265,
+  "payment_type": "other",
+  "status": "paid",
+  "id": 1,
+  "identity": "Alice McAllison - #1",
+  "is_real": true,
+  "full_id": "1-P",
+  "total": 50,
+  "due": 0,
+  "description": "nc.xsmall-test - 0.0.0.0\/24 - nexcess-cli.example.com",
+  "is_overdue": false,
+  "is_payable": false
+}

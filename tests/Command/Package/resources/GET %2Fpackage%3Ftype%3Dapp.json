@@ -1,0 +1,46 @@
+[
+  {
+    "package_id": 697,
+    "name": "Test Package",
+    "bandwidth": 0,
+    "monthly_fee": 0,
+    "setup_fee": 0,
+    "overage_fee": 0.5,
+    "bandwidth_profile_id": 2,
+    "type": "app",
+    "cpu_used": 0,
+    "ip_num": 2,
+    "form_id": 0,
+    "auto_renew": "yes",
+    "virt_cpu": 0,
+    "virt_ram": 0,
+    "virt_disk": 0,
+    "default_term": 0,
+    "ssl_product_code": "",
+    "app_id": 0,
+    "virt_dedicated_guest": 0,
+    "virt_cloud_host_type_id": 0,
+    "company_id": 4,
+    "user_concurrency": 0,
+    "user_autoscale_concurrency": 0,
+    "environment_type": "production",
+    "child_accounts": 0,
+    "id": 697,
+    "identity": "Test Package",
+    "is_real": true,
+    "meta": {
+      "scope": "package"
+    },
+    "description": "",
+    "term_fee": {
+      "1": 0
+    },
+    "effective_monthly_fee": {
+      "1": 0
+    },
+    "terms": {
+      "1": 1
+    },
+    "hdd_count": 0
+  }
+]

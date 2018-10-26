@@ -1,0 +1,142 @@
+[
+  {
+    "app_id": 12,
+    "name": "CraftCMS",
+    "version": "2",
+    "type": "craftcms",
+    "ansible_repo": "",
+    "ansible_branch": "master",
+    "ansible_role_alias": "",
+    "git_repo": "",
+    "git_branch": "master",
+    "configuration_template_json": "",
+    "status": "active",
+    "id": 12,
+    "identity": "CraftCMS 2",
+    "is_real": true,
+    "meta": {
+      "scope": "app-app"
+    },
+    "is_installable": false
+  },
+  {
+    "app_id": 14,
+    "name": "Expression Engine",
+    "version": "4",
+    "type": "expressionengine",
+    "ansible_repo": "",
+    "ansible_branch": "master",
+    "ansible_role_alias": "",
+    "git_repo": "",
+    "git_branch": "master",
+    "configuration_template_json": "",
+    "status": "active",
+    "id": 14,
+    "identity": "Expression Engine 4",
+    "is_real": true,
+    "meta": {
+      "scope": "app-app"
+    },
+    "is_installable": false
+  },
+  {
+    "app_id": 13,
+    "name": "Flexible",
+    "version": "",
+    "type": "generic",
+    "ansible_repo": "",
+    "ansible_branch": "master",
+    "ansible_role_alias": "",
+    "git_repo": "",
+    "git_branch": "master",
+    "configuration_template_json": "",
+    "status": "active",
+    "id": 13,
+    "identity": "Flexible ",
+    "is_real": true,
+    "meta": {
+      "scope": "app-app"
+    },
+    "is_installable": false
+  },
+  {
+    "app_id": 11,
+    "name": "Magento",
+    "version": "2",
+    "type": "magento",
+    "ansible_repo": "",
+    "ansible_branch": "master",
+    "ansible_role_alias": "",
+    "git_repo": "",
+    "git_branch": "master",
+    "configuration_template_json": "",
+    "status": "active",
+    "id": 11,
+    "identity": "Magento 2",
+    "is_real": true,
+    "meta": {
+      "scope": "app-app"
+    },
+    "is_installable": true
+  },
+  {
+    "app_id": 15,
+    "name": "OroCRM",
+    "version": "1",
+    "type": "orocrm",
+    "ansible_repo": "",
+    "ansible_branch": "master",
+    "ansible_role_alias": "",
+    "git_repo": "",
+    "git_branch": "master",
+    "configuration_template_json": "",
+    "status": "active",
+    "id": 15,
+    "identity": "OroCRM 1",
+    "is_real": true,
+    "meta": {
+      "scope": "app-app"
+    },
+    "is_installable": false
+  },
+  {
+    "app_id": 17,
+    "name": "WooCommerce",
+    "version": "1",
+    "type": "woocommerce",
+    "ansible_repo": "",
+    "ansible_branch": "master",
+    "ansible_role_alias": "",
+    "git_repo": "",
+    "git_branch": "master",
+    "configuration_template_json": "",
+    "status": "active",
+    "id": 17,
+    "identity": "WooCommerce 1",
+    "is_real": true,
+    "meta": {
+      "scope": "app-app"
+    },
+    "is_installable": true
+  },
+  {
+    "app_id": 16,
+    "name": "Wordpress",
+    "version": "4",
+    "type": "wordpress",
+    "ansible_repo": "",
+    "ansible_branch": "master",
+    "ansible_role_alias": "",
+    "git_repo": "",
+    "git_branch": "master",
+    "configuration_template_json": "",
+    "status": "active",
+    "id": 16,
+    "identity": "Wordpress 4",
+    "is_real": true,
+    "meta": {
+      "scope": "app-app"
+    },
+    "is_installable": true
+  }
+]

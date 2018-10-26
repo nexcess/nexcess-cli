@@ -1,0 +1,262 @@
+[
+  {
+    "service_id": 1,
+    "client_id": 1,
+    "package_id": 680,
+    "parent_id": 0,
+    "discount_id": 0,
+    "turnup_date": 1501938135,
+    "last_bill_date": 0,
+    "next_bill_date": 1504584000,
+    "term": 1,
+    "pricing_type": "monthly",
+    "status": "enabled",
+    "state": "stable",
+    "override_price": 10,
+    "override_percent": 0,
+    "override_addons": "no",
+    "override_bandwidth": 2048,
+    "bandwidth_overage_fee": 0.5,
+    "bandwidth_profile_id": 2,
+    "start_date": 1501938135,
+    "type": "virt-guest",
+    "auto_renew": "yes",
+    "description": "nex1.small",
+    "cancellable_override_expire_date": 0,
+    "cloud_id": 3,
+    "nickname": "",
+    "id": 1,
+    "identity": "nexcess-cli.example.com - 203.0.113.1",
+    "is_real": true,
+    "meta": {
+      "scope": "service"
+    },
+    "main_ip": {
+      "id": "203.0.113.1",
+      "identity": "203.0.113.1",
+      "is_real": true,
+      "meta": {
+        "scope": "ip-block"
+      },
+      "type": "ipv4",
+      "status": "used",
+      "real_id": 1
+    },
+    "host": "nexcess-cli.example.com",
+    "billing_term": {
+      "type": "monthly",
+      "months": 1,
+      "years": 0,
+      "description": "Monthly",
+      "amount": 10
+    },
+    "is_rebootable": true,
+    "contract_id": 0,
+    "is_cancellable": true,
+    "has_stored_password": false,
+    "can_change_root_password": false,
+    "package": {
+      "id": 680,
+      "identity": "n5s.small",
+      "is_real": true,
+      "meta": {
+        "scope": "package"
+      },
+      "type": "virt-guest",
+      "status": "web-active",
+      "bandwidth": 2048,
+      "ram": 2048,
+      "cpu": 2,
+      "disk": 30720
+    },
+    "order": {
+      "id": 1,
+      "identity": "(1) Alice McAllison",
+      "is_real": true,
+      "meta": {
+        "scope": "order"
+      },
+      "type": "virt-guest",
+      "status": "allocated",
+      "months": 1
+    },
+    "settings": {
+      "extranet.disable-networking.enabled": false
+    },
+    "has_paypal_subscription": false,
+    "bandwidth": {
+      "used": {
+        "total": 0,
+        "billable": 0
+      },
+      "projected": {
+        "total": 0,
+        "billable": 0
+      },
+      "previous": {
+        "total": 0,
+        "billable": 0
+      },
+      "given": "2048",
+      "type": "GB"
+    },
+    "os": {
+      "id": 32,
+      "identity": "ubuntu 17.04 (x86_64)",
+      "is_real": true,
+      "meta": {
+        "scope": "operating-system"
+      },
+      "distribution": "ubuntu",
+      "version": "17.04",
+      "arch": "x86_64"
+    },
+    "location": {
+      "id": 3,
+      "identity": "us-midwest-1",
+      "is_real": true,
+      "meta": {
+        "scope": "virt-cloud"
+      },
+      "type": "openstack",
+      "status": "active",
+      "location": "Southfield, MI",
+      "location_code": "us-midwest-1",
+      "country": "US"
+    },
+    "power_status": "on",
+    "cloud_status": "active",
+    "disk_space": 30,
+    "has_console": true
+  },
+  {
+    "service_id": 2,
+    "client_id": 1,
+    "package_id": 681,
+    "parent_id": 0,
+    "discount_id": 0,
+    "turnup_date": 1499571179,
+    "last_bill_date": 0,
+    "next_bill_date": 1502164800,
+    "term": 1,
+    "pricing_type": "monthly",
+    "status": "enabled",
+    "state": "stable",
+    "override_price": 0,
+    "override_percent": 0,
+    "override_addons": "no",
+    "override_bandwidth": 0,
+    "bandwidth_overage_fee": 0,
+    "bandwidth_profile_id": 1,
+    "start_date": 1499571179,
+    "type": "virt-guest",
+    "auto_renew": "yes",
+    "description": "nex1.tiny",
+    "cancellable_override_expire_date": 0,
+    "cloud_id": 3,
+    "nickname": "",
+    "id": 2,
+    "identity": "nexcess-cli-2.example.com - 203.0.113.2",
+    "is_real": true,
+    "meta": {
+      "scope": "service"
+    },
+    "main_ip": {
+      "id": "203.0.113.2",
+      "identity": "203.0.113.2",
+      "is_real": true,
+      "meta": {
+        "scope": "ip-block"
+      },
+      "type": "ipv4",
+      "status": "used",
+      "real_id": 2
+    },
+    "host": "nexcess-cli-2.example.com",
+    "billing_term": {
+      "type": "monthly",
+      "months": 1,
+      "years": 0,
+      "description": "Monthly",
+      "amount": 0
+    },
+    "is_rebootable": true,
+    "contract_id": 0,
+    "is_cancellable": true,
+    "has_stored_password": false,
+    "can_change_root_password": false,
+    "package": {
+      "id": 681,
+      "identity": "n5s.tiny",
+      "is_real": true,
+      "meta": {
+        "scope": "package"
+      },
+      "type": "virt-guest",
+      "status": "web-active",
+      "bandwidth": 1024,
+      "ram": 1024,
+      "cpu": 1,
+      "disk": 20480
+    },
+    "order": {
+      "id": 2,
+      "identity": "(2) Alice McAllison",
+      "is_real": true,
+      "meta": {
+        "scope": "order"
+      },
+      "type": "virt-guest",
+      "status": "allocated",
+      "months": 1
+    },
+    "settings": {
+      "extranet.disable-networking.enabled": false
+    },
+    "has_paypal_subscription": false,
+    "bandwidth": {
+      "used": {
+        "total": 0,
+        "billable": 0
+      },
+      "projected": {
+        "total": 0,
+        "billable": 0
+      },
+      "previous": {
+        "total": 0,
+        "billable": 0
+      },
+      "given": "1024",
+      "type": "Mbps"
+    },
+    "os": {
+      "id": 33,
+      "identity": "fedora 26 (x86_64)",
+      "is_real": true,
+      "meta": {
+        "scope": "operating-system"
+      },
+      "distribution": "fedora",
+      "version": "26",
+      "arch": "x86_64"
+    },
+    "location": {
+      "id": 3,
+      "identity": "us-midwest-1",
+      "is_real": true,
+      "meta": {
+        "scope": "virt-cloud"
+      },
+      "type": "openstack",
+      "status": "active",
+      "location": "Southfield, MI",
+      "location_code": "us-midwest-1",
+      "country": "US"
+    },
+    "power_status": "on",
+    "cloud_status": "active",
+    "disk_space": 20,
+    "has_console": true
+  }
+]

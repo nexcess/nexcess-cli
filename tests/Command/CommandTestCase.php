@@ -34,7 +34,7 @@ use Symfony\Component\Console\ {
 abstract class CommandTestCase extends TestCase {
 
   /** @var string Path to test resources. */
-  const RESOURCE_PATH = __DIR__ . '/../resources';
+  const RESOURCE_PATH = __DIR__;
 
   /**
    * @group integration
@@ -45,11 +45,6 @@ abstract class CommandTestCase extends TestCase {
    * @param array|Throwable $expected Expected [exit_code, [output]] or exception
    */
   public function testRun(array $invocation, array $interactions, $expected) {
-
-    // @todo re-enable integration tests once NSD-12252 is resolved
-    $this->markTestIncomplete();
-    return;
-
     if ($expected instanceof Throwable) {
       $this->setExpectedException($expected);
     }
@@ -87,7 +82,6 @@ abstract class CommandTestCase extends TestCase {
     $options['sandboxed'] = true;
     $console = new Console($options);
     $console->getSandbox()->setRequestHandler([
-      //new ResourceHandler(Console::DIR, Client::DIR),
       new ResourceHandler(self::RESOURCE_PATH),
       'handle'
     ]);

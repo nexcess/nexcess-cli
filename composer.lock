@@ -193,18 +193,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nexcess/nexcess-php-sdk.git",
-                "reference": "8c9186c6c954cc43203f5161622feb42a23554ef"
+                "reference": "e2df6f43393a8e754d54a647d2b99011530bd3d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nexcess/nexcess-php-sdk/zipball/8c9186c6c954cc43203f5161622feb42a23554ef",
-                "reference": "8c9186c6c954cc43203f5161622feb42a23554ef",
+                "url": "https://api.github.com/repos/nexcess/nexcess-php-sdk/zipball/e2df6f43393a8e754d54a647d2b99011530bd3d5",
+                "reference": "e2df6f43393a8e754d54a647d2b99011530bd3d5",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.0",
                 "php": "^7.1",
-                "php-enspired/exceptable": "^1.2.1"
+                "php-enspired/exceptable": "^1.2.2"
             },
             "require-dev": {
                 "nocworx/phpcs": "^1.4",
@@ -238,20 +238,20 @@
                 "source": "https://github.com/nexcess/nexcess-php-sdk/tree/master",
                 "issues": "https://github.com/nexcess/nexcess-php-sdk/issues"
             },
-            "time": "2018-10-23T17:05:31+00:00"
+            "time": "2018-10-25T01:59:38+00:00"
         },
         {
             "name": "php-enspired/exceptable",
-            "version": "v1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enspired/exceptable.git",
-                "reference": "90a9ab03bfb6cddf90f87276dc762a15c98f7488"
+                "reference": "bbed81cc58e1b2ad71bd0b6441d491b88e49f695"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enspired/exceptable/zipball/90a9ab03bfb6cddf90f87276dc762a15c98f7488",
-                "reference": "90a9ab03bfb6cddf90f87276dc762a15c98f7488",
+                "url": "https://api.github.com/repos/php-enspired/exceptable/zipball/bbed81cc58e1b2ad71bd0b6441d491b88e49f695",
+                "reference": "bbed81cc58e1b2ad71bd0b6441d491b88e49f695",
                 "shasum": ""
             },
             "require": {
@@ -279,7 +279,7 @@
             ],
             "description": "Augmented features for exceptions and exception handling.",
             "homepage": "http://php.enspi.red",
-            "time": "2018-05-16T14:25:58+00:00"
+            "time": "2018-10-25T01:23:08+00:00"
         },
         {
             "name": "psr/http-message",

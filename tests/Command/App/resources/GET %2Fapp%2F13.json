@@ -1,0 +1,20 @@
+{
+  "app_id": 13,
+  "name": "Flexible",
+  "version": "",
+  "type": "generic",
+  "ansible_repo": "",
+  "ansible_branch": "master",
+  "ansible_role_alias": "",
+  "git_repo": "",
+  "git_branch": "master",
+  "configuration_template_json": "",
+  "status": "active",
+  "id": 13,
+  "identity": "Flexible ",
+  "is_real": true,
+  "meta": {
+    "scope": "app-app"
+  },
+  "is_installable": false
+}
