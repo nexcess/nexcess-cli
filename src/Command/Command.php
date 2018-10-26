@@ -256,10 +256,14 @@ abstract class Command extends SymfonyCommand {
 
   protected function _orderDetails(array $details) : array {
     $return_value = [];
-    foreach(static::SUMMARY_KEYS as $key) {
-      $return_value[$key] = $details[$key];
+    if (! empty(static::SUMMARY_KEYS)) {
+      foreach(static::SUMMARY_KEYS as $key) {
+        $return_value[$key] = $details[$key];
+      }
+      return $return_value;
+    } else {
+      return $details;
     }
-    return $return_value;
   }
 
   /**
