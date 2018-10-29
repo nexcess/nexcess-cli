@@ -94,6 +94,9 @@ abstract class ShowList extends Command {
     return $details;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   protected function _saySummary(array $details, bool $json = false) {
     $console = $this->getApplication();
     $details = $this->_getSummary($details);
@@ -109,8 +112,9 @@ abstract class ShowList extends Command {
   }
 
   /**
-   * Output a table
-   * @@param array $details Items to be displayed
+   * Output a table.
+   *
+   * @param array $details Items to be displayed
    */
   protected function _sayTable(array $details) {
     $console = $this->getApplication();
