@@ -254,16 +254,22 @@ abstract class Command extends SymfonyCommand {
     return $this->_orderDetails($details);
   }
 
+  /**
+   * Order the output array in the same order as the SUMMARY_KEYS
+   *
+   * @param array $details the details to be output.
+   * @return array
+   */
   protected function _orderDetails(array $details) : array {
     $return_value = [];
     if (! empty(static::SUMMARY_KEYS)) {
-      foreach(static::SUMMARY_KEYS as $key) {
+      foreach (static::SUMMARY_KEYS as $key) {
         $return_value[$key] = $details[$key];
       }
       return $return_value;
-    } else {
-      return $details;
     }
+
+    return $details;
   }
 
   /**

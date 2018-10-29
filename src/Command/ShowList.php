@@ -124,18 +124,24 @@ abstract class ShowList extends Command {
 
   /**
    * Return the header of the table to be output based on SUMMARY_KEYS
+   *
+   * @param array $details Details array
    */
   protected function _getTableHeader($details) : array {
     $returnValue = [];
     $keys = (count($details) > 0 ? array_keys($details) : static::SUMMARY_KEYS);
 
-    foreach($keys as $header) {
+    foreach ($keys as $header) {
       $returnValue[] = $this->getPhrase($header);
     }
 
     return $returnValue;
   }
 
+  /**
+   * Create our default tableStyle
+   * @return TableStyle
+   */
   protected function _setupTableStyle() : TableStyle {
     $tableStyle = new TableStyle();
     $tableStyle
