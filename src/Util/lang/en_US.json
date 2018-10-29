@@ -14,7 +14,6 @@
       "backup" : {
         "list": {
           "desc" : "List all backups for a given cloud account.",
-          "summary_item": "{filedate} | {filename} | {complete}",
           "summary_title": "Backups",
           "usage": "cloud-account:backup:list --cloud_account_id=XXX",
           "help": "This function outputs a list of all the backups for a given Cloud Account",
