@@ -127,7 +127,7 @@ abstract class ShowList extends Command {
    *
    * @param array $details Details array
    */
-  protected function _getTableHeader($details) : array {
+  protected function _getTableHeader(array $details) : array {
     $returnValue = [];
     $keys = (count($details) > 0 ? array_keys($details) : static::SUMMARY_KEYS);
 
