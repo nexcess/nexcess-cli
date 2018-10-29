@@ -11,7 +11,8 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
-  Resource\CloudAccount\Backup
+  Resource\CloudAccount\Backup,
+  Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
@@ -19,8 +20,6 @@ use Nexcess\Sdk\Cli\ {
   ConsoleException,
   Command\ShowList as ShowListCommand
 };
-
-use Nexcess\Sdk\Util\Util;
 
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
