@@ -9,12 +9,12 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
-use Nexcess\Sdk\Resource\CloudAccount\Endpoint;
-use Nexcess\Sdk\Resource\CloudAccount\Backup;
-use Nexcess\Sdk\Cli\ {
-  Console,
-  ConsoleException,
-  Command\ShowList as ShowListCommand
+use Nexcess\Sdk\ {
+  Resource\CloudAccount\Endpoint,
+  Resource\CloudAccount\Backup,
+  Cli\Console,
+  Cli\ConsoleException,
+  Cli\Command\ShowList as ShowListCommand
 };
 
 use Nexcess\Sdk\Util\Util;
@@ -75,8 +75,8 @@ class ShowList extends ShowListCommand {
     
         $new_date = new \DateTimeImmutable();
         $new_date = $new_date->setTimestamp($timestamp);
-        $backup_array['filedate'] = $new_date->format('Y-m-d h:i:s');
-        $backup_array['complete'] = ($backup_array['filedate'] ? 'YES' : 'NO');
+        $backup_array['filedate'] = $new_date->format('Y-m-d h:i:s T');
+        $backup_array['complete'] = ($backup_array['complete'] ? 'YES' : 'NO');
         return $backup_array;
       },
       $details

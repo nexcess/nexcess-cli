@@ -104,19 +104,35 @@ abstract class ShowList extends Command {
     }
 
     $console->say($this->getPhrase('summary_title'));
-    
+
+    $this->_sayTable($details);
+  }
+
+  /**
+   * Output a table
+   * @@param array $details Items to be displayed
+   */
+  protected function _sayTable(array $details) {
+    $console = $this->getApplication();
+
     $table = new Table($console->getIo()[Console::GET_IO_OUTPUT]);
     $table->setStyle($this->_setupTableStyle());
-    $table->setHeaders($this->_sayHeader());
+    $table->setHeaders($this->_getTableHeader($details[0]));
     $table->setRows($details);
     $table->render();
   }
 
-  protected function _sayHeader() : array {
+  /**
+   * Return the header of the table to be output based on SUMMARY_KEYS
+   */
+  protected function _getTableHeader($details) : array {
     $returnValue = [];
-    foreach(static::SUMMARY_KEYS as $header) {
+    $keys = (count($details) > 0 ? array_keys($details) : static::SUMMARY_KEYS);
+
+    foreach($keys as $header) {
       $returnValue[] = $this->getPhrase($header);
     }
+
     return $returnValue;
   }
 
