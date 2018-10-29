@@ -9,6 +9,8 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
+use DateTimeImmutable;
+
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
   Resource\CloudAccount\Backup,
@@ -41,7 +43,7 @@ class ShowList extends ShowListCommand {
   const NAME = 'cloud-account:backup:list';
 
   /** {@inheritDoc} */
-  const SUMMARY_KEYS = ['filename', 'filedate', 'complete','filesize'];
+  const SUMMARY_KEYS = ['filename', 'filedate', 'complete', 'filesize'];
 
   /** {@inheritDoc} */
   const OPTS = ['cloud_account_id' => [Opt::VALUE_REQUIRED]];
@@ -71,12 +73,7 @@ class ShowList extends ShowListCommand {
   protected function _getSummary(array $details) : array {
     $details = array_map(
       function ($backup_array) {
-        $timestamp = Util::filter(
-          $backup_array['filedate'], Util::FILTER_INT
-        );
-    
-        $new_date = new \DateTimeImmutable();
-        $new_date = $new_date->setTimestamp($timestamp);
+        $new_date = new DateTimeImmutable("@{$backup_array['filedate']}");
         $backup_array['filedate'] = $new_date->format('Y-m-d h:i:s T');
         $backup_array['complete'] = ($backup_array['complete'] ? 'YES' : 'NO');
         return $backup_array;
