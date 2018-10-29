@@ -11,10 +11,13 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
-  Resource\CloudAccount\Backup,
-  Cli\Console,
-  Cli\ConsoleException,
-  Cli\Command\ShowList as ShowListCommand
+  Resource\CloudAccount\Backup
+};
+
+use Nexcess\Sdk\Cli\ {
+  Console,
+  ConsoleException,
+  Command\ShowList as ShowListCommand
 };
 
 use Nexcess\Sdk\Util\Util;
