@@ -32,9 +32,9 @@ class ListTest extends ListTestCase {
       [],
       [
         'output' => [
-          "#1: 'Example API Token'",
-          "#2: 'Another Example API Token'",
-          "#3: 'And One More Example API Token'"
+          'Example API Token',
+          'Another Example API Token',
+          'And One More Example API Token'
         ]
       ]
     ];

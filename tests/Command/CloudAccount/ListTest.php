@@ -32,9 +32,12 @@ class ListTest extends ListTestCase {
       [],
       [
         'output' => [
-          '#1: nexcess-cli.example.com (203.0.113.1)',
-          '#2: nexcess-cli-2.example.com (203.0.113.2)',
-          '#3: nexcess-cli-3.example.com (203.0.113.3)'
+          'nexcess-cli.example.com',
+          '203.0.113.1',
+          'nexcess-cli-2.example.com',
+          '203.0.113.2',
+          'nexcess-cli-3.example.com',
+          '203.0.113.3'
         ]
       ]
     ];

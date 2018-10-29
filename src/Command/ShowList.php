@@ -23,7 +23,9 @@ use Nexcess\Sdk\Cli\ {
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,
-  Output\OutputInterface as Output
+  Output\OutputInterface as Output,
+  Helper\TableStyle,
+  Helper\Table
 };
 
 /**
@@ -90,5 +92,65 @@ abstract class ShowList extends Command {
     }
 
     return $details;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected function _saySummary(array $details, bool $json = false) {
+    $console = $this->getApplication();
+    $details = $this->_getSummary($details);
+    
+    if ($json) {
+      $console->sayJson($details);
+      return;
+    }
+
+    $console->say($this->getPhrase('summary_title'));
+
+    $this->_sayTable($details);
+  }
+
+  /**
+   * Output a table.
+   *
+   * @param array $details Items to be displayed
+   */
+  protected function _sayTable(array $details) {
+    $console = $this->getApplication();
+
+    $table = new Table($console->getIo()[Console::GET_IO_OUTPUT]);
+    $table->setStyle($this->_setupTableStyle());
+    $table->setHeaders($this->_getTableHeader($details[0]));
+    $table->setRows($details);
+    $table->render();
+  }
+
+  /**
+   * Return the header of the table to be output based on SUMMARY_KEYS
+   *
+   * @param array $details Details array
+   */
+  protected function _getTableHeader(array $details) : array {
+    $returnValue = [];
+    $keys = (count($details) > 0 ? array_keys($details) : static::SUMMARY_KEYS);
+
+    foreach ($keys as $header) {
+      $returnValue[] = $this->getPhrase($header);
+    }
+
+    return $returnValue;
+  }
+
+  /**
+   * Create our default tableStyle
+   * @return TableStyle
+   */
+  protected function _setupTableStyle() : TableStyle {
+    $tableStyle = new TableStyle();
+    $tableStyle
+      ->setCellRowFormat('<fg=white;options=bold>%s</>')
+      ->setCellHeaderFormat('<fg=yellow;options=bold>%s</>');
+      return $tableStyle;
   }
 }
