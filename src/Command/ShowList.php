@@ -100,7 +100,7 @@ abstract class ShowList extends Command {
   protected function _saySummary(array $details, bool $json = false) {
     $console = $this->getApplication();
     $details = $this->_getSummary($details);
-    
+
     if ($json) {
       $console->sayJson($details);
       return;
@@ -119,9 +119,13 @@ abstract class ShowList extends Command {
   protected function _sayTable(array $details) {
     $console = $this->getApplication();
 
+    if (empty($details)) {
+      $details = [[$console->translate('console.no_data') => '']];
+    }
+
     $table = new Table($console->getIo()[Console::GET_IO_OUTPUT]);
     $table->setStyle($this->_setupTableStyle());
-    $table->setHeaders($this->_getTableHeader($details[0]));
+    $table->setHeaders($this->_getTableHeader(reset($details)));
     $table->setRows($details);
     $table->render();
   }
