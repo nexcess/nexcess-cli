@@ -9,6 +9,8 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
+use Closure;
+
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
   Util\Config,
@@ -16,6 +18,7 @@ use Nexcess\Sdk\ {
 };
 
 use Nexcess\Sdk\Cli\ {
+  Command\CloudAccount\CloudAccountException,
   Command\Create as CreateCommand,
   Console
 };
@@ -72,50 +75,20 @@ class Create extends CreateCommand {
       $input->getOption('cloud_account_id'),
       Util::FILTER_INT
     );
+    $model = $endpoint->retrieve($cloud_id);
+    $path = $input->getOption('download');
+    $then_download = empty($path) ?
+      null :
+      $this->_thenDownload($path);
 
     $app->say($this->getPhrase('creating'));
-    $model = $endpoint->retrieve($cloud_id);
-
-    $downloadClosure = null;
-
-    if ($input->getOption('download')) {
-      $downloadClosure = $this->_downloadClosure();
-    }
-
     $backup = $endpoint->createBackup($model)
-      ->waitUntil($this->_waitClosure())
-      ->then($downloadClosure)
+      ->then($then_download)
       ->wait();
 
     $this->_saySummary($backup->toArray(), $input->getOption('json'));
 
-    $app->say(
-      $this->getPhrase('done')
-    );
     return Console::EXIT_SUCCESS;
-  }
-
-  /**
-   * Used in the wait() of a Guzzle promise.
-   * Checks to see if the download is complete.
-   *
-   * @return bool
-   */
-  protected function _waitClosure() : callable {
-    $cloud_id = Util::filter(
-      $this->getApplication()->getIO()[Console::GET_IO_INPUT]
-        ->getOption('cloud_account_id'),
-      Util::FILTER_INT
-    );
-    return function ($backup) use ($cloud_id) {
-      $endpoint = $this->_getEndpoint();
-      return (
-        $endpoint->getBackup(
-          $endpoint->retrieve($cloud_id),
-          $backup->get('filename')
-        )->wait()
-      )->get('complete');
-    };
   }
 
   /**
@@ -124,26 +97,22 @@ class Create extends CreateCommand {
    *
    * @return callable
    */
-  protected function _downloadClosure() : callable {
-    $cloud_id = Util::filter(
-      $this->getApplication()
-        ->getIO()[Console::GET_IO_INPUT]
-        ->getOption('cloud_account_id'),
-      Util::FILTER_INT
-    );
-    return function ($backup) use ($cloud_id) {
-      $endpoint = $this->_getEndpoint();
-        $endpoint->getBackup(
-          $endpoint->retrieve($cloud_id),
-          $backup->get('filename')
-        )->wait();
-        $endpoint->downloadBackup(
-          $endpoint->retrieve($cloud_id),
-          $backup->get('filename'),
-          $this->getApplication()
-            ->getIO()[Console::GET_IO_INPUT]
-            ->getOption('download')
-        );
+  protected function _thenDownload(string $path) : Closure {
+    return function ($backup) use ($path) {
+      $console = $this->getApplication();
+
+      $console->say(
+        $this->getPhrase('downloading'),
+        [Console::SAY_OPT_NEWLINE => false]
+      );
+      $backup->download($path);
+      $console->say(
+        $this->getPhrase(
+          'download_complete',
+          ['file' => "{$path}/{$backup->get('filename')}"]
+        )
+      );
+
       return $backup;
     };
   }
