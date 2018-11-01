@@ -83,10 +83,12 @@ class Create extends CreateCommand {
 
     $app->say($this->getPhrase('creating'));
     $backup = $endpoint->createBackup($model)
+      ->then(function ($backup) use ($input) {
+        $this->_saySummary($backup->toArray(), $input->getOption('json'));
+        return $backup;
+      })
       ->then($then_download)
       ->wait();
-
-    $this->_saySummary($backup->toArray(), $input->getOption('json'));
 
     return Console::EXIT_SUCCESS;
   }
