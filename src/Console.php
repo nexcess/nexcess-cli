@@ -554,19 +554,13 @@ class Console extends SymfonyApplication {
         [new ResourceHandler(self::DIR, Client::DIR), 'handle']
       );
       $this->_client = $this->_sandbox->newClient();
-      return;
+    } else {
+      $this->_client = new Client($this->_config);
     }
 
-    $this->_client = new Client($this->_config);
-  }
-
-  /**
-   * Are we debugging?
-   *
-   * @return bool True if debugging; false otherwise
-   */
-  protected function _isDebug() : bool {
-    return $this->_config->get('debug');
+    if ($this->isDebug()) {
+      $this->_client->addDebugListener([$this, 'debug']);
+    }
   }
 
   /**
