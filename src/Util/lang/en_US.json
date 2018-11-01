@@ -27,6 +27,8 @@
           "creating":"Creating",
           "created":"Created",
           "desc": "Create a new backup for a given cloud account",
+          "downloading": "Downloading backup... ",
+          "download_complete": "download complete:\n  {file}",
           "help": "Creates a new backup for a cloud account and optionally downloads it when complete. The given download path must exist and be writable.",
           "opt_cloud_account_id": "Cloud Account ID",
           "opt_download": "Local filesystem path to download backup to",
