@@ -48,7 +48,7 @@ class Create extends CreateCommand {
   const OPTS = [
     'cloud_account_id|c' => [OPT::VALUE_REQUIRED],
     'download|d' => [OPT::VALUE_REQUIRED],
-];
+  ];
 
   /** {@inheritDoc} */
   const RESTRICT_TO = [Config::COMPANY_NEXCESS];
@@ -59,7 +59,7 @@ class Create extends CreateCommand {
   public function execute(Input $input, Output $output) {
     $this->getApplication()->getConfig()->set(
       'wait',
-      ['timeout'=>9999,'interval'=>5]
+      ['timeout' => 9999,'interval' => 5]
     );
 
     $app = $this->getApplication();
