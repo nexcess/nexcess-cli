@@ -193,12 +193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nexcess/nexcess-php-sdk.git",
-                "reference": "0b392e6373d485ec68ca7bfc518c41d49ae6f569"
+                "reference": "4359c2472ab84427e464ebb1ab308dfc2ca83ed6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nexcess/nexcess-php-sdk/zipball/0b392e6373d485ec68ca7bfc518c41d49ae6f569",
-                "reference": "0b392e6373d485ec68ca7bfc518c41d49ae6f569",
+                "url": "https://api.github.com/repos/nexcess/nexcess-php-sdk/zipball/4359c2472ab84427e464ebb1ab308dfc2ca83ed6",
+                "reference": "4359c2472ab84427e464ebb1ab308dfc2ca83ed6",
                 "shasum": ""
             },
             "require": {
@@ -238,7 +238,7 @@
                 "source": "https://github.com/nexcess/nexcess-php-sdk/tree/master",
                 "issues": "https://github.com/nexcess/nexcess-php-sdk/issues"
             },
-            "time": "2018-10-31T14:43:07+00:00"
+            "time": "2018-11-01T14:43:22+00:00"
         },
         {
             "name": "php-enspired/exceptable",

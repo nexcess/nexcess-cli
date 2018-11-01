@@ -74,7 +74,7 @@ class Create extends CreateCommand {
     );
 
     $app->say($this->getPhrase('creating'));
-    $model = $this->_getEndpoint()->retrieve($cloud_id);
+    $model = $endpoint->retrieve($cloud_id);
 
     $downloadClosure = null;
 
@@ -108,13 +108,13 @@ class Create extends CreateCommand {
       Util::FILTER_INT
     );
     return function ($backup) use ($cloud_id) {
+      $endpoint = $this->_getEndpoint();
       return (
-        $backup->getEndPoint()
-          ->getBackup(
-            $backup->getEndPoint()->retrieve($cloud_id),
-            $backup->get('filename')
-          )->wait()
-        )->get('complete');
+        $endpoint->getBackup(
+          $endpoint->retrieve($cloud_id),
+          $backup->get('filename')
+        )->wait()
+      )->get('complete');
     };
   }
 
@@ -132,13 +132,13 @@ class Create extends CreateCommand {
       Util::FILTER_INT
     );
     return function ($backup) use ($cloud_id) {
-        $backup = $backup->getEndPoint()
-          ->getBackup(
-            $backup->getEndPoint()->retrieve($cloud_id),
-            $backup->get('filename')
-          )->wait();
-        $backup->getEndPoint()->downloadBackup(
-          $backup->getEndPoint()->retrieve($cloud_id),
+      $endpoint = $this->_getEndpoint();
+        $endpoint->getBackup(
+          $endpoint->retrieve($cloud_id),
+          $backup->get('filename')
+        )->wait();
+        $endpoint->downloadBackup(
+          $endpoint->retrieve($cloud_id),
           $backup->get('filename'),
           $this->getApplication()
             ->getIO()[Console::GET_IO_INPUT]
