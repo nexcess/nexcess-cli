@@ -96,7 +96,7 @@ class Create extends CreateCommand {
   }
 
   /**
-   * Used in the wait() of a Guzzle promise. 
+   * Used in the wait() of a Guzzle promise.
    * Checks to see if the download is complete.
    *
    * @return bool
@@ -119,7 +119,7 @@ class Create extends CreateCommand {
   }
 
   /**
-   * Returns a closure that when used in the then() of a Guzzle promise, 
+   * Returns a closure that when used in the then() of a Guzzle promise,
    * will download the backup just created.
    *
    * @return callable
