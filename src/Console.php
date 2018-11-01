@@ -45,15 +45,6 @@ use Symfony\Component\Console\ {
  */
 class Console extends SymfonyApplication {
 
-  /** @var int Verbose output. */
-  const DEBUG_V = Output::VERBOSITY_VERBOSE;
-
-  /** @var int Very verbose output. */
-  const DEBUG_VV = Output::VERBOSITY_VERY_VERBOSE;
-
-  /** @var int Debug output. */
-  const DEBUG_VVV = Output::VERBOSITY_DEBUG;
-
   /** @var string[] Map of name: config classname pairs. */
   const CONFIG_FQCN = [
     'nexcess' => NexcessConfig::class,
@@ -237,12 +228,12 @@ class Console extends SymfonyApplication {
    * Outputs debug messages based on output verbosity.
    *
    * @param string $message The debug message to output
-   * @param int $verbosity One of Console::DEBUG_V|VV|VVV
+   * @param int $verbosity One of Output::VERBOSITY_*
    * @return Console $this
    */
   public function debug(
     string $message,
-    int $verbosity = self::DEBUG_VVV
+    int $verbosity = Output::VERBOSITY_DEBUG
   ) : Console {
     $this->say($message, [self::SAY_OPT_OPTIONS => $verbosity]);
 
