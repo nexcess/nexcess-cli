@@ -12,11 +12,14 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
   Util\Config,
-  Util\Util,
-  Cli\Console
+  Util\Util
 };
 
-use Nexcess\Sdk\Cli\Command\Create as CreateCommand;
+use Nexcess\Sdk\Cli\ {
+  Command\Create as CreateCommand,
+  Console
+};
+
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,
@@ -36,7 +39,7 @@ class Create extends CreateCommand {
   const ENDPOINT = Endpoint::class;
 
   /** {@inheritDoc} */
-  const SUMMARY_KEYS = ['filename','complete'];
+  const SUMMARY_KEYS = ['filename', 'complete'];
 
   /** {@inheritDoc} */
   const INPUTS = [];
@@ -57,12 +60,12 @@ class Create extends CreateCommand {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $this->getApplication()->getConfig()->set(
+    $app = $this->getApplication();
+    $app->getConfig()->set(
       'wait',
-      ['timeout' => 9999,'interval' => 5]
+      ['timeout' => 9999, 'interval' => 5]
     );
 
-    $app = $this->getApplication();
     $endpoint = $this->_getEndpoint();
 
     $cloud_id = Util::filter(
@@ -93,11 +96,10 @@ class Create extends CreateCommand {
   }
 
   /**
-   * Used in the wait() of a Guzzle promise. Checks to see if the download is
-   * complete.
+   * Used in the wait() of a Guzzle promise.
+   * Checks to see if the download is complete.
    *
    * @return bool
-   *
    */
   protected function _waitClosure() : callable {
     $cloud_id = Util::filter(
@@ -117,27 +119,29 @@ class Create extends CreateCommand {
   }
 
   /**
-   * Returns a closure that when used in the then() of a Guzzle promise, will
-   * download the backup just created.
+   * Returns a closure that when used in the then() of a Guzzle promise,
+   * will download the backup just created.
    *
    * @return callable
    */
   protected function _downloadClosure() : callable {
     $cloud_id = Util::filter(
-      $this->getApplication()->getIO()[Console::GET_IO_INPUT]
+      $this->getApplication()
+        ->getIO()[Console::GET_IO_INPUT]
         ->getOption('cloud_account_id'),
       Util::FILTER_INT
     );
     return function ($backup) use ($cloud_id) {
         $backup = $backup->getEndPoint()
-                    ->getBackup(
-                      $backup->getEndPoint()->retrieve($cloud_id),
-                      $backup->get('filename')
-                    )->wait();
+          ->getBackup(
+            $backup->getEndPoint()->retrieve($cloud_id),
+            $backup->get('filename')
+          )->wait();
         $backup->getEndPoint()->downloadBackup(
           $backup->getEndPoint()->retrieve($cloud_id),
           $backup->get('filename'),
-          $this->getApplication()->getIO()[Console::GET_IO_INPUT]
+          $this->getApplication()
+            ->getIO()[Console::GET_IO_INPUT]
             ->getOption('download')
         );
       return $backup;
