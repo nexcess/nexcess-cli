@@ -194,6 +194,7 @@ abstract class Command extends SymfonyCommand {
       }
       $details[$translated_key] = $value;
     }
+
     $indent = str_repeat('  ', $depth);
 
     $formatted = '';
@@ -279,6 +280,7 @@ abstract class Command extends SymfonyCommand {
    * @param bool $json Output as json?
    */
   protected function _saySummary(array $details, bool $json = false) {
+
     $console = $this->getApplication();
     $summary = $this->_getSummary($details);
 

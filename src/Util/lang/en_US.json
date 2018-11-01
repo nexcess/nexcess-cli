@@ -13,14 +13,37 @@
     "cloud_account": {
       "backup" : {
         "list": {
+          "complete": "Complete",
           "desc" : "List all backups for a given cloud account.",
-          "summary_title": "Backups",
-          "usage": "cloud-account:backup:list --cloud_account_id=XXX",
-          "help": "This function outputs a list of all the backups for a given Cloud Account",
-          "filename": "File Name",
+          "help": "Outputs a list of all the backups for a given cloud account",
           "filedate": "File Date",
+          "filename": "File Name",
           "filesize": "File Size",
-          "complete": "Complete"
+          "opt_cloud_account_id": "Cloud Account ID",
+          "summary_title": "Backups",
+          "usage": "cloud-account:backup:list --cloud_account_id 1234"
+        },
+        "create": {
+          "creating":"Creating",
+          "created":"Created",
+          "desc": "Create a new backup for a given cloud account",
+          "downloading": "Downloading backup... ",
+          "download_complete": "download complete:\n  {file}",
+          "help": "Creates a new backup for a cloud account and optionally downloads it when complete. The given download path must exist and be writable.",
+          "opt_cloud_account_id": "Cloud Account ID",
+          "opt_download": "Local filesystem path to download backup to",
+          "summary_title": "Backup Created",
+          "summary_key": {
+            "complete": "Complete",
+            "download_url": "Download URL",
+            "filedate": "File Date",
+            "filename": "File Name",
+            "filepath": "File Path",
+            "filesize": "File Size",
+            "filesize_bytes": "File Size Bytes",
+            "type": "Type"
+          },
+          "usage": "cloud-account:backup:create --cloud_account_id 1234\n  cloud-account:backup:create --cloud_account_id 1234 --download /home/You/Downloads"
         }
       },
       "create": {
