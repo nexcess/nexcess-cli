@@ -117,6 +117,7 @@
       "profile_not_found": "Could not find profile '{profile}' in current directory or any parent directory",
       "unsupported_profile_type": "user profile format must be one of {supported}; '{type}' is not a supported"
     },
+    "no_data": " -- no data -- ",
     "opt_api_token": "Your API Token (log in to your portal to create one)",
     "opt_json": "Display command output as json? (this does not affect interactive output; see --no-interaction)",
     "opt_language": "Specify preferred language (currently, only en_US is supported)",
