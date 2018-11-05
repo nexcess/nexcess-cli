@@ -12,6 +12,12 @@
     "banner": "Command Line Interface for the Nexcess.net / Thermo.io API Client\nⓒ 2018 Nexcess.net, LLC\n",
     "cloud_account": {
       "backup" : {
+        "download": {
+          "done": "Done",
+          "downloading" : "<info>Downloading</info> {filename} <info>to</info> {download_path}",
+          "help": "Download a specific backup",
+          "usage": "cloud-account:backup:download -d /path/to/place/download/in -f file_name.tgz -c 1234"
+        },
         "list": {
           "complete": "Complete",
           "desc" : "List all backups for a given cloud account.",
