@@ -76,7 +76,7 @@ class Delete extends CreateCommand {
       throw new CloudAccountException(CloudAccountException::INVALID_BACKUP);
     }
 
-    $app->say($this->getPhrase('deleting',['filename' => $filename]));
+    $app->say($this->getPhrase('deleting', ['filename' => $filename]));
 
     $endpoint = $this->_getEndpoint();
     $cloud = $endpoint->retrieve($cloud_account_id);
