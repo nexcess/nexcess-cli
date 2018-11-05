@@ -91,16 +91,17 @@ class Download extends CreateCommand {
         unlink($download_path . $filename);
       }
     }
-    
-    $endpoint = $this->_getEndpoint();
-    $cloud = $endpoint->retrieve($cloud_account_id);
-    $backup = $endpoint->getBackup($cloud, $filename);
 
     $app->say(
       $this->getPhrase(
         'downloading',
         ['filename' => $filename, 'download_path' => $download_path])
     );
+    
+    $endpoint = $this->_getEndpoint();
+    $cloud = $endpoint->retrieve($cloud_account_id);
+    $backup = $endpoint->getBackup($cloud, $filename);
+
     $backup->download($download_path);
     $app->say($this->getPhrase('done'));
 
