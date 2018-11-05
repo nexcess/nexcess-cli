@@ -54,9 +54,10 @@ class Download extends CreateCommand {
 
   /** {@inheritDoc} */
   const OPTS = [
-    'cloud_account_id|c' => [OPT::VALUE_REQUIRED],
-    'file_name|f' => [OPT::VALUE_REQUIRED],
-    'download_path|d' => [OPT::VALUE_REQUIRED]
+    'cloud-account-id|c' => [OPT::VALUE_REQUIRED],
+    'filename|f' => [OPT::VALUE_REQUIRED],
+    'download-path|d' => [OPT::VALUE_REQUIRED],
+    'force' => [OPT::VALUE_NONE]
   ];
 
   /** {@inheritDoc} */
@@ -66,19 +67,40 @@ class Download extends CreateCommand {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
+    $download_path = $input->getOption('download-path');
+
+    if (empty($download_path) || ! is_string($download_path)) {
+      throw new CloudAccountException(CloudAccountException::INVALID_PATH);
+    }
+
     $app = $this->getApplication();
     $cloud_account_id = Util::filter(
-      $input->getOption('cloud_account_id'),
+      $input->getOption('cloud-account-id'),
       Util::FILTER_INT
     );
-    $file_name = $input->getOption('file_name');
-    $download_path = $input->getOption('download_path');
 
+    $filename = $input->getOption('filename');
+
+    if ($input->getOption('force')) {
+      $download_path = trim($download_path);
+      if (substr($download_path, -1) !== DIRECTORY_SEPARATOR) {
+        $download_path .= DIRECTORY_SEPARATOR;
+      }
+
+      if (file_exists($download_path . $filename)) {
+        unlink($download_path . $filename);
+      }
+    }
+    
     $endpoint = $this->_getEndpoint();
     $cloud = $endpoint->retrieve($cloud_account_id);
-    $backup = $endpoint->getBackup($cloud,$file_name);
+    $backup = $endpoint->getBackup($cloud, $filename);
 
-    $app->say($this->getPhrase('downloading',['file_name' => $file_name]));
+    $app->say(
+      $this->getPhrase(
+        'downloading',
+        ['filename' => $filename, 'download_path' => $download_path])
+    );
     $backup->download($download_path);
     $app->say($this->getPhrase('done'));
 
