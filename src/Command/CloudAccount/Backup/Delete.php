@@ -54,8 +54,8 @@ class Delete extends CreateCommand {
 
   /** {@inheritDoc} */
   const OPTS = [
-    'cloud_account_id|c' => [OPT::VALUE_REQUIRED],
-    'file_name|f' => [OPT::VALUE_REQUIRED]
+    'cloud-account-id|c' => [OPT::VALUE_REQUIRED],
+    'filename|f' => [OPT::VALUE_REQUIRED]
   ];
 
   /** {@inheritDoc} */
@@ -67,16 +67,21 @@ class Delete extends CreateCommand {
   public function execute(Input $input, Output $output) {
     $app = $this->getApplication();
     $cloud_account_id = Util::filter(
-      $input->getOption('cloud_account_id'),
+      $input->getOption('cloud-account-id'),
       Util::FILTER_INT
     );
-    $file_name = $input->getOption('file_name');
+    
+    $filename = $input->getOption('filename');
+    if (empty($filename)) {
+      throw new CloudAccountException(CloudAccountException::INVALID_BACKUP);
+    }
+
+    $app->say($this->getPhrase('deleting',['filename' => $filename]));
 
     $endpoint = $this->_getEndpoint();
     $cloud = $endpoint->retrieve($cloud_account_id);
-    $backup = $endpoint->getBackup($cloud,$file_name);
+    $backup = $endpoint->getBackup($cloud, $filename);
 
-    $app->say($this->getPhrase('Deleting',['file_name' => $file_name]));
     $backup->delete($cloud);
     $app->say($this->getPhrase('done'));
 
