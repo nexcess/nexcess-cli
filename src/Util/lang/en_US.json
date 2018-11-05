@@ -24,15 +24,18 @@
           "usage": "cloud-account:backup:list --cloud_account_id 1234"
         },
         "create": {
+          "backup_complete": "Backup complete.\n<info>To download this backup, use:</info>\ncloud-account:backup:download --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
+          "backup_started": "<info>To check on the status of this Backup, use:</info>\ncloud-account:backup:show --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
           "creating":"Creating",
           "created":"Created",
           "desc": "Create a new backup for a given cloud account",
           "downloading": "Downloading backup... ",
-          "download_complete": "download complete:\n  {file}",
+          "download_complete": "Download complete.\n  {filename}",
           "help": "Creates a new backup for a cloud account and optionally downloads it when complete. The given download path must exist and be writable.",
           "opt_cloud_account_id": "Cloud Account ID",
           "opt_download": "Local filesystem path to download backup to",
-          "summary_title": "Backup Created",
+          "starting_backup": "Starting backup...",
+          "summary_title": "Backup started.",
           "summary_key": {
             "complete": "Complete",
             "download_url": "Download URL",
@@ -40,10 +43,11 @@
             "filename": "File Name",
             "filepath": "File Path",
             "filesize": "File Size",
-            "filesize_bytes": "File Size Bytes",
+            "filesize_bytes": "File Size (in bytes)",
             "type": "Type"
           },
-          "usage": "cloud-account:backup:create --cloud_account_id 1234\n  cloud-account:backup:create --cloud_account_id 1234 --download /home/You/Downloads"
+          "usage": "cloud-account:backup:create --cloud_account_id 1234\n  cloud-account:backup:create --cloud_account_id 1234 --download /home/You/Downloads",
+          "waiting": "Waiting for Backup to complete..."
         }
       },
       "create": {
