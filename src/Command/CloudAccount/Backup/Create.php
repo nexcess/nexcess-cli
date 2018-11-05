@@ -14,6 +14,7 @@ use Closure;
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Backup,
   Resource\CloudAccount\Endpoint,
+  Resource\Promise,
   Util\Config,
   Util\Util
 };
@@ -116,7 +117,7 @@ class Create extends CreateCommand {
     $app = $this->getApplication();
     $app->say($this->getPhrase('downloading'));
 
-    $backup->whenComplete(['timeout' => 0])
+    $backup->whenComplete([Promise::OPT_TIMEOUT => 0])
       ->then(function ($backup) use ($download_path) {
         $backup->download($download_path);
       })
@@ -139,7 +140,7 @@ class Create extends CreateCommand {
     $app = $this->getApplication();
     $app->say($this->getPhrase('waiting'));
 
-    $backup->whenComplete(['timeout' => 0])->wait();
+    $backup->whenComplete([Promise::OPT_TIMEOUT => 0])->wait();
 
     $app->say(
       $this->getPhrase(
