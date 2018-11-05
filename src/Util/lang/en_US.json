@@ -14,7 +14,7 @@
       "backup" : {
         "download": {
           "done": "Done",
-          "downloading" : "<info>Downloading</info> {file_name}",
+          "downloading" : "<info>Downloading</info> {filename} <info>to</info> {download_path}",
           "help": "Download a specific backup",
           "usage": "cloud-account:backup:download -d /path/to/place/download/in -f file_name.tgz -c 1234"
         },
