@@ -12,6 +12,7 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 use Closure;
 
 use Nexcess\Sdk\ {
+  Resource\CloudAccount\Backup,
   Resource\CloudAccount\Endpoint,
   Util\Config,
   Util\Util
@@ -64,58 +65,91 @@ class Create extends CreateCommand {
    */
   public function execute(Input $input, Output $output) {
     $app = $this->getApplication();
-    $app->getConfig()->set(
-      'wait',
-      ['timeout' => 9999, 'interval' => 5]
-    );
-
-    $endpoint = $this->_getEndpoint();
-
-    $cloud_id = Util::filter(
+    $cloud_account_id = Util::filter(
       $input->getOption('cloud_account_id'),
       Util::FILTER_INT
     );
-    $model = $endpoint->retrieve($cloud_id);
-    $path = $input->getOption('download');
-    $then_download = empty($path) ?
-      null :
-      $this->_thenDownload($path);
+    $download_path = $input->getOption('download');
+    $wait = $input->getOption('wait');
 
-    $app->say($this->getPhrase('creating'));
-    $backup = $endpoint->createBackup($model)
-      ->then(function ($backup) use ($input) {
-        $this->_saySummary($backup->toArray(), $input->getOption('json'));
-        return $backup;
-      })
-      ->then($then_download)
-      ->wait();
+    // create backup
+    $app->say($this->getPhrase('starting_backup'));
+    $endpoint = $this->_getEndpoint();
+    $cloud = $endpoint->retrieve($cloud_account_id);
+    $backup = $endpoint->createBackup($cloud);
+    $this->_saySummary($backup->toArray(), $input->getOption('json'));
 
+    // wait for backup to complete and then download it?
+    if (isset($download_path)) {
+      $this->_downloadWhenComplete($backup, $download_path);
+      return Console::EXIT_SUCCESS;
+    }
+
+    // wait for backup to complete?
+    if ($wait) {
+      $this->_waitUntilComplete($backup);
+      return Console::EXIT_SUCCESS;
+    }
+
+    // not waiting
+    $app->say(
+      $this->getPhrase(
+        'backup_started',
+        [
+          'filename' => $backup->get('filename'),
+          'cloud_account_id' => $cloud_account_id
+        ]
+      )
+    );
     return Console::EXIT_SUCCESS;
   }
 
   /**
-   * Returns a closure that when used in the then() of a Guzzle promise,
-   * will download the backup just created.
+   * Waits for backup to complete and downloads the file.
    *
-   * @return callable
+   * @param Backup $backup The backup to wait for
+   * @param string $download_path The target download directory
    */
-  protected function _thenDownload(string $path) : Closure {
-    return function ($backup) use ($path) {
-      $console = $this->getApplication();
+  protected function _downloadWhenComplete(
+    Backup $backup,
+    string $download_path
+  ) : void {
+    $app = $this->getApplication();
+    $app->say($this->getPhrase('downloading'));
 
-      $console->say(
-        $this->getPhrase('downloading'),
-        [Console::SAY_OPT_NEWLINE => false]
-      );
-      $backup->download($path);
-      $console->say(
-        $this->getPhrase(
-          'download_complete',
-          ['file' => "{$path}/{$backup->get('filename')}"]
-        )
-      );
+    $backup->whenComplete(['timeout' => 0])
+      ->then(function ($backup) use ($download_path) {
+        $backup->download($download_path);
+      })
+      ->wait();
 
-      return $backup;
-    };
+    $app->say(
+       $this->getPhrase(
+         'download_complete',
+         ['filename' => "{$download_path}/{$backup->get('filename')}"]
+       )
+    );
+  }
+
+  /**
+   * Waits for backup to complete.
+   *
+   * @param Backup $backup The backup to wait for
+   */
+  protected function _waitUntilComplete(Backup $backup) : void {
+    $app = $this->getApplication();
+    $app->say($this->getPhrase('waiting'));
+
+    $backup->whenComplete(['timeout' => 0])->wait();
+
+    $app->say(
+      $this->getPhrase(
+        'backup_complete',
+        [
+          'filename' => $backup->get('filename'),
+          'cloud_account_id' => $backup->getCloudAccount()->getId()
+        ]
+      )
+    );
   }
 }
