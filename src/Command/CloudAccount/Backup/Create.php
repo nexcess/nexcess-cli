@@ -69,8 +69,6 @@ class Create extends CreateCommand {
       $input->getOption('cloud_account_id'),
       Util::FILTER_INT
     );
-    $download_path = $input->getOption('download');
-    $wait = $input->getOption('wait');
 
     // create backup
     $app->say($this->getPhrase('starting_backup'));
@@ -80,13 +78,14 @@ class Create extends CreateCommand {
     $this->_saySummary($backup->toArray(), $input->getOption('json'));
 
     // wait for backup to complete and then download it?
+    $download_path = $input->getOption('download');
     if (isset($download_path)) {
       $this->_downloadWhenComplete($backup, $download_path);
       return Console::EXIT_SUCCESS;
     }
 
     // wait for backup to complete?
-    if ($wait) {
+    if ($input->getOption('wait')) {
       $this->_waitUntilComplete($backup);
       return Console::EXIT_SUCCESS;
     }
