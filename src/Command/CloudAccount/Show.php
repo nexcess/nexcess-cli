@@ -55,6 +55,7 @@ class Show extends ShowCommand {
     'ip',
     'location',
     'service',
+    'service.status',
     'status',
     'temp_domain',
     'unix_username'

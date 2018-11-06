@@ -110,6 +110,7 @@
           "ip": "Primary IP Address",
           "location": "Cloud",
           "service": "Service",
+          "service_status": "Service Status",
           "status": "Status",
           "temp_domain": "Temporary Domain Name",
           "unix_username": "Unix (login) Username"
