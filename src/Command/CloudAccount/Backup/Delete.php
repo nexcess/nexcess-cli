@@ -17,8 +17,9 @@ use Nexcess\Sdk\ {
 };
 
 use Nexcess\Sdk\Cli\ {
+  Console,
   Command\CloudAccount\CloudAccountException,
-  Console
+  Command\Command
 };
 
 use Symfony\Component\Console\ {
@@ -82,5 +83,4 @@ class Delete extends Command {
 
     return Console::EXIT_SUCCESS;
   }
-
 }
