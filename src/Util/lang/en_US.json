@@ -27,7 +27,8 @@
           "filesize": "File Size",
           "opt_cloud_account_id": "Cloud Account ID",
           "summary_title": "Backups",
-          "usage": "cloud-account:backup:list --cloud_account_id 1234"
+          "usage": "cloud-account:backup:list --cloud-account-id 1234",
+          "done": "Done"
         },
         "create": {
           "backup_complete": "Backup complete.\n<info>To download this backup, use:</info>\ncloud-account:backup:download --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
@@ -42,6 +43,7 @@
           "opt_download": "Local filesystem path to download backup to",
           "starting_backup": "Starting backup...",
           "summary_title": "Backup started.",
+          "done": "Done",
           "summary_key": {
             "complete": "Complete",
             "download_url": "Download URL",
@@ -52,7 +54,7 @@
             "filesize_bytes": "File Size (in bytes)",
             "type": "Type"
           },
-          "usage": "cloud-account:backup:create --cloud_account_id 1234\n  cloud-account:backup:create --cloud_account_id 1234 --download /home/You/Downloads",
+          "usage": "cloud-account:backup:create --cloud-account-id 1234\n  cloud-account:backup:create --cloud-account-id 1234 --download /home/You/Downloads",
           "waiting": "Waiting for Backup to complete..."
         }
       },

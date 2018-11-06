@@ -46,7 +46,7 @@ class ShowList extends ShowListCommand {
   const SUMMARY_KEYS = ['filename', 'filedate', 'complete', 'filesize'];
 
   /** {@inheritDoc} */
-  const OPTS = ['cloud_account_id' => [Opt::VALUE_REQUIRED]];
+  const OPTS = ['cloud-account-id' => [Opt::VALUE_REQUIRED]];
 
   /** {@inheritDoc} */
   const ARGS = [];
@@ -54,7 +54,7 @@ class ShowList extends ShowListCommand {
   /** {@inheritDoc} */
   public function execute(Input $input, Output $output) {
     $cloud_id = Util::filter(
-      $input->getOption('cloud_account_id'),
+      $input->getOption('cloud-account-id'),
       Util::FILTER_INT
     );
 
@@ -65,6 +65,8 @@ class ShowList extends ShowListCommand {
       $input->getOption('json'),
       $output
     );
+
+    $this->getApplication()->say($this->getPhrase('done'));
 
     return Console::EXIT_SUCCESS;
   }

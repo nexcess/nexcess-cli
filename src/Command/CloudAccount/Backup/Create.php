@@ -54,7 +54,7 @@ class Create extends CreateCommand {
 
   /** {@inheritDoc} */
   const OPTS = [
-    'cloud_account_id|c' => [OPT::VALUE_REQUIRED],
+    'cloud-account-id|c' => [OPT::VALUE_REQUIRED],
     'download|d' => [OPT::VALUE_REQUIRED],
   ];
 
@@ -67,7 +67,7 @@ class Create extends CreateCommand {
   public function execute(Input $input, Output $output) {
     $app = $this->getApplication();
     $cloud_account_id = Util::filter(
-      $input->getOption('cloud_account_id'),
+      $input->getOption('cloud-account-id'),
       Util::FILTER_INT
     );
 
@@ -129,6 +129,8 @@ class Create extends CreateCommand {
          ['filename' => "{$download_path}/{$backup->get('filename')}"]
        )
     );
+
+    $app->say($this->getPhrase('done'));
   }
 
   /**
