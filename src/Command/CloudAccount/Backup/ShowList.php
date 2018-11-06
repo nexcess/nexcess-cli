@@ -74,7 +74,7 @@ class ShowList extends ShowListCommand {
     $details = array_map(
       function ($backup_array) {
         $new_date = new DateTimeImmutable("@{$backup_array['filedate']}");
-        $backup_array['filedate'] = $new_date->format('Y-m-d h:i:s T');
+        $backup_array['filedate'] = $new_date->format('Y-m-d H:i:s T');
         $backup_array['complete'] = ($backup_array['complete'] ? 'YES' : 'NO');
         return $backup_array;
       },
