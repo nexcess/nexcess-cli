@@ -80,17 +80,7 @@ class Download extends CreateCommand {
     );
 
     $filename = $input->getOption('filename');
-
-    if ($input->getOption('force')) {
-      $download_path = trim($download_path);
-      if (substr($download_path, -1) !== DIRECTORY_SEPARATOR) {
-        $download_path .= DIRECTORY_SEPARATOR;
-      }
-
-      if (file_exists($download_path . $filename)) {
-        unlink($download_path . $filename);
-      }
-    }
+    $force = $input->getOption('force');
 
     $app->say(
       $this->getPhrase(
@@ -100,7 +90,7 @@ class Download extends CreateCommand {
     
     $endpoint = $this->_getEndpoint();
     $cloud = $endpoint->retrieve($cloud_account_id);
-    $backup = $endpoint->getBackup($cloud, $filename);
+    $backup = $endpoint->getBackup($cloud, $filename, $force);
 
     $backup->download($download_path);
     $app->say($this->getPhrase('done'));
