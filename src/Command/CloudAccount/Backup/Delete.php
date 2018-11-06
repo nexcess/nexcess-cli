@@ -9,33 +9,28 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
-use Closure;
-
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Backup,
   Resource\CloudAccount\Endpoint,
-  Resource\Promise,
   Util\Config,
   Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
   Command\CloudAccount\CloudAccountException,
-  Command\Create as CreateCommand,
   Console
 };
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
   Output\OutputInterface as Output
 };
 
 /**
- * Creates a new Cloud Account.
+ * Delete a backup
  */
-class Delete extends CreateCommand {
+class Delete extends Command {
 
   /** {@inheritDoc} */
   const ARGS = [];
