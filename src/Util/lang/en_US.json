@@ -21,7 +21,7 @@
           "filesize": "File Size",
           "opt_cloud_account_id": "Cloud Account ID",
           "summary_title": "Backups",
-          "usage": "cloud-account:backup:list --cloud_account_id 1234",
+          "usage": "cloud-account:backup:list --cloud-account-id 1234",
           "done": "Done"
         },
         "create": {
@@ -48,7 +48,7 @@
             "filesize_bytes": "File Size (in bytes)",
             "type": "Type"
           },
-          "usage": "cloud-account:backup:create --cloud_account_id 1234\n  cloud-account:backup:create --cloud_account_id 1234 --download /home/You/Downloads",
+          "usage": "cloud-account:backup:create --cloud-account-id 1234\n  cloud-account:backup:create --cloud-account-id 1234 --download /home/You/Downloads",
           "waiting": "Waiting for Backup to complete..."
         }
       },
