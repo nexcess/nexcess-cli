@@ -11,16 +11,16 @@ namespace Nexcess\Sdk\Cli\Command;
 
 use Nexcess\Sdk\ {
   Resource\Readable as Endpoint,
-  Resource\Modelable as Model,
   Util\Util
 };
+
 use Nexcess\Sdk\Cli\ {
   Console,
   ConsoleException
 };
+
 use Symfony\Component\Console\ {
   Command\Command as SymfonyCommand,
-  Helper\QuestionHelper,
   Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
@@ -80,6 +80,15 @@ abstract class Command extends SymfonyCommand {
   }
 
   /**
+   * Gets the Console.
+   *
+   * @return Console
+   */
+  public function getConsole() : Console {
+    return $this->getConsole();
+  }
+
+  /**
    * Gets a translated phrase for this command.
    *
    * @param string $key Translation key (without base part)
@@ -87,7 +96,7 @@ abstract class Command extends SymfonyCommand {
    * @return string Translated phrase on success; untranslated key otherwise
    */
   public function getPhrase(string $key, array $context = []) : string {
-    $console = $this->getApplication();
+    $console = $this->getConsole();
     if ($console === null) {
       return $key;
     }
@@ -104,7 +113,7 @@ abstract class Command extends SymfonyCommand {
   public function isEnabled() {
     return empty(static::RESTRICT_TO) ||
       in_array(
-        $this->getApplication()->getConfig()::COMPANY,
+        $this->getConsole()->getConfig()::COMPANY,
         static::RESTRICT_TO
       );
   }
@@ -114,7 +123,7 @@ abstract class Command extends SymfonyCommand {
    * Ensure application has most recent I/O.
    */
   public function run(Input $input, Output $output) {
-    $this->getApplication()->setIO($input, $output);
+    $this->getConsole()->setIO($input, $output);
     return parent::run($input, $output);
   }
 
@@ -228,13 +237,22 @@ abstract class Command extends SymfonyCommand {
   /**
    * Gets an API Endpoint instance.
    *
+   * Note, this method hints it returns "Endpoint",
+   * but the returned Endpoint should often be a specific subclass.
+   * In these cases, to avoid confusing static analysis tools,
+   * always assert() the Endpoint returned is of the expected subclass:
+   * @example <code><?php
+   *    $endpoint = $this->_getEndpoint();
+   *    assert($endpoint instanceof ExpectedEndpointSubclass);
+   *  </code>
+   *
    * @param string|null $endpoint Name of desired endpoint; omit for default
    * @return Endpoint Requested endpoint on success
-   * @throw ConsoleException On failure
+   * @throws ConsoleException On failure
    */
   protected function _getEndpoint(string $endpoint = null) : Endpoint {
     $endpoint = $endpoint ?? static::ENDPOINT;
-    return $this->getApplication()->getClient()->getEndpoint($endpoint);
+    return $this->getConsole()->getClient()->getEndpoint($endpoint);
   }
 
   /**
@@ -282,7 +300,7 @@ abstract class Command extends SymfonyCommand {
    */
   protected function _saySummary(array $details, bool $json = false) {
 
-    $console = $this->getApplication();
+    $console = $this->getConsole();
     $summary = $this->_getSummary($details);
 
     if ($json) {

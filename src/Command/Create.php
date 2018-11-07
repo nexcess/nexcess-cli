@@ -11,12 +11,14 @@ namespace Nexcess\Sdk\Cli\Command;
 
 use Nexcess\Sdk\ {
   ApiException,
-  SdkException
+  Resource\Creatable
 };
+
 use Nexcess\Sdk\Cli\ {
   Command\InputCommand,
   Console
 };
+
 use Symfony\Component\Console\ {
   Input\InputInterface as Input,
   Output\OutputInterface as Output
@@ -31,10 +33,11 @@ abstract class Create extends InputCommand {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $app = $this->getApplication();
+    $console = $this->getConsole();
     $endpoint = $this->_getEndpoint();
+    assert($endpoint instanceof Creatable);
 
-    $app->say($this->getPhrase('creating'));
+    $console->say($this->getPhrase('creating'));
 
     try {
       $model = $endpoint->create($this->getInput());
@@ -42,22 +45,14 @@ abstract class Create extends InputCommand {
       switch ($e->getCode()) {
         case ApiException::CREATE_FAILED:
           // @todo Open a support ticket?
-          $app->say($this->getPhrase('failed', ['id' => $model->getId()]));
+          $console->say($this->getPhrase('failed'));
           return Console::EXIT_API_ERROR;
-        default:
-          throw $e;
-      }
-    } catch (SdkException $e) {
-      switch ($e->getCode()) {
-        case SdkException::WAIT_TIMEOUT_EXCEEDED:
-          $app->say($this->getPhrase('timed_out', ['id' => $model->getId()]));
-          return Console::EXIT_SDK_ERROR;
         default:
           throw $e;
       }
     }
 
-    $app->say($this->getPhrase('created', ['id' => $model->getId()]));
+    $console->say($this->getPhrase('created', ['id' => $model->getId()]));
     $this->_saySummary($model->toArray(), $input->getOption('json'));
     return Console::EXIT_SUCCESS;
   }

@@ -9,24 +9,19 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
-use Closure;
-
 use Nexcess\Sdk\ {
-  Resource\CloudAccount\Backup,
   Resource\CloudAccount\Endpoint,
-  Resource\Promise,
+  Resource\CloudAccount\Entity as CloudAccount,
   Util\Config,
   Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
-  Command\CloudAccount\CloudAccountException,
   Command\Create as CreateCommand,
   Console
 };
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
   Output\OutputInterface as Output
@@ -69,11 +64,7 @@ class Download extends CreateCommand {
   public function execute(Input $input, Output $output) {
     $download_path = $input->getOption('download-path');
 
-    if (empty($download_path) || ! is_string($download_path)) {
-      throw new CloudAccountException(CloudAccountException::INVALID_PATH);
-    }
-
-    $app = $this->getApplication();
+    $app = $this->getConsole();
     $cloud_account_id = Util::filter(
       $input->getOption('cloud-account-id'),
       Util::FILTER_INT
@@ -85,14 +76,19 @@ class Download extends CreateCommand {
     $app->say(
       $this->getPhrase(
         'downloading',
-        ['filename' => $filename, 'download_path' => $download_path])
+        ['filename' => $filename, 'download_path' => $download_path]
+      )
     );
-    
-    $endpoint = $this->_getEndpoint();
-    $cloud = $endpoint->retrieve($cloud_account_id);
-    $backup = $endpoint->getBackup($cloud, $filename, $force);
 
-    $backup->download($download_path);
+    $endpoint = $this->_getEndpoint();
+    assert($endpoint instanceof Endpoint);
+
+    $cloud = $endpoint->retrieve($cloud_account_id);
+    assert($cloud instanceof CloudAccount);
+
+    $backup = $endpoint->getBackup($cloud, $filename);
+
+    $backup->download($download_path, $force);
     $app->say($this->getPhrase('done'));
 
     return Console::EXIT_SUCCESS;
