@@ -85,7 +85,7 @@ abstract class Command extends SymfonyCommand {
    * @return Console
    */
   public function getConsole() : Console {
-    return $this->getConsole();
+    return $this->getApplication();
   }
 
   /**
