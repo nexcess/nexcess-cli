@@ -102,7 +102,7 @@
         "help": "Provide a service id, or use the --domain or --ip options to look up the desired service.",
         "opt_domain": "Cloud Account Domain Name (used for service_id lookup)",
         "opt_ip": "Cloud Account IP Address (used for service_id lookup)",
-        "summary_app": "{identity}",
+        "summary_app": "#{app_id} {identity}",
         "summary_key": {
           "app": "Application Environment",
           "deploy_date": "Date Deployed",
@@ -112,12 +112,13 @@
           "ip": "Primary IP Address",
           "location": "Cloud",
           "service": "Service",
+          "service_status": "Service Status",
           "status": "Status",
           "temp_domain": "Temporary Domain Name",
           "unix_username": "Unix (login) Username"
         },
-        "summary_location": "{location} ({identity})",
-        "summary_service": "#{id} {identity}",
+        "summary_location": "#{cloud_id} {identity}",
+        "summary_service": "#{service_id} {identity}",
         "summary_title": "Cloud Account Details:",
         "usage": "cloud-account:show 12345\n  cloud-account:show --domain cloud.example.com"
       }

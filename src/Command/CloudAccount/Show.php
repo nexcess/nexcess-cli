@@ -9,11 +9,15 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
+use DateTimeImmutable as DateTime;
+
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
   Util\Config
 };
+
 use Nexcess\Sdk\Cli\Command\Show as ShowCommand;
+
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,
@@ -51,6 +55,7 @@ class Show extends ShowCommand {
     'ip',
     'location',
     'service',
+    'service.status',
     'status',
     'temp_domain',
     'unix_username'
@@ -99,6 +104,8 @@ class Show extends ShowCommand {
     $details = parent::_getSummary($details);
 
     $details['app'] = $this->getPhrase('summary_app', $details['app']);
+    $details['deploy_date'] = (new DateTime("@{$details['deploy_date']}"))
+      ->format('Y-m-d H:i:s T');
     $details['location'] = $this->getPhrase(
       'summary_location',
       $details['location']
