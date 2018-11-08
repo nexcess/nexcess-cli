@@ -19,7 +19,6 @@ use Nexcess\Sdk\ {
 use Nexcess\Sdk\Cli\Command\Show as ShowCommand;
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
   Output\OutputInterface as Output

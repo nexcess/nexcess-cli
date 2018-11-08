@@ -85,7 +85,6 @@
           "status": "Status",
           "temp_domain": "Temp Domain"
         },
-        "timed_out": "<comment>Wait timeout exceeded:</comment> your new Cloud Account is still being set up. <info>Use</info> cloud-account:show {id} <info>to check on its status.</info>",
         "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install"
       },
       "list": {

@@ -13,22 +13,19 @@ use DateTimeImmutable;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
-  Resource\CloudAccount\Backup,
+  Resource\CloudAccount\Entity as CloudAccount,
   Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
   Console,
-  ConsoleException,
   Command\ShowList as ShowListCommand
 };
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
-  Output\OutputInterface as Output,
-  Helper\Table
+  Output\OutputInterface as Output
 };
 
 /**
@@ -58,15 +55,17 @@ class ShowList extends ShowListCommand {
       Util::FILTER_INT
     );
 
+    $endpoint = $this->_getEndpoint();
+    assert($endpoint instanceof Endpoint);
+    $cloud = $endpoint->retrieve($cloud_id);
+    assert($cloud instanceof CloudAccount);
+
     $this->_saySummary(
-      $this->_getEndpoint()->getBackups(
-        $this->_getEndpoint()->retrieve($cloud_id)
-      )->toArray(true),
-      $input->getOption('json'),
-      $output
+      $endpoint->getBackups($cloud)->toArray(),
+      $input->getOption('json')
     );
 
-    $this->getApplication()->say($this->getPhrase('done'));
+    $this->getConsole()->say($this->getPhrase('done'));
 
     return Console::EXIT_SUCCESS;
   }

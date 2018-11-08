@@ -26,7 +26,7 @@ class CommandDiscoveryFactory extends Factory {
   /** @var SymfonyApplication The application we're loading commands for. */
   protected $_app;
 
-  /** @var string[] Map of available command:fqcn pairs. */
+  /** @var array Map of available command:fqcn pairs. */
   protected $_commands = [];
 
   /** @var string Directory to load php files from. */

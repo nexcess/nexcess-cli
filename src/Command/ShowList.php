@@ -9,11 +9,6 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command;
 
-use Nexcess\Sdk\ {
-  ApiException,
-  SdkException
-};
-
 use Nexcess\Sdk\Cli\ {
   Command\Command,
   Command\CommandException,
@@ -98,7 +93,7 @@ abstract class ShowList extends Command {
    * {@inheritDoc}
    */
   protected function _saySummary(array $details, bool $json = false) {
-    $console = $this->getApplication();
+    $console = $this->getConsole();
     $details = $this->_getSummary($details);
 
     if ($json) {
@@ -117,7 +112,7 @@ abstract class ShowList extends Command {
    * @param array $details Items to be displayed
    */
   protected function _sayTable(array $details) {
-    $console = $this->getApplication();
+    $console = $this->getConsole();
 
     if (empty($details)) {
       $details = [[$console->translate('console.no_data') => '']];
