@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9c19cbcef604143c20d3d561aa894a9",
+    "content-hash": "ea6b95dac110d9e092c3a1fbae865ef7",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -845,16 +845,16 @@
         },
         {
             "name": "nocworx/phpcs",
-            "version": "1.4.1",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nocworx/phpcs.git",
-                "reference": "22d36bca5ba17d3dc4f91f5a74600e42ec795c93"
+                "reference": "f7e1793ffafc879f68a64db60bd0bd6c8a857405"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nocworx/phpcs/zipball/22d36bca5ba17d3dc4f91f5a74600e42ec795c93",
-                "reference": "22d36bca5ba17d3dc4f91f5a74600e42ec795c93",
+                "url": "https://api.github.com/repos/nocworx/phpcs/zipball/f7e1793ffafc879f68a64db60bd0bd6c8a857405",
+                "reference": "f7e1793ffafc879f68a64db60bd0bd6c8a857405",
                 "shasum": ""
             },
             "require": {
@@ -869,10 +869,10 @@
             ],
             "description": "NocWorx PHP Codesniffer",
             "support": {
-                "source": "https://github.com/nocworx/phpcs/tree/1.4.1",
+                "source": "https://github.com/nocworx/phpcs/tree/1.5.1",
                 "issues": "https://github.com/nocworx/phpcs/issues"
             },
-            "time": "2018-04-13T18:44:40+00:00"
+            "time": "2018-11-09T21:26:28+00:00"
         },
         {
             "name": "phan/phan",
