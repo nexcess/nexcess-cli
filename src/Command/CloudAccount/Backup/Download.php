@@ -86,7 +86,7 @@ class Download extends CreateCommand {
     $cloud = $endpoint->retrieve($cloud_account_id);
     assert($cloud instanceof CloudAccount);
 
-    $backup = $endpoint->getBackup($cloud, $filename);
+    $backup = $endpoint->retrieveBackup($cloud, $filename);
 
     $backup->download($download_path, $force);
     $app->say($this->getPhrase('done'));

@@ -193,12 +193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nexcess/nexcess-php-sdk.git",
-                "reference": "63a38e0923c5ae359479d68542bc1e26cb9724c9"
+                "reference": "1e958fb3054d6a3ebdb67e5e007b9001e34c7174"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nexcess/nexcess-php-sdk/zipball/63a38e0923c5ae359479d68542bc1e26cb9724c9",
-                "reference": "63a38e0923c5ae359479d68542bc1e26cb9724c9",
+                "url": "https://api.github.com/repos/nexcess/nexcess-php-sdk/zipball/1e958fb3054d6a3ebdb67e5e007b9001e34c7174",
+                "reference": "1e958fb3054d6a3ebdb67e5e007b9001e34c7174",
                 "shasum": ""
             },
             "require": {
@@ -207,8 +207,9 @@
                 "php-enspired/exceptable": "^1.2.2"
             },
             "require-dev": {
-                "nocworx/phpcs": "^1.4",
-                "phan/phan": "0.8.11",
+                "mikey179/vfsstream": "^1.6",
+                "nocworx/phpcs": "^1",
+                "phan/phan": "^1",
                 "phpunit/phpunit": "^7.0"
             },
             "type": "library",
@@ -226,7 +227,7 @@
                     "vendor/bin/phan"
                 ],
                 "tests:phpcs": [
-                    "vendor/bin/phpcs --standard=NocWorx src"
+                    "vendor/bin/phpcs --standard=NocWorx src tests"
                 ]
             },
             "license": [
@@ -238,7 +239,7 @@
                 "source": "https://github.com/nexcess/nexcess-php-sdk/tree/master",
                 "issues": "https://github.com/nexcess/nexcess-php-sdk/issues"
             },
-            "time": "2018-11-06T13:51:37+00:00"
+            "time": "2018-11-15T16:50:57+00:00"
         },
         {
             "name": "php-enspired/exceptable",

@@ -61,7 +61,7 @@ class ShowList extends ShowListCommand {
     assert($cloud instanceof CloudAccount);
 
     $this->_saySummary(
-      $endpoint->getBackups($cloud)->toArray(),
+      $endpoint->listBackups($cloud)->toArray(),
       $input->getOption('json')
     );
 
