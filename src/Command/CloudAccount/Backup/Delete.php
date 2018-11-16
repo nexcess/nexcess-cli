@@ -66,7 +66,7 @@ class Delete extends Command {
       $input->getOption('cloud-account-id'),
       Util::FILTER_INT
     );
-    
+
     $filename = $input->getOption('filename');
     if (empty($filename)) {
       throw new CloudAccountException(CloudAccountException::INVALID_BACKUP);
@@ -75,8 +75,10 @@ class Delete extends Command {
     $app->say($this->getPhrase('deleting', ['filename' => $filename]));
 
     $endpoint = $this->_getEndpoint();
+    assert($endpoint instanceof Endpoint);
+
     $cloud = $endpoint->retrieve($cloud_account_id);
-    $backup = $endpoint->getBackup($cloud, $filename);
+    $backup = $endpoint->retrieveBackup($cloud, $filename);
 
     $backup->delete($cloud);
     $app->say($this->getPhrase('done'));
