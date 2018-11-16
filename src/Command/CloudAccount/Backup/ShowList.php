@@ -13,7 +13,7 @@ use DateTimeImmutable;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
-  Resource\CloudAccount\Entity as CloudAccount,
+  Resource\CloudAccount\CloudAccount,
   Util\Util
 };
 
