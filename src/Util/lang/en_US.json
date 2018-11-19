@@ -30,6 +30,18 @@
           "usage": "cloud-account:backup:list --cloud-account-id 1234",
           "done": "Done"
         },
+        "delete": {
+          "done": "Done",
+          "deleting": "<info>Deleting</info> {filename}",
+          "help": "Delete a specific backup from the system",
+          "usage": "cloud-account:backup:delete --filename file_name.tgz --cloud-account-id 1234"
+        },
+        "delete": {
+          "done": "Done",
+          "deleting": "<info>Deleting</info> {filename}",
+          "help": "Delete a specific backup from the system",
+          "usage": "cloud-account:backup:delete --filename file_name.tgz --cloud-account-id 1234"
+        },
         "create": {
           "backup_complete": "Backup complete.\n<info>To download this backup, use:</info>\ncloud-account:backup:download --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
           "backup_started": "<info>To check on the status of this Backup, use:</info>\ncloud-account:backup:show --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
