@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\ {
-  Resource\CloudAccount\Entity as CloudAccount,
+  Resource\CloudAccount\CloudAccount,
   Resource\CloudAccount\CloudAccountException,
   Resource\CloudAccount\Endpoint,
   Util\Config,
@@ -79,7 +79,7 @@ class Delete extends Command {
 
     $cloud = $endpoint->retrieve($cloud_account_id);
     assert($cloud instanceof CloudAccount);
-    
+
     $backup = $endpoint->retrieveBackup($cloud, $filename);
 
     $backup->delete();
