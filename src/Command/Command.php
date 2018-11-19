@@ -175,7 +175,7 @@ abstract class Command extends SymfonyCommand {
       $long = array_shift($name);
       $short = array_shift($name);
       $mode = array_shift($opt) ?? Opt::VALUE_OPTIONAL;
-      $desc = $this->getPhrase("opt_{$long}");
+      $desc = $this->getPhrase('opt_' . strtr($long, ['-' => '_']));
       $default = array_shift($opt);
 
       $this->addOption($long, $short, $mode, $desc, $default);
