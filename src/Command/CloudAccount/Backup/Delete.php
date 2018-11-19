@@ -10,7 +10,8 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\ {
-  Resource\CloudAccount\Backup,
+  Resource\CloudAccount\CloudAccount,
+  Resource\CloudAccount\CloudAccountException,
   Resource\CloudAccount\Endpoint,
   Util\Config,
   Util\Util
@@ -18,7 +19,6 @@ use Nexcess\Sdk\ {
 
 use Nexcess\Sdk\Cli\ {
   Console,
-  Command\CloudAccount\CloudAccountException,
   Command\Command
 };
 
@@ -61,7 +61,7 @@ class Delete extends Command {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $app = $this->getApplication();
+    $app = $this->getConsole();
     $cloud_account_id = Util::filter(
       $input->getOption('cloud-account-id'),
       Util::FILTER_INT
@@ -78,9 +78,11 @@ class Delete extends Command {
     assert($endpoint instanceof Endpoint);
 
     $cloud = $endpoint->retrieve($cloud_account_id);
+    assert($cloud instanceof CloudAccount);
+    
     $backup = $endpoint->retrieveBackup($cloud, $filename);
 
-    $backup->delete($cloud);
+    $backup->delete();
     $app->say($this->getPhrase('done'));
 
     return Console::EXIT_SUCCESS;
