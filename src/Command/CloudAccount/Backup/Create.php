@@ -9,24 +9,21 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
-use Closure;
-
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Backup,
   Resource\CloudAccount\Endpoint,
+  Resource\CloudAccount\Entity as CloudAccount,
   Resource\Promise,
   Util\Config,
   Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
-  Command\CloudAccount\CloudAccountException,
   Command\Create as CreateCommand,
   Console
 };
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
   Output\OutputInterface as Output
@@ -54,7 +51,7 @@ class Create extends CreateCommand {
 
   /** {@inheritDoc} */
   const OPTS = [
-    'cloud_account_id|c' => [OPT::VALUE_REQUIRED],
+    'cloud-account-id|c' => [OPT::VALUE_REQUIRED],
     'download|d' => [OPT::VALUE_REQUIRED],
   ];
 
@@ -65,16 +62,20 @@ class Create extends CreateCommand {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $app = $this->getApplication();
+    $app = $this->getConsole();
     $cloud_account_id = Util::filter(
-      $input->getOption('cloud_account_id'),
+      $input->getOption('cloud-account-id'),
       Util::FILTER_INT
     );
 
     // create backup
     $app->say($this->getPhrase('starting_backup'));
     $endpoint = $this->_getEndpoint();
+    assert($endpoint instanceof Endpoint);
+
     $cloud = $endpoint->retrieve($cloud_account_id);
+    assert($cloud instanceof CloudAccount);
+
     $backup = $endpoint->createBackup($cloud);
     $this->_saySummary($backup->toArray(), $input->getOption('json'));
 
@@ -114,7 +115,7 @@ class Create extends CreateCommand {
     Backup $backup,
     string $download_path
   ) : void {
-    $app = $this->getApplication();
+    $app = $this->getConsole();
     $app->say($this->getPhrase('downloading'));
 
     $backup->whenComplete([Promise::OPT_TIMEOUT => 0])
@@ -129,6 +130,8 @@ class Create extends CreateCommand {
          ['filename' => "{$download_path}/{$backup->get('filename')}"]
        )
     );
+
+    $app->say($this->getPhrase('done'));
   }
 
   /**
@@ -137,7 +140,7 @@ class Create extends CreateCommand {
    * @param Backup $backup The backup to wait for
    */
   protected function _waitUntilComplete(Backup $backup) : void {
-    $app = $this->getApplication();
+    $app = $this->getConsole();
     $app->say($this->getPhrase('waiting'));
 
     $backup->whenComplete([Promise::OPT_TIMEOUT => 0])->wait();

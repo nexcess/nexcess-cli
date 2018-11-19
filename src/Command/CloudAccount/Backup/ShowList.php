@@ -13,22 +13,19 @@ use DateTimeImmutable;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
-  Resource\CloudAccount\Backup,
+  Resource\CloudAccount\Entity as CloudAccount,
   Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
   Console,
-  ConsoleException,
   Command\ShowList as ShowListCommand
 };
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
-  Output\OutputInterface as Output,
-  Helper\Table
+  Output\OutputInterface as Output
 };
 
 /**
@@ -46,7 +43,7 @@ class ShowList extends ShowListCommand {
   const SUMMARY_KEYS = ['filename', 'filedate', 'complete', 'filesize'];
 
   /** {@inheritDoc} */
-  const OPTS = ['cloud_account_id' => [Opt::VALUE_REQUIRED]];
+  const OPTS = ['cloud-account-id' => [Opt::VALUE_REQUIRED]];
 
   /** {@inheritDoc} */
   const ARGS = [];
@@ -54,17 +51,21 @@ class ShowList extends ShowListCommand {
   /** {@inheritDoc} */
   public function execute(Input $input, Output $output) {
     $cloud_id = Util::filter(
-      $input->getOption('cloud_account_id'),
+      $input->getOption('cloud-account-id'),
       Util::FILTER_INT
     );
 
+    $endpoint = $this->_getEndpoint();
+    assert($endpoint instanceof Endpoint);
+    $cloud = $endpoint->retrieve($cloud_id);
+    assert($cloud instanceof CloudAccount);
+
     $this->_saySummary(
-      $this->_getEndpoint()->getBackups(
-        $this->_getEndpoint()->retrieve($cloud_id)
-      )->toArray(true),
-      $input->getOption('json'),
-      $output
+      $endpoint->listBackups($cloud)->toArray(),
+      $input->getOption('json')
     );
+
+    $this->getConsole()->say($this->getPhrase('done'));
 
     return Console::EXIT_SUCCESS;
   }
@@ -74,7 +75,7 @@ class ShowList extends ShowListCommand {
     $details = array_map(
       function ($backup_array) {
         $new_date = new DateTimeImmutable("@{$backup_array['filedate']}");
-        $backup_array['filedate'] = $new_date->format('Y-m-d h:i:s T');
+        $backup_array['filedate'] = $new_date->format('Y-m-d H:i:s T');
         $backup_array['complete'] = ($backup_array['complete'] ? 'YES' : 'NO');
         return $backup_array;
       },

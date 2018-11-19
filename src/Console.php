@@ -9,8 +9,8 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli;
 
-use Exception,
-  SplFileInfo as FileInfo;
+use SplFileInfo as FileInfo;
+
 use Nexcess\Sdk\ {
   Client,
   Sandbox\ResourceHandler,
@@ -21,11 +21,13 @@ use Nexcess\Sdk\ {
   Util\ThermoConfig,
   Util\Util
 };
+
 use Nexcess\Sdk\Cli\ {
   ConsoleException,
   Util\CommandDiscoveryFactory as DiscoveryFactory,
   Util\ErrorHandler
 };
+
 use Symfony\Component\Console\ {
   Application as SymfonyApplication,
   Command\Command as SymfonyCommand,
@@ -102,13 +104,13 @@ class Console extends SymfonyApplication {
   /** @var string Version of application. */
   const VERSION = '0.1-alpha';
 
-  /** @var Guzzle The guzzle http client. */
+  /** @var Client The SDK client. */
   protected $_client;
 
   /** @var Config The SDK configuration object. */
   protected $_config;
 
-  /** @var Handler Application error/exception handler. */
+  /** @var ErrorHandler Application error/exception handler. */
   protected $_error_handler;
 
   /** @var Input Application input object. */
@@ -154,7 +156,7 @@ class Console extends SymfonyApplication {
    * Queries the user and gets response.
    *
    * @param string $message The question to ask
-   * @param string $default A default answer
+   * @param string|null $default A default answer
    * @return string|null The user's response
    * @throws ConsoleException If no QuestionHelper is available
    */
@@ -279,6 +281,9 @@ class Console extends SymfonyApplication {
   /**
    * {@inheritDoc}
    * Overridden to set up the input options needed for bootstrapping.
+   *
+   * symfony/console has wrong annotation for Option::__construct $long
+   * @suppress PhanTypeMismatchArgument
    */
   public function getDefaultInputDefinition() {
     $definition = parent::getDefaultInputDefinition();
@@ -375,7 +380,7 @@ class Console extends SymfonyApplication {
    * {@see Console::sayJson()}
    *
    * @param string $message The message or message key to output
-   * @param array $opts Map of output options:
+   * @param array $options Map of output options:
    *  - bool Console::SAY_OPT_NEWLINE Add a newline at the end?
    *  - int Console::SAY_OPT_OPTIONS {@see OutputInterface::write $options}
    * @return Console $this
@@ -404,7 +409,7 @@ class Console extends SymfonyApplication {
    * this method will attempt to simply echo to stdout.
    *
    * @param mixed $data The data to output
-   * @param array $opts Map of output options:
+   * @param array $options Map of output options:
    *  - bool Console::SAY_OPT_NEWLINE Add a newline at the end?
    *  - int Console::SAY_OPT_OPTIONS {@see OutputInterface::write $options}
    * @return Console $this
@@ -519,6 +524,7 @@ class Console extends SymfonyApplication {
       );
     }
 
+    // @phan-suppress-next-line PhanTypeExpectedObjectOrClassName
     $this->_config = new $profile['fqcn']($profile);
   }
 
@@ -535,8 +541,6 @@ class Console extends SymfonyApplication {
 
   /**
    * Sets up the API Client for console use.
-   *
-   * @param Config $config Sdk configuration object
    */
   protected function _initializeClient() {
     if ($this->_config->get('sandboxed')) {

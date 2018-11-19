@@ -112,7 +112,7 @@ abstract class InputCommand extends Command {
    * Asks user to fill in missing inputs.
    */
   public function interact(Input $input, Output $output) {
-    $app = $this->getApplication();
+    $app = $this->getConsole();
 
     foreach ($this->_input as $name => $value) {
       if ($value === null) {
@@ -142,10 +142,11 @@ abstract class InputCommand extends Command {
    * Set choices in configure(), or override _getChoices() to lazy-load.
    *
    * @param string $name Name of option to get choices for
+   * @param bool $format Format the choices for output?
    * @return array Map of choice:description pairs if available;
    *  empty array otherwise
    */
-  protected function _getChoices(string $name) : array {
+  protected function _getChoices(string $name, bool $format = false) : array {
     return $this->_choices[$name] ?? [];
   }
 

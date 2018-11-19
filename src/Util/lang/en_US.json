@@ -12,6 +12,12 @@
     "banner": "Command Line Interface for the Nexcess.net / Thermo.io API Client\nⓒ 2018 Nexcess.net, LLC\n",
     "cloud_account": {
       "backup" : {
+        "download": {
+          "done": "Done",
+          "downloading" : "<info>Downloading</info> {filename} <info>to</info> {download_path}",
+          "help": "Download a specific backup",
+          "usage": "cloud-account:backup:download -d /path/to/place/download/in -f file_name.tgz -c 1234"
+        },
         "list": {
           "complete": "Complete",
           "desc" : "List all backups for a given cloud account.",
@@ -21,7 +27,14 @@
           "filesize": "File Size",
           "opt_cloud_account_id": "Cloud Account ID",
           "summary_title": "Backups",
-          "usage": "cloud-account:backup:list --cloud_account_id 1234"
+          "usage": "cloud-account:backup:list --cloud-account-id 1234",
+          "done": "Done"
+        },
+        "delete": {
+          "done": "Done",
+          "deleting": "<info>Deleting</info> {filename}",
+          "help": "Delete a specific backup from the system",
+          "usage": "cloud-account:backup:delete --filename file_name.tgz --cloud-account-id 1234"
         },
         "delete": {
           "done": "Done",
@@ -42,6 +55,7 @@
           "opt_download": "Local filesystem path to download backup to",
           "starting_backup": "Starting backup...",
           "summary_title": "Backup started.",
+          "done": "Done",
           "summary_key": {
             "complete": "Complete",
             "download_url": "Download URL",
@@ -52,7 +66,7 @@
             "filesize_bytes": "File Size (in bytes)",
             "type": "Type"
           },
-          "usage": "cloud-account:backup:create --cloud_account_id 1234\n  cloud-account:backup:create --cloud_account_id 1234 --download /home/You/Downloads",
+          "usage": "cloud-account:backup:create --cloud-account-id 1234\n  cloud-account:backup:create --cloud-account-id 1234 --download /home/You/Downloads",
           "waiting": "Waiting for Backup to complete..."
         }
       },
@@ -83,7 +97,6 @@
           "status": "Status",
           "temp_domain": "Temp Domain"
         },
-        "timed_out": "<comment>Wait timeout exceeded:</comment> your new Cloud Account is still being set up. <info>Use</info> cloud-account:show {id} <info>to check on its status.</info>",
         "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install"
       },
       "list": {
@@ -100,7 +113,7 @@
         "help": "Provide a service id, or use the --domain or --ip options to look up the desired service.",
         "opt_domain": "Cloud Account Domain Name (used for service_id lookup)",
         "opt_ip": "Cloud Account IP Address (used for service_id lookup)",
-        "summary_app": "{identity}",
+        "summary_app": "#{app_id} {identity}",
         "summary_key": {
           "app": "Application Environment",
           "deploy_date": "Date Deployed",
@@ -110,12 +123,13 @@
           "ip": "Primary IP Address",
           "location": "Cloud",
           "service": "Service",
+          "service_status": "Service Status",
           "status": "Status",
           "temp_domain": "Temporary Domain Name",
           "unix_username": "Unix (login) Username"
         },
-        "summary_location": "{location} ({identity})",
-        "summary_service": "#{id} {identity}",
+        "summary_location": "#{cloud_id} {identity}",
+        "summary_service": "#{service_id} {identity}",
         "summary_title": "Cloud Account Details:",
         "usage": "cloud-account:show 12345\n  cloud-account:show --domain cloud.example.com"
       }

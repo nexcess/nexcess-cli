@@ -16,8 +16,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0",
-    "phan/phan": "0.8.11",
-    "nocworx/phpcs": "^1.4"
+    "phan/phan": "^1",
+    "nocworx/phpcs": "^1"
   },
   "autoload-dev": {
     "psr-4": { "Nexcess\\Sdk\\Cli\\Tests\\": "tests/" }
