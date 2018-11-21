@@ -11,6 +11,7 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
+  Resource\VirtGuestCloud\Entity as Service,
   Util\Config,
   Util\Util
 };
@@ -96,7 +97,13 @@ class Create extends CreateCommand {
       uasort(
         $this->_choices['app_id'],
         function ($a, $b) {
-          return (strpos($a, 'Flexible') !== false) ? -1 : 1;
+          if (strpos($a, 'Flexible') !== false) {
+            return -1;
+          }
+          if (strpos($b, 'Flexible') !== false) {
+            return 1;
+          }
+          return $a <=> $b;
         }
       );
     }
@@ -177,13 +184,13 @@ class Create extends CreateCommand {
    */
   protected function _getSummary(array $details) : array {
     return [
-      'status' => $details['status'],
-      'domain' => $details['cloud_account_domain'],
-      'temp_domain' => $details['cloud_account_temp_domain'],
-      'app' => $details['cloud_account_app']->get('name'),
-      'service_level' => $details['description'],
-      'cloud' => "{$details['location']->get('location')} " .
-        "({$details['location']->get('location_code')})"
+      'state' => $details['state'],
+      'domain' => $details['domain'],
+      'temp_domain' => $details['temp_domain'],
+      'app' => $details['app']->get('identity'),
+      'cloud' => $details['location']->get('identity'),
+      'service_level' => $details['service']->get('description'),
+      'service_status' => $details['service']->get('status')
     ];
   }
 }
