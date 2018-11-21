@@ -9,7 +9,10 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
-use Nexcess\Sdk\Cli\Command\CloudAccount\CloudAccountException;
+use Nexcess\Sdk\Cli\ {
+  Command\CloudAccount\CloudAccountException,
+  Console
+};
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Entity as CloudAccount,
@@ -18,6 +21,11 @@ use Nexcess\Sdk\ {
 };
 
 trait GetsBackupChoices {
+
+  /**
+   * {@inheritDoc} Command\Command::getConsole()
+   */
+  abstract public function getConsole() : Console;
 
   /**
    * {@inheritDoc} Command\InputCommand::getInput()
@@ -62,6 +70,18 @@ trait GetsBackupChoices {
       }
     }
 
-    return $this->_choices['filename'];
+    $choices = $this->_choices['filename'];
+
+    if ($format) {
+      $console = $this->getConsole();
+      foreach ($choices as $filename) {
+        $choices[$filename] = $console->translate(
+          'console.cloud_account.choices.backup',
+          ['filename' => $filename]
+        );
+      }
+    }
+
+    return $choices;
   }
 }

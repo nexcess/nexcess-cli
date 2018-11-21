@@ -9,11 +9,19 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
-use Nexcess\Sdk\Cli\Command\CloudAccount\CloudAccountException;
+use Nexcess\Sdk\Cli\Console;
 
-use Nexcess\Sdk\Resource\Readable;
+use Nexcess\Sdk\ {
+  Resource\CloudAccount\Endpoint,
+  Resource\Readable
+};
 
 trait GetsCloudAccountChoices {
+
+  /**
+   * {@inheritDoc} Command\Command::getConsole()
+   */
+  abstract public function getConsole() : Console;
 
   /**
    * {@inheritDoc} Command\Command::_getEndpoint()
@@ -30,23 +38,35 @@ trait GetsCloudAccountChoices {
    * @return string[] Map of id:description pairs
    */
   protected function _getCloudAccountChoices(bool $format = true) : array {
-    if (empty($this->_choices['cloud_account_id'])) {
-      $choices = array_column(
-        $this->_getEndpoint()->list()->toArray(),
+    if (empty($this->_choices['cloud_account'])) {
+      $this->_choices['cloud_account'] = array_column(
+        $this->_getEndpoint(Endpoint::class)->list()->toArray(),
         null,
         'id'
       );
-      if (empty($choices)) {
+      if (empty($this->_choices['cloud_account'])) {
         throw new CloudAccountException(
           CloudAccountException::NO_CLOUD_ACCOUNT_CHOICES
         );
       }
-
-      foreach ($choices as $id => $cloudaccount) {
-        $this->_choices['cloud_account_id'][$id] =
-          "{$cloudaccount['ip']} {$cloudaccount['domain']}";
-      }
     }
-    return $this->_choices['cloud_account_id'];
+
+    $choices = $this->_choices['cloud_account'];
+
+    if ($format) {
+      $console = $this->getConsole();
+      foreach ($choices as $id => $cloudaccount) {
+        $choices[$id] = $console->translate(
+          'console.cloud_account.choices.cloud_account',
+          $cloudaccount
+        );
+      }
+      return $choices;
+    }
+
+    foreach ($choices as $id => $cloudaccount) {
+      $choices[$id] = $cloudaccount['domain'];
+    }
+    return $choices;
   }
 }
