@@ -11,7 +11,6 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
-  Resource\VirtGuestCloud\Entity as Service,
   Util\Config,
   Util\Util
 };
