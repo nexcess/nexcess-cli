@@ -11,7 +11,7 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
-  Resource\CloudAccount\Entity as CloudAccount,
+  Resource\CloudAccount\CloudAccount,
   Util\Config,
   Util\Util
 };
