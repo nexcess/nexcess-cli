@@ -15,7 +15,7 @@ use Nexcess\Sdk\Cli\ {
 };
 
 use Nexcess\Sdk\ {
-  Resource\CloudAccount\Entity as CloudAccount,
+  Resource\CloudAccount\CloudAccount,
   Resource\CloudAccount\Endpoint,
   Resource\Readable
 };

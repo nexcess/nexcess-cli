@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\ {
-  Resource\CloudAccount\Entity as CloudAccount,
+  Resource\CloudAccount\CloudAccount,
   Resource\CloudAccount\Endpoint,
   Util\Config,
   Util\Util
