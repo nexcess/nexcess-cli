@@ -183,4 +183,23 @@ abstract class InputCommand extends Command {
         );
     }
   }
+
+  /**
+   * Choice formatter: pads column(s) of an array to equal length.
+   *
+   * @param array $details The array to pad
+   * @param array|null $columns Column (key) name(s) to pad; defaults to all
+   * @return array Padded details
+   */
+  protected function _padColumns(array $details, array $columns = null) : array {
+    $columns = $columns ?? array_keys($details);
+    foreach ($columns as $column) {
+      $max = max(array_map('mb_strlen', array_column($details, $column)));
+      foreach ($details as $i => $row) {
+        $details[$i][$column] = $row[$column] .
+          str_repeat(' ', $max - mb_strlen($row[$column]));
+      }
+    }
+    return $details;
+  }
 }
