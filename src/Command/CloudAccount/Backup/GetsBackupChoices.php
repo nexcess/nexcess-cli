@@ -40,6 +40,14 @@ trait GetsBackupChoices {
    */
   abstract protected function _getEndpoint(string $endpoint = null) : Readable;
 
+  /**
+   * {@inheritDoc} Command\InputCommand::_padColumns()
+   */
+  abstract protected function _padColumns(
+    array $details,
+    array $columns = null
+  ) : array;
+
   /** @var array {@inheritDoc} InputCommand::$_choices */
   protected $_choices = [];
 
@@ -50,19 +58,19 @@ trait GetsBackupChoices {
    * @return string[] Map of id:description pairs
    */
   protected function _getBackupChoices(bool $format = true) : array {
-    if (empty($this->_choices['filename'])) {
+    if (empty($this->_choices['backup'])) {
       $id = $this->getInput('cloud_account_id');
       $endpoint = $this->_getEndpoint();
       assert($endpoint instanceof Endpoint);
       $cloudaccount = $endpoint->retrieve($id);
       assert($cloudaccount instanceof CloudAccount);
 
-      $this->_choices['filename'] = array_column(
+      $this->_choices['backup'] = array_column(
         $endpoint->listBackups($cloudaccount)->toArray(),
         'filename',
         'filename'
       );
-      if (empty($this->_choices['filename'])) {
+      if (empty($this->_choices['backup'])) {
         throw new CloudAccountException(
           CloudAccountException::NO_BACKUP_CHOICES,
           ['cloud_account_id' => $id, 'domain' => $cloudaccount->get('domain')]
@@ -70,9 +78,10 @@ trait GetsBackupChoices {
       }
     }
 
-    $choices = $this->_choices['filename'];
+    $choices = $this->_choices['backup'];
 
     if ($format) {
+      $choices = $this->_padColumns($choices);
       $console = $this->getConsole();
       foreach ($choices as $filename) {
         $choices[$filename] = $console->translate(
@@ -80,6 +89,7 @@ trait GetsBackupChoices {
           ['filename' => $filename]
         );
       }
+      return $choices;
     }
 
     return $choices;

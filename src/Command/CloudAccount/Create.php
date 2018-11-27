@@ -14,7 +14,9 @@ use Nexcess\Sdk\ {
   Util\Config,
   Util\Util
 };
-use Nexcess\Sdk\Cli\Command\Create as CreateCommand;
+use Nexcess\Sdk\Cli\ {
+  Command\Create as CreateCommand
+};
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,

@@ -28,6 +28,14 @@ trait GetsCloudAccountChoices {
    */
   abstract protected function _getEndpoint(string $endpoint = null) : Readable;
 
+  /**
+   * {@inheritDoc} Command\InputCommand::_padColumns()
+   */
+  abstract protected function _padColumns(
+    array $details,
+    array $columns = null
+  ) : array;
+
   /** @var array {@inheritDoc} InputCommand::$_choices */
   protected $_choices = [];
 
@@ -54,6 +62,7 @@ trait GetsCloudAccountChoices {
     $choices = $this->_choices['cloud_account'];
 
     if ($format) {
+      $choices = $this->_padColumns($choices, ['domain']);
       $console = $this->getConsole();
       foreach ($choices as $id => $cloudaccount) {
         $choices[$id] = $console->translate(
@@ -64,9 +73,6 @@ trait GetsCloudAccountChoices {
       return $choices;
     }
 
-    foreach ($choices as $id => $cloudaccount) {
-      $choices[$id] = $cloudaccount['domain'];
-    }
-    return $choices;
+    return array_column($choices, 'domain', 'id');
   }
 }

@@ -16,7 +16,10 @@ use Nexcess\Sdk\ {
   Util\Config
 };
 
-use Nexcess\Sdk\Cli\Command\Show as ShowCommand;
+use Nexcess\Sdk\Cli\ {
+  Command\CloudAccount\GetsCloudAccountChoices,
+  Command\Show as ShowCommand
+};
 
 use Symfony\Component\Console\ {
   Input\InputInterface as Input,
@@ -28,6 +31,7 @@ use Symfony\Component\Console\ {
  * Creates a new Cloud Account.
  */
 class Show extends ShowCommand {
+  use GetsCloudAccountChoices;
 
   /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;
@@ -80,17 +84,7 @@ class Show extends ShowCommand {
   protected function _getChoices(string $name, bool $format = true) : array {
     switch ($name) {
       case 'id':
-        if (empty($this->_choices['id'])) {
-          $this->_choices['id'] = array_column(
-            $this->_getEndpoint()->list()->toArray(true),
-            null,
-            'id'
-          );
-          foreach ($this->_choices['id'] as $id => $cloud) {
-            $this->_choices['id'][$id] = "{$cloud['ip']} {$cloud['domain']}";
-          }
-        }
-        return $this->_choices['id'];
+        return $this->_getCloudAccountChoices($format);
       default:
         return parent::_getChoices($name, $format);
     }
