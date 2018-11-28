@@ -59,7 +59,7 @@ trait GetsBackupChoices {
    */
   protected function _getBackupChoices(bool $format = true) : array {
     if (empty($this->_choices['backup'])) {
-      $id = $this->getInput('cloud_account_id');
+      $id = $this->getInput('cloud_account_id', false);
       $endpoint = $this->_getEndpoint();
       assert($endpoint instanceof Endpoint);
       $cloudaccount = $endpoint->retrieve($id);
@@ -81,7 +81,6 @@ trait GetsBackupChoices {
     $choices = $this->_choices['backup'];
 
     if ($format) {
-      $choices = $this->_padColumns($choices);
       $console = $this->getConsole();
       foreach ($choices as $filename) {
         $choices[$filename] = $console->translate(

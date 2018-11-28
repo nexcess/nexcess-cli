@@ -15,6 +15,7 @@
         "create": {
           "backup_complete": "Backup complete.\n<info>To download this backup, use:</info>\ncloud-account:backup:download --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
           "backup_started": "<info>To check on the status of this Backup, use:</info>\ncloud-account:backup:show --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
+          "choose_cloud_account_id": "Choose which Cloud Account you want to create a Backup from:",
           "creating":"Creating",
           "created":"Created",
           "desc": "Create a new backup for a given cloud account",
@@ -40,12 +41,17 @@
           "waiting": "Waiting for Backup to complete..."
         },
         "delete": {
+          "choose_cloud_account_id": "Choose which Cloud Account you want to delete a Backup from:",
+          "choose_filename": "Choose a Backup to delete:",
           "deleting": "<info>Deleting</info> {filename}",
           "done": "Done",
           "help": "Delete a specific backup from the system",
           "usage": "cloud-account:backup:delete --filename file_name.tgz --cloud-account-id 1234"
         },
         "download": {
+          "ask_download_path": "Where do you want to save your Backup?",
+          "choose_cloud_account_id": "Choose which Cloud Account you want to download a Backup from:",
+          "choose_filename": "Choose a Backup to download:",
           "done": "Done",
           "downloading" : "<info>Downloading</info> {filename} <info>to</info> {download_path}",
           "help": "Download a specific backup",
@@ -83,17 +89,17 @@
         }
       },
       "choices": {
-        "backup": "<question>{filename}</question>",
-        "cloud_account": "<question>{domain}</question> ({ip})"
+        "backup": "<question> {filename} </question>",
+        "cloud_account": "#{id} <question> {domain} </question> ({ip})"
       },
       "create": {
-        "app_desc": "<question>{app}</question>",
+        "app_desc": "<question> {app} </question>",
         "arg_app": "Application Environment name (used for app_id lookup)",
         "ask_domain": "What Domain Name do you want to use for your Cloud Account?",
         "choose_app_id": "Select an Application Environment for your Cloud Account:",
         "choose_cloud_id": "Choose which Cloud you want your Cloud Account to be hosted on:",
         "choose_package_id": "Choose a Service Level for your Cloud Account:",
-        "cloud_desc": "<question>{location}</question> ({location_code})",
+        "cloud_desc": "<question> {location} </question> ({location_code})",
         "created": "\nYour new Cloud Account has been created. <info>Use</info> cloud-account:show {id} <info>to check on its status!</info>",
         "creating": "Your new Cloud Account is being created. <info>This may take a few moments…</info>",
         "desc": "Creates a new Cloud Account",
@@ -104,7 +110,7 @@
         "opt_domain": "Domain Name",
         "opt_install_app": "Install the Application to the new Cloud Account?\n  (currently, this option applies only to Magento and WordPress Application Environments)",
         "opt_package_id": "Service Level ID",
-        "package_desc": "<question>{name}</question>: {virt_disk} GB Storage, {bandwidth} GB Bandwidth; ${monthly_fee}/month",
+        "package_desc": "<question> {name} </question> {virt_disk} GB Storage, {bandwidth} GB Bandwidth; ${monthly_fee}/month",
         "summary_key": {
           "app": "App Environment",
           "cloud": "Cloud Location",

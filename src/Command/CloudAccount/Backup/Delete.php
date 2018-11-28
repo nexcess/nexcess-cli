@@ -11,15 +11,16 @@ namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\CloudAccount,
-  Resource\CloudAccount\CloudAccountException,
   Resource\CloudAccount\Endpoint,
   Util\Config,
   Util\Util
 };
 
 use Nexcess\Sdk\Cli\ {
-  Console,
-  Command\Command
+  Command\CloudAccount\Backup\GetsBackupChoices,
+  Command\CloudAccount\GetsCloudAccountChoices,
+  Command\InputCommand,
+  Console
 };
 
 use Symfony\Component\Console\ {
@@ -31,7 +32,9 @@ use Symfony\Component\Console\ {
 /**
  * Delete a backup
  */
-class Delete extends Command {
+class Delete extends InputCommand {
+  use GetsCloudAccountChoices,
+    GetsBackupChoices;
 
   /** {@inheritDoc} */
   const ARGS = [];
@@ -43,7 +46,10 @@ class Delete extends Command {
   const SUMMARY_KEYS = ['filename'];
 
   /** {@inheritDoc} */
-  const INPUTS = [];
+  const INPUTS = [
+    'cloud_account_id' => Util::FILTER_INT,
+    'filename' => Util::FILTER_STRING
+  ];
 
   /** {@inheritDoc} */
   const NAME = 'cloud-account:backup:delete';
@@ -61,30 +67,35 @@ class Delete extends Command {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $app = $this->getConsole();
-    $cloud_account_id = Util::filter(
-      $input->getOption('cloud-account-id'),
-      Util::FILTER_INT
-    );
-
-    $filename = $input->getOption('filename');
-    if (empty($filename)) {
-      throw new CloudAccountException(CloudAccountException::INVALID_BACKUP);
-    }
-
-    $app->say($this->getPhrase('deleting', ['filename' => $filename]));
-
     $endpoint = $this->_getEndpoint();
     assert($endpoint instanceof Endpoint);
 
+    $cloud_account_id = $this->getInput('cloud_account_id', false);
     $cloud = $endpoint->retrieve($cloud_account_id);
     assert($cloud instanceof CloudAccount);
 
+    $filename = $this->getInput('filename', false);
     $backup = $endpoint->retrieveBackup($cloud, $filename);
 
+    $app = $this->getConsole();
+    $app->say($this->getPhrase('deleting', ['filename' => $filename]));
     $backup->delete();
     $app->say($this->getPhrase('done'));
 
     return Console::EXIT_SUCCESS;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected function _getChoices(string $name, bool $format = true) : array {
+    switch ($name) {
+      case 'cloud_account_id':
+        return $this->_getCloudAccountChoices($format);
+      case 'filename':
+        return $this->_getBackupChoices($format);
+      default:
+        return parent::_getChoices($name, $format);
+    }
   }
 }

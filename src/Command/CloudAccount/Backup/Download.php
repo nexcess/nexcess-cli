@@ -17,7 +17,9 @@ use Nexcess\Sdk\ {
 };
 
 use Nexcess\Sdk\Cli\ {
-  Command\Create as CreateCommand,
+  Command\CloudAccount\Backup\GetsBackupChoices,
+  Command\CloudAccount\GetsCloudAccountChoices,
+  Command\InputCommand,
   Console
 };
 
@@ -30,7 +32,9 @@ use Symfony\Component\Console\ {
 /**
  * Creates a new Cloud Account.
  */
-class Download extends CreateCommand {
+class Download extends InputCommand {
+  use GetsCloudAccountChoices,
+    GetsBackupChoices;
 
   /** {@inheritDoc} */
   const ARGS = [];
@@ -42,7 +46,11 @@ class Download extends CreateCommand {
   const SUMMARY_KEYS = ['filename'];
 
   /** {@inheritDoc} */
-  const INPUTS = [];
+  const INPUTS = [
+    'cloud_account_id' => Util::FILTER_INT,
+    'download_path' => Util::FILTER_STRING,
+    'filename' => Util::FILTER_STRING
+  ];
 
   /** {@inheritDoc} */
   const NAME = 'cloud-account:backup:download';
@@ -62,36 +70,42 @@ class Download extends CreateCommand {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $download_path = $input->getOption('download-path');
+    $endpoint = $this->_getEndpoint();
+    assert($endpoint instanceof Endpoint);
+
+    $cloud_account_id = $this->getInput('cloud_account_id', false);
+    $cloud = $endpoint->retrieve($cloud_account_id);
+    assert($cloud instanceof CloudAccount);
+
+    $filename = $this->getInput('filename', false);
+    $backup = $endpoint->retrieveBackup($cloud, $filename);
+
+    $download_path = $this->getInput('download_path') ?: '.';
 
     $app = $this->getConsole();
-    $cloud_account_id = Util::filter(
-      $input->getOption('cloud-account-id'),
-      Util::FILTER_INT
-    );
-
-    $filename = $input->getOption('filename');
-    $force = $input->getOption('force');
-
     $app->say(
       $this->getPhrase(
         'downloading',
         ['filename' => $filename, 'download_path' => $download_path]
       )
     );
-
-    $endpoint = $this->_getEndpoint();
-    assert($endpoint instanceof Endpoint);
-
-    $cloud = $endpoint->retrieve($cloud_account_id);
-    assert($cloud instanceof CloudAccount);
-
-    $backup = $endpoint->retrieveBackup($cloud, $filename);
-
-    $backup->download($download_path, $force);
+    $backup->download($download_path, $input->getOption('force'));
     $app->say($this->getPhrase('done'));
 
     return Console::EXIT_SUCCESS;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  protected function _getChoices(string $name, bool $format = true) : array {
+    switch ($name) {
+      case 'cloud_account_id':
+        return $this->_getCloudAccountChoices($format);
+      case 'filename':
+        return $this->_getBackupChoices($format);
+      default:
+        return parent::_getChoices($name, $format);
+    }
+  }
 }

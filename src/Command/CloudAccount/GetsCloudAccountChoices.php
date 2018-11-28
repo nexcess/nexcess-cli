@@ -9,7 +9,10 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
-use Nexcess\Sdk\Cli\Console;
+use Nexcess\Sdk\Cli\ {
+  Command\CloudAccount\CloudAccountException,
+  Console
+};
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
@@ -62,7 +65,7 @@ trait GetsCloudAccountChoices {
     $choices = $this->_choices['cloud_account'];
 
     if ($format) {
-      $choices = $this->_padColumns($choices, ['domain']);
+      $choices = $this->_padColumns($choices, ['domain', 'id']);
       $console = $this->getConsole();
       foreach ($choices as $id => $cloudaccount) {
         $choices[$id] = $console->translate(

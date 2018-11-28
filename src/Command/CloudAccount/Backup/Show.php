@@ -72,11 +72,11 @@ class Show extends InputCommand {
   public function execute(Input $input, Output $output) {
     $endpoint = $this->_getEndpoint();
     assert($endpoint instanceof Endpoint);
-    $cloudaccount_id = $this->getInput('cloud_account_id');
+    $cloudaccount_id = $this->getInput('cloud_account_id', false);
     $cloudaccount = $endpoint->retrieve($cloudaccount_id);
     assert($cloudaccount instanceof CloudAccount);
     $backup = $endpoint
-      ->retrieveBackup($cloudaccount, $this->getInput('filename'))
+      ->retrieveBackup($cloudaccount, $this->getInput('filename', false))
       ->toArray();
 
     $this->_saySummary($backup, $input->getOption('json'));

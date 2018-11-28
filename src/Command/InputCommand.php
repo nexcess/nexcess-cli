@@ -10,10 +10,12 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command;
 
 use Nexcess\Sdk\Util\Util;
+
 use Nexcess\Sdk\Cli\ {
   Command\Command,
   Command\CommandException
 };
+
 use Symfony\Component\Console\ {
   Input\InputInterface as Input,
   Output\OutputInterface as Output
@@ -127,9 +129,8 @@ abstract class InputCommand extends Command {
           continue;
         }
 
-        $this->_input[$name] = $app->ask(
-          "{$this->getPhrase("ask_{$name}")}\n > "
-        );
+        $this->_input[$name] = $app
+          ->ask("{$this->getPhrase("ask_{$name}")}\n > ");
       }
     }
 
@@ -191,13 +192,21 @@ abstract class InputCommand extends Command {
    * @param array|null $columns Column (key) name(s) to pad; defaults to all
    * @return array Padded details
    */
-  protected function _padColumns(array $details, array $columns = null) : array {
+  protected function _padColumns(
+    array $details,
+    array $columns = null
+  ) : array {
     $columns = $columns ?? array_keys($details);
     foreach ($columns as $column) {
-      $max = max(array_map('mb_strlen', array_column($details, $column)));
+      $values = array_column($details, $column);
+      if (empty($values)) {
+        continue;
+      }
+      $max = max(array_map('mb_strlen', $values));
       foreach ($details as $i => $row) {
-        $details[$i][$column] = $row[$column] .
-          str_repeat(' ', $max - mb_strlen($row[$column]));
+        $value = Util::filter($row[$column] ?? '', Util::FILTER_STRING);
+        $details[$i][$column] = $value .
+          str_repeat(' ', $max - mb_strlen($value));
       }
     }
     return $details;
