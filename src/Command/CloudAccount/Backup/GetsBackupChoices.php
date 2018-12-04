@@ -10,12 +10,12 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\CloudAccount\Backup;
 
 use Nexcess\Sdk\Cli\ {
-  Command\CloudAccount\CloudAccountException,
+  Command\ChoiceException,
   Console
 };
 
 use Nexcess\Sdk\ {
-  Resource\CloudAccount\Entity as CloudAccount,
+  Resource\CloudAccount\CloudAccount,
   Resource\CloudAccount\Endpoint,
   Resource\Readable
 };
@@ -71,8 +71,8 @@ trait GetsBackupChoices {
         'filename'
       );
       if (empty($this->_choices['backup'])) {
-        throw new CloudAccountException(
-          CloudAccountException::NO_BACKUP_CHOICES,
+        throw new ChoiceException(
+          ChoiceException::NO_BACKUP_CHOICES,
           ['cloud_account_id' => $id, 'domain' => $cloudaccount->get('domain')]
         );
       }
@@ -84,7 +84,7 @@ trait GetsBackupChoices {
       $console = $this->getConsole();
       foreach ($choices as $filename) {
         $choices[$filename] = $console->translate(
-          'console.cloud_account.choices.backup',
+          'console.cloud_account.backup.choices.backup',
           ['filename' => $filename]
         );
       }

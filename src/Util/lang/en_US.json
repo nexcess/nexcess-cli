@@ -12,6 +12,10 @@
     "banner": "Command Line Interface for the Nexcess.net / Thermo.io API Client\nⓒ 2018 Nexcess.net, LLC\n",
     "cloud_account": {
       "backup" : {
+        "choices": {
+          "backup": "<question> {filename} </question>",
+          "no_backup_choices": "No backups are available to choose from on {domain} (use `cloud-account:backup:create -c {cloud_account_id}` to create one)"
+        },
         "create": {
           "backup_complete": "Backup complete.\n<info>To download this backup, use:</info>\ncloud-account:backup:download --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
           "backup_started": "<info>To check on the status of this Backup, use:</info>\ncloud-account:backup:show --cloud-account-id {cloud_account_id} \\\n  --filename '{filename}'",
@@ -89,8 +93,10 @@
         }
       },
       "choices": {
-        "backup": "<question> {filename} </question>",
-        "cloud_account": "#{id} <question> {domain} </question> ({ip})"
+        "cloud_account": "#{id} <question> {domain} </question> ({ip})",
+        "no_cloud_account_choices": "No cloud accounts are available to choose from (use `cloud-account:create` to create one)",
+        "package": "<question> {name} </question> (${monthly_fee} /month) {user_concurrency} Concurrent Users, {virt_disk} GB Storage, {bandwidth} GB Bandwidth",
+        "no_package_choices": "No Cloud Account service packages are available to choose from"
       },
       "create": {
         "app_desc": "<question> {app} </question>",
@@ -110,7 +116,6 @@
         "opt_domain": "Domain Name",
         "opt_install_app": "Install the Application to the new Cloud Account?\n  (currently, this option applies only to Magento and WordPress Application Environments)",
         "opt_package_id": "Service Level ID",
-        "package_desc": "<question> {name} </question> {virt_disk} GB Storage, {bandwidth} GB Bandwidth; ${monthly_fee}/month",
         "summary_key": {
           "app": "App Environment",
           "cloud": "Cloud Location",
@@ -120,10 +125,6 @@
           "temp_domain": "Temp Domain"
         },
         "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install"
-      },
-      "exception": {
-        "no_backup_choices": "No backups are available to choose from on {domain} (use `cloud-account:backup:create -c {cloud_account_id}` to create one)",
-        "no_cloud_account_choices": "No cloud accounts are available to choose from (use `cloud-account:create` to create one)"
       },
       "list": {
         "desc": "Lists your Cloud Accounts",

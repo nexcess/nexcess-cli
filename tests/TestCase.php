@@ -9,8 +9,14 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Tests;
 
-use Nexcess\Sdk\Tests\TestCase as SdkTestCase;
+use Nexcess\Sdk\ {
+  Tests\TestCase as SdkTestCase
+};
+
+use Nexcess\Sdk\Cli\Console;
+
 use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
+
 use Symfony\Component\Console\ {
   Helper\QuestionHelper,
   Input\InputInterface as Input,
@@ -22,6 +28,21 @@ use Symfony\Component\Console\ {
  * Base class for nexcess-cli testcases.
  */
 abstract class TestCase extends SdkTestCase {
+
+  /** @var string Path to test resources. */
+  const RESOURCE_PATH = __DIR__;
+
+  /**
+   * Gets a Console applciation instance for testing.
+   *
+   * @param array $options Config option overrides
+   * @return Console A sandboxed console instance
+   */
+  protected function _getConsole(array $options = []) : Console {
+    $options['sandboxed'] = true;
+    $console = new Console($options);
+    return $console;
+  }
 
   /**
    * Builds a question helper to handle questions during interactive tests.

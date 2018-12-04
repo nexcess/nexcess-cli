@@ -9,7 +9,10 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
-use Nexcess\Sdk\Cli\Command\CloudAccount\CloudAccountException;
+use Nexcess\Sdk\Cli\ {
+  Command\ChoiceException,
+  Console
+};
 
 use Nexcess\Sdk\ {
   Resource\Package\Endpoint as Package,
@@ -19,9 +22,30 @@ use Nexcess\Sdk\ {
 trait GetsPackageChoices {
 
   /**
+   * {@inheritDoc} Command\Command::getConsole()
+   */
+  abstract public function getConsole() : Console;
+
+  /**
+   * {@inheritDoc} Command\InputCommand::getInput()
+   */
+  abstract public function getInput(
+    string $name = null,
+    bool $optional = true
+  );
+
+  /**
    * {@inheritDoc} Command\Command::_getEndpoint()
    */
   abstract protected function _getEndpoint(string $endpoint = null) : Readable;
+
+  /**
+   * {@inheritDoc} Command\InputCommand::_padColumns()
+   */
+  abstract protected function _padColumns(
+    array $details,
+    array $columns = null
+  ) : array;
 
   /** @var array {@inheritDoc} InputCommand::$_choices */
   protected $_choices = [];
@@ -33,8 +57,8 @@ trait GetsPackageChoices {
    * @return string[] Map of id:description pairs
    */
   protected function _getPackageChoices(bool $format = true) : array {
-    if (empty($this->_choices['package_id'])) {
-      $this->_choices['package_id'] = array_column(
+    if (empty($this->_choices['package'])) {
+      $this->_choices['package'] = array_column(
         $this->_getEndpoint(Package::class)
           ->list([
             'type' => 'virt-guest-cloud',
@@ -44,49 +68,27 @@ trait GetsPackageChoices {
         null,
         'id'
       );
-    }
-
-    $packages = $this->_choices['package_id'];
-
-    if ($format) {
-      $max = max(array_map('strlen', array_column($packages, 'name')));
-      foreach ($packages as $id => $package) {
-        $package['name'] = ' ' . str_pad($package['name'], $max) . ' ';
-        $packages[$id] = $this->getPhrase('package_desc', $package);
-      }
-      return $packages;
-    }
-
-    foreach ($packages as $id => $package) {
-      $packages[$id] = $package['name'];
-    }
-    return $packages;
-
-
-
-
-
-
-
-
-
-    if (empty($this->_choices['cloud_account_id'])) {
-      $choices = array_column(
-        $this->_getEndpoint()->list()->toArray(),
-        null,
-        'id'
-      );
-      if (empty($choices)) {
-        throw new CloudAccountException(
-          CloudAccountException::NO_CLOUD_ACCOUNT_CHOICES
+      if (empty($this->_choices['package'])) {
+        throw new ChoiceException(
+          ChoiceException::NO_CLOUD_ACCOUNT_PACKAGE_CHOICES
         );
       }
-
-      foreach ($choices as $id => $cloudaccount) {
-        $this->_choices['cloud_account_id'][$id] =
-          "{$cloudaccount['ip']} {$cloudaccount['domain']}";
-      }
     }
-    return $this->_choices['cloud_account_id'];
+
+    $choices = $this->_choices['package'];
+
+    if ($format) {
+      $choices = $this->_padColumns($choices, ['name', 'monthly_fee']);
+      $console = $this->getConsole();
+      foreach ($choices as $id => $package) {
+        $choices[$id] = $console->translate(
+          'console.cloud_account.choices.package',
+          $package
+        );
+      }
+      return $choices;
+    }
+
+    return array_column($choices, 'name', 'id');
   }
 }

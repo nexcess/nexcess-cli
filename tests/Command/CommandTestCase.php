@@ -10,16 +10,15 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Tests\Command;
 
 use Throwable;
-use Nexcess\Sdk\ {
-  Client,
-  Sandbox\ResourceHandler
-};
+
 use Nexcess\Sdk\Cli\ {
   Console,
   Command\Command,
   Tests\TestCase
 };
+
 use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
+
 use Symfony\Component\Console\ {
   Helper\QuestionHelper,
   Input\InputInterface as Input,
@@ -32,9 +31,6 @@ use Symfony\Component\Console\ {
  * Base class for nexcess-cli command testcases.
  */
 abstract class CommandTestCase extends TestCase {
-
-  /** @var string Path to test resources. */
-  const RESOURCE_PATH = __DIR__;
 
   /**
    * @group integration
@@ -71,22 +67,6 @@ abstract class CommandTestCase extends TestCase {
    * @return array[] List of testcases
    */
   abstract public function runProvider() : array;
-
-  /**
-   * Gets a Console applciation instance for testing.
-   *
-   * @param array $options Config option overrides
-   * @return Console A sandboxed console instance
-   */
-  protected function _getConsole(array $options = []) : Console {
-    $options['sandboxed'] = true;
-    $console = new Console($options);
-    $console->getSandbox()->setRequestHandler([
-      new ResourceHandler(self::RESOURCE_PATH),
-      'handle'
-    ]);
-    return $console;
-  }
 
   /**
    * Executes a command and returns the CommandTester for making assertions.

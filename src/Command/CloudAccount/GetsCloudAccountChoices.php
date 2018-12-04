@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\CloudAccount;
 
 use Nexcess\Sdk\Cli\ {
-  Command\CloudAccount\CloudAccountException,
+  Command\ChoiceException,
   Console
 };
 
@@ -56,8 +56,8 @@ trait GetsCloudAccountChoices {
         'id'
       );
       if (empty($this->_choices['cloud_account'])) {
-        throw new CloudAccountException(
-          CloudAccountException::NO_CLOUD_ACCOUNT_CHOICES
+        throw new ChoiceException(
+          ChoiceException::NO_CLOUD_ACCOUNT_CHOICES
         );
       }
     }
