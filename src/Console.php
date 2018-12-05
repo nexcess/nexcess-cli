@@ -13,7 +13,6 @@ use SplFileInfo as FileInfo;
 
 use Nexcess\Sdk\ {
   Client,
-  Sandbox\ResourceHandler,
   Sandbox\Sandbox,
   Util\Config,
   Util\Language,

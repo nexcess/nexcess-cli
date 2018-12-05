@@ -40,6 +40,7 @@ abstract class Create extends InputCommand {
     $console->say($this->getPhrase('creating'));
 
     try {
+      // @phan-suppress-next-line PhanUndeclaredMethod
       $model = $endpoint->create($this->getInput());
     } catch (ApiException $e) {
       switch ($e->getCode()) {

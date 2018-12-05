@@ -80,6 +80,7 @@ class GetsBackupChoicesTest extends GetsChoicesTestCase {
     Console $console,
     bool $format
   ) : array {
+    // phpcs:disable
     $chooser = new class($console) extends InputCommand {
       use GetsBackupChoices;
       public const NAME = 'test:get-backup-choices';
@@ -88,6 +89,7 @@ class GetsBackupChoicesTest extends GetsChoicesTestCase {
         return 1;
       }
     };
+    // phpcs:enable
 
     return $this->_invokeNonpublicMethod(
       $chooser,
