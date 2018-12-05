@@ -38,16 +38,28 @@ abstract class CommandTestCase extends TestCase {
    *
    * @param array $invocation Map of args/opts to invoke the command with
    * @param array $interactions List of [expected, response]s for interactions
-   * @param array|Throwable $expected Expected [exit_code, [output]] or exception
+   * @param array $responses List of [request_line, status, data]s
+   *  to stage on the sandbox for api calls
+   * @param array|Throwable $expected Expected [code, [output]] or exception
    */
-  public function testRun(array $invocation, array $interactions, $expected) {
+  public function testRun(
+    array $invocation,
+    array $interactions,
+    array $responses,
+    $expected
+  ) {
     if ($expected instanceof Throwable) {
       $this->setExpectedException($expected);
     }
 
+    $console = $this->_getConsole();
+    $sandbox = $console->getSandbox();
+    foreach ($responses as [$request_line, $status, $response]) {
+      $sandbox->makeResponse($request_line, $status, $response);
+    }
     $command = static::_SUBJECT_FQCN;
     $actual = $this->_testRun(
-      new $command($this->_getConsole()),
+      new $command($console),
       $invocation,
       $interactions
     );

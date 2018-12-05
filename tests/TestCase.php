@@ -30,7 +30,7 @@ use Symfony\Component\Console\ {
 abstract class TestCase extends SdkTestCase {
 
   /** @var string Path to test resources. */
-  const RESOURCE_PATH = __DIR__;
+  protected const _RESOURCE_PATH = __DIR__;
 
   /**
    * Gets a Console applciation instance for testing.
