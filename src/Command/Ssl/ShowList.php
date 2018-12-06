@@ -24,5 +24,5 @@ class ShowList extends ShowListCommand {
   const NAME = 'ssl:list';
 
   /** {@inheritDoc} */
-  const SUMMARY_KEYS = ['id', 'domain', 'ip']; // fix
+  const SUMMARY_KEYS = ['id', 'common_name']; // fix
 }

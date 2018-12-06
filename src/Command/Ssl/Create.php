@@ -7,7 +7,7 @@
 
 declare(strict_types = 1);
 
-namespace Nexcess\Sdk\Cli\Command\CloudAccount;
+namespace Nexcess\Sdk\Cli\Command\Ssl;
 
 use Nexcess\Sdk\ {
   Resource\CloudAccount\Endpoint,
@@ -47,7 +47,7 @@ class Create extends CreateCommand {
   ];
 
   /** {@inheritDoc} */
-  const NAME = 'cloud-account:create';
+  const NAME = 'ssl:create';
 
   /** {@inheritDoc} */
   const OPTS = [

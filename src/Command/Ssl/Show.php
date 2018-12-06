@@ -12,7 +12,7 @@ namespace Nexcess\Sdk\Cli\Command\Ssl;
 use DateTimeImmutable as DateTime;
 
 use Nexcess\Sdk\ {
-  Resource\Ssal\Endpoint,
+  Resource\Ssl\Endpoint,
   Util\Config
 };
 
@@ -27,10 +27,10 @@ use Symfony\Component\Console\ {
 };
 
 /**
- * Creates a new Cloud Account.
+ * Show existing SSL Certificates
  */
 class Show extends ShowCommand {
-  use GetsCloudAccountChoices;
+  use GetsSslChoices;
 
   /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;
