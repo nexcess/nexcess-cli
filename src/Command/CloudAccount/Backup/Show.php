@@ -30,20 +30,17 @@ use Symfony\Component\Console\ {
 };
 
 /**
- * Delete a backup
+ * Creates a new Cloud Account.
  */
-class Delete extends InputCommand {
+class Show extends InputCommand {
   use GetsCloudAccountChoices,
     GetsBackupChoices;
-
-  /** {@inheritDoc} */
-  const ARGS = [];
 
   /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;
 
   /** {@inheritDoc} */
-  const SUMMARY_KEYS = ['filename'];
+  const NAME = 'cloud-account:backup:show';
 
   /** {@inheritDoc} */
   const INPUTS = [
@@ -52,16 +49,22 @@ class Delete extends InputCommand {
   ];
 
   /** {@inheritDoc} */
-  const NAME = 'cloud-account:backup:delete';
-
-  /** {@inheritDoc} */
   const OPTS = [
     'cloud-account-id|c' => [OPT::VALUE_REQUIRED],
-    'filename|f' => [OPT::VALUE_REQUIRED]
+    'filename|f' => [Opt::VALUE_REQUIRED]
   ];
 
   /** {@inheritDoc} */
   const RESTRICT_TO = [Config::COMPANY_NEXCESS];
+
+  /** {@inheritDoc} */
+  const SUMMARY_KEYS = [
+    'filename',
+    'type',
+    'filesize',
+    'filedate',
+    'complete'
+  ];
 
   /**
    * {@inheritDoc}
@@ -69,18 +72,23 @@ class Delete extends InputCommand {
   public function execute(Input $input, Output $output) {
     $endpoint = $this->_getEndpoint();
     assert($endpoint instanceof Endpoint);
+    $cloudaccount_id = $this->getInput('cloud_account_id', false);
+    $cloudaccount = $endpoint->retrieve($cloudaccount_id);
+    assert($cloudaccount instanceof CloudAccount);
+    $backup = $endpoint
+      ->retrieveBackup($cloudaccount, $this->getInput('filename', false))
+      ->toArray();
 
-    $cloud_account_id = $this->getInput('cloud_account_id', false);
-    $cloud = $endpoint->retrieve($cloud_account_id);
-    assert($cloud instanceof CloudAccount);
-
-    $filename = $this->getInput('filename', false);
-    $backup = $endpoint->retrieveBackup($cloud, $filename);
-
-    $app = $this->getConsole();
-    $app->say($this->getPhrase('deleting', ['filename' => $filename]));
-    $backup->delete();
-    $app->say($this->getPhrase('done'));
+    $this->_saySummary($backup, $input->getOption('json'));
+    $this->getConsole()->say(
+      $this->getPhrase(
+        'how_to_download',
+        [
+          'cloud_account_id' => $cloudaccount_id,
+          'filename' => $backup['filename']
+        ]
+      )
+    );
 
     return Console::EXIT_SUCCESS;
   }

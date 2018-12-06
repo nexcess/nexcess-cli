@@ -10,16 +10,15 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Tests\Command;
 
 use Throwable;
-use Nexcess\Sdk\ {
-  Client,
-  Sandbox\ResourceHandler
-};
+
 use Nexcess\Sdk\Cli\ {
   Console,
   Command\Command,
   Tests\TestCase
 };
+
 use PhpUnit\Framework\ExpectationFailedException as PhpUnitException;
+
 use Symfony\Component\Console\ {
   Helper\QuestionHelper,
   Input\InputInterface as Input,
@@ -33,25 +32,34 @@ use Symfony\Component\Console\ {
  */
 abstract class CommandTestCase extends TestCase {
 
-  /** @var string Path to test resources. */
-  const RESOURCE_PATH = __DIR__;
-
   /**
    * @group integration
    * @dataProvider runProvider
    *
    * @param array $invocation Map of args/opts to invoke the command with
    * @param array $interactions List of [expected, response]s for interactions
-   * @param array|Throwable $expected Expected [exit_code, [output]] or exception
+   * @param array $responses List of [request_line, status, data]s
+   *  to stage on the sandbox for api calls
+   * @param array|Throwable $expected Expected [code, [output]] or exception
    */
-  public function testRun(array $invocation, array $interactions, $expected) {
+  public function testRun(
+    array $invocation,
+    array $interactions,
+    array $responses,
+    $expected
+  ) {
     if ($expected instanceof Throwable) {
       $this->setExpectedException($expected);
     }
 
+    $console = $this->_getConsole();
+    $sandbox = $console->getSandbox();
+    foreach ($responses as [$request_line, $status, $response]) {
+      $sandbox->makeResponse($request_line, $status, $response);
+    }
     $command = static::_SUBJECT_FQCN;
     $actual = $this->_testRun(
-      new $command($this->_getConsole()),
+      new $command($console),
       $invocation,
       $interactions
     );
@@ -71,22 +79,6 @@ abstract class CommandTestCase extends TestCase {
    * @return array[] List of testcases
    */
   abstract public function runProvider() : array;
-
-  /**
-   * Gets a Console applciation instance for testing.
-   *
-   * @param array $options Config option overrides
-   * @return Console A sandboxed console instance
-   */
-  protected function _getConsole(array $options = []) : Console {
-    $options['sandboxed'] = true;
-    $console = new Console($options);
-    $console->getSandbox()->setRequestHandler([
-      new ResourceHandler(self::RESOURCE_PATH),
-      'handle'
-    ]);
-    return $console;
-  }
 
   /**
    * Executes a command and returns the CommandTester for making assertions.

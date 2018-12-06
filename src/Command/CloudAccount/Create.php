@@ -14,7 +14,10 @@ use Nexcess\Sdk\ {
   Util\Config,
   Util\Util
 };
-use Nexcess\Sdk\Cli\Command\Create as CreateCommand;
+use Nexcess\Sdk\Cli\ {
+  Command\CloudAccount\GetsPackageChoices,
+  Command\Create as CreateCommand
+};
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,
@@ -26,6 +29,7 @@ use Symfony\Component\Console\ {
  * Creates a new Cloud Account.
  */
 class Create extends CreateCommand {
+  use GetsPackageChoices;
 
   /** {@inheritDoc} */
   const ARGS = ['app' => [Arg::OPTIONAL]];
@@ -140,36 +144,6 @@ class Create extends CreateCommand {
       $clouds[$id] = $cloud['location_code'];
     }
     return $clouds;
-  }
-
-  protected function _getPackageChoices(bool $format) : array {
-    if (empty($this->_choices['package_id'])) {
-      $this->_choices['package_id'] = array_column(
-        $this->_getEndpoint('Package')
-          ->list([
-            'type' => 'virt-guest-cloud',
-            'environment_type' => 'production'
-          ])
-          ->toArray(true),
-        null,
-        'id'
-      );
-    }
-    $packages = $this->_choices['package_id'];
-
-    if ($format) {
-      $max = max(array_map('strlen', array_column($packages, 'name')));
-      foreach ($packages as $id => $package) {
-        $package['name'] = ' ' . str_pad($package['name'], $max) . ' ';
-        $packages[$id] = $this->getPhrase('package_desc', $package);
-      }
-      return $packages;
-    }
-
-    foreach ($packages as $id => $package) {
-      $packages[$id] = $package['name'];
-    }
-    return $packages;
   }
 
   /**

@@ -19,6 +19,7 @@ use Nexcess\Sdk\ {
 };
 
 use Nexcess\Sdk\Cli\ {
+  Command\CloudAccount\GetsCloudAccountChoices,
   Command\Create as CreateCommand,
   Console
 };
@@ -33,6 +34,7 @@ use Symfony\Component\Console\ {
  * Creates a new Cloud Account.
  */
 class Create extends CreateCommand {
+  use GetsCloudAccountChoices;
 
   /** {@inheritDoc} */
   const ARGS = [];
@@ -44,7 +46,7 @@ class Create extends CreateCommand {
   const SUMMARY_KEYS = ['filename', 'complete'];
 
   /** {@inheritDoc} */
-  const INPUTS = [];
+  const INPUTS = ['cloud_account_id' => Util::FILTER_INT];
 
   /** {@inheritDoc} */
   const NAME = 'cloud-account:backup:create';
@@ -62,17 +64,14 @@ class Create extends CreateCommand {
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
-    $app = $this->getConsole();
-    $cloud_account_id = Util::filter(
-      $input->getOption('cloud-account-id'),
-      Util::FILTER_INT
-    );
-
     // create backup
+    $app = $this->getConsole();
     $app->say($this->getPhrase('starting_backup'));
+
     $endpoint = $this->_getEndpoint();
     assert($endpoint instanceof Endpoint);
 
+    $cloud_account_id = $this->getInput('cloud_account_id', false);
     $cloud = $endpoint->retrieve($cloud_account_id);
     assert($cloud instanceof CloudAccount);
 
@@ -132,6 +131,18 @@ class Create extends CreateCommand {
     );
 
     $app->say($this->getPhrase('done'));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  protected function _getChoices(string $name, bool $format = true) : array {
+    switch ($name) {
+      case 'cloud_account_id':
+        return $this->_getCloudAccountChoices($format);
+      default:
+        return parent::_getChoices($name, $format);
+    }
   }
 
   /**

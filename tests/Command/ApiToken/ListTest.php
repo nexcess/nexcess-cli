@@ -22,6 +22,12 @@ class ListTest extends ListTestCase {
   /** {@inheritDoc} */
   const _SUBJECT_FQCN = ShowList::class;
 
+  /** {@inheritDoc} */
+  protected const _RESOURCE_PATH = __DIR__ . '/resources';
+
+  /** @var string Path to "GET /api-token" response resource. */
+  const _RESOURCE_GET_LIST = 'GET-%2Fapi-token%3F.json';
+
   /**
    * {@inheritDoc}
    */
@@ -30,6 +36,7 @@ class ListTest extends ListTestCase {
     $testcases[] = [
       [],
       [],
+      [['GET /api-token', 200, $this->_getResource(self::_RESOURCE_GET_LIST)]],
       [
         'output' => [
           'Example API Token',

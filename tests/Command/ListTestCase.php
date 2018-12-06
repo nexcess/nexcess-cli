@@ -31,6 +31,7 @@ abstract class ListTestCase extends CommandTestCase {
       [
         ['filter' => ['foobar']],
         [],
+        [],
         new CommandException(CommandException::INVALID_LIST_FILTER)
       ]
     ];

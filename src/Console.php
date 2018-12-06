@@ -13,7 +13,6 @@ use SplFileInfo as FileInfo;
 
 use Nexcess\Sdk\ {
   Client,
-  Sandbox\ResourceHandler,
   Sandbox\Sandbox,
   Util\Config,
   Util\Language,
@@ -544,10 +543,7 @@ class Console extends SymfonyApplication {
    */
   protected function _initializeClient() {
     if ($this->_config->get('sandboxed')) {
-      $this->_sandbox = new Sandbox(
-        $this->_config,
-        [new ResourceHandler(self::DIR, Client::DIR), 'handle']
-      );
+      $this->_sandbox = new Sandbox($this->_config);
       $this->_client = $this->_sandbox->newClient();
     } else {
       $this->_client = new Client($this->_config);
