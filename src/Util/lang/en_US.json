@@ -121,7 +121,8 @@
           "cloud": "Cloud Location",
           "domain": "Domain",
           "service_level": "Service Level",
-          "status": "Status",
+          "service_status": "Service Status",
+          "state": "Cloud Account State",
           "temp_domain": "Temp Domain"
         },
         "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install"
