@@ -19,6 +19,9 @@ use Nexcess\Sdk\ {
   Resource\Readable
 };
 
+/**
+ * @todo See notes in GetPackageChocies about moving abstract methods.
+ */
 trait GetsSslChoices {
 
   /**

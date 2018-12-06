@@ -19,15 +19,21 @@ use Nexcess\Sdk\ {
   Resource\Readable
 };
 
+/**
+ * @todo re-factor. Break into multiple methods.
+ * @todo move abstract functions into their own traits.
+ */
 trait GetsPackageChoices {
 
   /**
    * {@inheritDoc} Command\Command::getConsole()
+   * @todo move to it's own trait
    */
   abstract public function getConsole() : Console;
 
   /**
    * {@inheritDoc} Command\InputCommand::getInput()
+   * @todo move to it's own trait
    */
   abstract public function getInput(
     string $name = null,
@@ -36,11 +42,13 @@ trait GetsPackageChoices {
 
   /**
    * {@inheritDoc} Command\Command::_getEndpoint()
+   * @todo move to it's own trait
    */
   abstract protected function _getEndpoint(string $endpoint = null) : Readable;
 
   /**
    * {@inheritDoc} Command\InputCommand::_padColumns()
+   * @todo move to it's own trait
    */
   abstract protected function _padColumns(
     array $details,
@@ -51,18 +59,17 @@ trait GetsPackageChoices {
   protected $_choices = [];
 
   /**
-   * Gets a map of available cloud accounts.
+   * Gets a map of available ssl certificate types.
    *
    * @param bool $format Apply formatting?
    * @return string[] Map of id:description pairs
-    FIX
    */
   protected function _getPackageChoices(bool $format = true) : array {
     if (empty($this->_choices['package'])) {
       $this->_choices['package'] = array_column(
         $this->_getEndpoint(Package::class)
           ->list([
-            'type' => 'virt-guest-cloud',
+            'type' => 'ssl',
             'environment_type' => 'production'
           ])
           ->toArray(true),
