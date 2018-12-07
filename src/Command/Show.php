@@ -15,8 +15,8 @@ use Nexcess\Sdk\Cli\ {
   Console
 };
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
+  Input\InputOption as Opt,
   Output\OutputInterface as Output
 };
 
@@ -26,7 +26,7 @@ use Symfony\Component\Console\ {
 abstract class Show extends InputCommand {
 
   /** {@inheritDoc} */
-  const ARGS = ['id' => [Arg::OPTIONAL]];
+  const OPTS = ['id' => [Opt::VALUE_REQUIRED]];
 
   /** {@inheritDoc} */
   const INPUTS = ['id' => Util::FILTER_INT];

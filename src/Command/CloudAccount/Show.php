@@ -40,7 +40,7 @@ class Show extends ShowCommand {
   const NAME = 'cloud-account:show';
 
   /** {@inheritDoc} */
-  const OPTS = [
+  const OPTS = ShowCommand::OPTS + [
     'domain' => [OPT::VALUE_REQUIRED],
     'ip' => [Opt::VALUE_REQUIRED]
   ];
