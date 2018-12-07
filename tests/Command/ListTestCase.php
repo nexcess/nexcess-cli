@@ -29,7 +29,7 @@ abstract class ListTestCase extends CommandTestCase {
   public function runProvider() : array {
     return [
       [
-        ['filter' => ['foobar']],
+        ['--filter' => ['foobar']],
         [],
         [],
         new CommandException(CommandException::INVALID_LIST_FILTER)
