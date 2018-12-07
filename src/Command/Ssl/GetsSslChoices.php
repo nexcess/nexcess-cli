@@ -46,40 +46,39 @@ trait GetsSslChoices {
   protected $_choices = [];
 
   /**
-   * Gets a map of available cloud accounts.
+   * Gets a map of available ssl certificates.
    *
    * @param bool $format Apply formatting?
    * @return string[] Map of id:description pairs
    FIX
    */
   protected function _getSslChoices(bool $format = true) : array {
-    if (empty($this->_choices['cloud_account'])) {
-      $this->_choices['cloud_account'] = array_column(
+    if (empty($this->_choices['ssl'])) {
+      $this->_choices['ssl'] = array_column(
         $this->_getEndpoint(Endpoint::class)->list()->toArray(),
         null,
         'id'
       );
-      if (empty($this->_choices['cloud_account'])) {
+      if (empty($this->_choices['ssl'])) {
         throw new ChoiceException(
           ChoiceException::NO_CLOUD_ACCOUNT_CHOICES
         );
       }
     }
 
-    $choices = $this->_choices['cloud_account'];
+    $choices = $this->_choices['ssl'];
 
     if ($format) {
-      $choices = $this->_padColumns($choices, ['domain', 'id']);
+      $choices = $this->_padColumns($choices, ['common_name', 'id']);
       $console = $this->getConsole();
-      foreach ($choices as $id => $cloudaccount) {
+      foreach ($choices as $id => $certificate) {
         $choices[$id] = $console->translate(
-          'console.cloud_account.choices.cloud_account',
-          $cloudaccount
+          'console.cloud_account.choices.ssl',
+          $certificate
         );
       }
       return $choices;
     }
-
-    return array_column($choices, 'domain', 'id');
+    return array_column($choices, 'common_name', 'id');
   }
 }

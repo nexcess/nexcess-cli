@@ -27,7 +27,7 @@ use Symfony\Component\Console\ {
 };
 
 /**
- * Show existing SSL Certificates
+ * Show an existing SSL Certificate
  */
 class Show extends ShowCommand {
   use GetsSslChoices;
@@ -40,8 +40,7 @@ class Show extends ShowCommand {
 
   /** {@inheritDoc} */
   const OPTS = [
-    'domain' => [OPT::VALUE_REQUIRED],
-    'ip' => [Opt::VALUE_REQUIRED]
+    'id' => [OPT::VALUE_REQUIRED]
   ];
 
   /** {@inheritDoc} */
@@ -50,18 +49,10 @@ class Show extends ShowCommand {
   /** {@inheritDoc} */
   const SUMMARY_KEYS = [
     'id',
-    'app',
-    'deploy_date',
-    'domain',
-    'environment',
-    'ip',
-    'location',
-    'service',
-    'service.status',
-    'status',
-    'temp_domain',
-    'unix_username'
-  ]; // fix
+    'common_name',
+    'valid_from_date',
+    'valid_to_date'
+  ];
 
   /**
    * {@inheritDoc}
@@ -70,7 +61,7 @@ class Show extends ShowCommand {
     parent::initialize($input, $output);
 
     if ($this->_input['id'] === null) {
-      $lookup = $input->getOption('domain') ?? $input->getOption('ip');
+      $lookup = $input->getOption('id');
       if (! empty($lookup)) {
         $this->_lookupChoice('id', $lookup);
       }
@@ -91,23 +82,22 @@ class Show extends ShowCommand {
 
   /**
    * {@inheritDoc}
-   FIX
    */
   protected function _getSummary(array $details) : array {
     $details = parent::_getSummary($details);
 
-    $details['app'] = $this->getPhrase('summary_app', $details['app']);
-    $details['deploy_date'] = (new DateTime("@{$details['deploy_date']}"))
-      ->format('Y-m-d H:i:s T');
-    $details['location'] = $this->getPhrase(
-      'summary_location',
-      $details['location']
-    );
-    $details['service'] = $this->getPhrase(
-      'summary_service',
-      $details['service']
-    );
-
+    if (!is_null($details['valid_from_date'])) {
+      $details['valid_from_date'] = (new \DateTimeImmutable($details['valid_from_date']))->format('Y-m-d h:i:s');
+    } else {
+      unset($details['valid_from_date']);
+    }
+    
+    if (!is_null($details['valid_to_date'])) {
+      $details['valid_to_date'] = (new \DateTimeImmutable($details['valid_to_date']))->format('Y-m-d h:i:s');
+    } else {
+      unset($details['valid_to_date']);
+    }
+    
     return $details;
   }
 }
