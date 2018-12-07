@@ -16,8 +16,8 @@ use Nexcess\Sdk\Cli\ {
 };
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
+  Input\InputOption as Opt,
   Output\OutputInterface as Output,
   Helper\TableStyle,
   Helper\Table
@@ -29,7 +29,7 @@ use Symfony\Component\Console\ {
 abstract class ShowList extends Command {
 
   /** {@inheritDoc} */
-  const ARGS = ['filter' => [Arg::OPTIONAL | Arg::IS_ARRAY]];
+  const OPTS = ['filter' => [Opt::VALUE_REQUIRED | Opt::VALUE_IS_ARRAY]];
 
   /** @var array List filter parsed from args. */
   protected $_filter = [];
@@ -39,18 +39,16 @@ abstract class ShowList extends Command {
    */
   public function initialize(Input $input, Output $output) {
     // collect list filter params
-    if ($input->hasArgument('filter')) {
-      foreach ($input->getArgument('filter') as $filter) {
-        if (substr_count($filter, ':') !== 1) {
-          throw new CommandException(
-            CommandException::INVALID_LIST_FILTER,
-            ['filter' => $filter]
-          );
-        }
-
-        [$key, $value] = explode(':', $filter);
-        $this->_filter[$key] = $value;
+    foreach ($input->getOption('filter') as $filter) {
+      if (substr_count($filter, ':') !== 1) {
+        throw new CommandException(
+          CommandException::INVALID_LIST_FILTER,
+          ['filter' => $filter]
+        );
       }
+
+      [$key, $value] = explode(':', $filter);
+      $this->_filter[$key] = $value;
     }
   }
 

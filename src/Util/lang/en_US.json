@@ -100,17 +100,17 @@
       },
       "create": {
         "app_desc": "<question> {app} </question>",
-        "arg_app": "Application Environment name (used for app_id lookup)",
         "ask_domain": "What Domain Name do you want to use for your Cloud Account?",
         "choose_app_id": "Select an Application Environment for your Cloud Account:",
         "choose_cloud_id": "Choose which Cloud you want your Cloud Account to be hosted on:",
         "choose_package_id": "Choose a Service Level for your Cloud Account:",
         "cloud_desc": "<question> {location} </question> ({location_code})",
-        "created": "\nYour new Cloud Account has been created. <info>Use</info> cloud-account:show {id} <info>to check on its status!</info>",
+        "created": "\nYour new Cloud Account has been created. <info>Use</info> cloud-account:show --id {id} <info>to check on its status!</info>",
         "creating": "Your new Cloud Account is being created. <info>This may take a few moments…</info>",
         "desc": "Creates a new Cloud Account",
         "failed": "<error>Creating your new Cloud Account failed.</error> Please open a support ticket.",
         "help": "Any option may be omitted and you will be prompted to choose from a menu.\nProviding an application name (e.g., 'magento') will select that application for you.",
+        "opt_app": "Application Environment name (used for app_id lookup)",
         "opt_app_id": "Application Environment ID",
         "opt_cloud_id": "Cloud location ID",
         "opt_domain": "Domain Name",
@@ -125,21 +125,21 @@
           "state": "Cloud Account State",
           "temp_domain": "Temp Domain"
         },
-        "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create magento --domain magneto.example.com --install"
+        "usage": "cloud-account:create --domain cloud.example.com\n  cloud-account:create --app magento --domain magneto.example.com --install-app"
       },
       "list": {
         "desc": "Lists your Cloud Accounts",
         "help": "You may proivde one or more filters in the form 'filter:value'.",
         "summary_item": "  #{id}: {domain} ({ip})",
         "summary_title": "Cloud Accounts:",
-        "usage": "cloud-account:list\n  cloud-account:list service.status:active"
+        "usage": "cloud-account:list\n  cloud-account:list --filter service.status:enabled"
       },
       "show": {
-        "arg_id": "Cloud Account Service ID",
         "choose_id": "Select a Cloud Account to view:",
         "desc": "Shows details of an existing Cloud Account",
         "help": "Provide a service id, or use the --domain or --ip options to look up the desired service.",
         "opt_domain": "Cloud Account Domain Name (used for service_id lookup)",
+        "opt_id": "Cloud Account Service ID",
         "opt_ip": "Cloud Account IP Address (used for service_id lookup)",
         "summary_app": "#{app_id} {identity}",
         "summary_key": {
@@ -159,7 +159,7 @@
         "summary_location": "#{cloud_id} {identity}",
         "summary_service": "#{service_id} {identity}",
         "summary_title": "Cloud Account Details:",
-        "usage": "cloud-account:show 12345\n  cloud-account:show --domain cloud.example.com"
+        "usage": "cloud-account:show --id 12345\n  cloud-account:show --domain cloud.example.com"
       }
     },
     "command": {

@@ -37,9 +37,6 @@ class Download extends InputCommand {
     GetsBackupChoices;
 
   /** {@inheritDoc} */
-  const ARGS = [];
-
-  /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;
 
   /** {@inheritDoc} */
