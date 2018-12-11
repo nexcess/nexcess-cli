@@ -19,7 +19,6 @@ use Nexcess\Sdk\Cli\ {
   Command\Create as CreateCommand
 };
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
   Output\OutputInterface as Output
@@ -30,9 +29,6 @@ use Symfony\Component\Console\ {
  */
 class Create extends CreateCommand {
   use GetsPackageChoices;
-
-  /** {@inheritDoc} */
-  const ARGS = ['app' => [Arg::OPTIONAL]];
 
   /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;
@@ -51,11 +47,12 @@ class Create extends CreateCommand {
 
   /** {@inheritDoc} */
   const OPTS = [
-    'app-id' => [OPT::VALUE_REQUIRED],
-    'cloud-id' => [OPT::VALUE_REQUIRED],
-    'domain' => [OPT::VALUE_REQUIRED],
-    'install-app' => [OPT::VALUE_NONE],
-    'package-id' => [OPT::VALUE_REQUIRED]
+    'app' => [Opt::VALUE_REQUIRED],
+    'app-id' => [Opt::VALUE_REQUIRED],
+    'cloud-id' => [Opt::VALUE_REQUIRED],
+    'domain' => [Opt::VALUE_REQUIRED],
+    'install-app' => [Opt::VALUE_NONE],
+    'package-id' => [Opt::VALUE_REQUIRED]
   ];
 
   /** {@inheritDoc} */
@@ -67,7 +64,7 @@ class Create extends CreateCommand {
   public function initialize(Input $input, Output $output) {
     parent::initialize($input, $output);
 
-    $app = $input->getArgument('app');
+    $app = $input->getOption('app');
     if ($app !== null) {
       $this->_lookupChoice('app_id', $app);
     }

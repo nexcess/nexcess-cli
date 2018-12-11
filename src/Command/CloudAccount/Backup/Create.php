@@ -20,7 +20,7 @@ use Nexcess\Sdk\ {
 
 use Nexcess\Sdk\Cli\ {
   Command\CloudAccount\GetsCloudAccountChoices,
-  Command\Create as CreateCommand,
+  Command\InputCommand,
   Console
 };
 
@@ -33,11 +33,8 @@ use Symfony\Component\Console\ {
 /**
  * Creates a new Cloud Account.
  */
-class Create extends CreateCommand {
+class Create extends InputCommand {
   use GetsCloudAccountChoices;
-
-  /** {@inheritDoc} */
-  const ARGS = [];
 
   /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;

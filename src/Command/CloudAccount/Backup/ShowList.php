@@ -43,10 +43,8 @@ class ShowList extends ShowListCommand {
   const SUMMARY_KEYS = ['filename', 'filedate', 'complete', 'filesize'];
 
   /** {@inheritDoc} */
-  const OPTS = ['cloud-account-id' => [Opt::VALUE_REQUIRED]];
-
-  /** {@inheritDoc} */
-  const ARGS = [];
+  const OPTS = ShowListCommand::OPTS +
+    ['cloud-account-id' => [Opt::VALUE_REQUIRED]];
 
   /** {@inheritDoc} */
   public function execute(Input $input, Output $output) {
