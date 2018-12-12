@@ -87,13 +87,13 @@ class Show extends ShowCommand {
     $details = parent::_getSummary($details);
 
     if (!is_null($details['valid_from_date'])) {
-      $details['valid_from_date'] = (new \DateTimeImmutable($details['valid_from_date']))->format('Y-m-d h:i:s');
+      $details['valid_from_date'] = (new \DateTimeImmutable(date('Y-m-d h:i:s',$details['valid_from_date'])))->format('Y-m-d h:i:s');
     } else {
       unset($details['valid_from_date']);
     }
     
     if (!is_null($details['valid_to_date'])) {
-      $details['valid_to_date'] = (new \DateTimeImmutable($details['valid_to_date']))->format('Y-m-d h:i:s');
+      $details['valid_to_date'] = (new \DateTimeImmutable(date('Y-m-d h:i:s',$details['valid_to_date'])))->format('Y-m-d h:i:s');
     } else {
       unset($details['valid_to_date']);
     }

@@ -12,10 +12,11 @@
     "banner": "Command Line Interface for the Nexcess.net / Thermo.io API Client\nⓒ 2018 Nexcess.net, LLC\n",
     "ssl": {
       "create": {
-        "help":"Create a new SSL Certificate by passing in either a file name containing the distinguished name plus the other needed options, or by passing in all the options individually on the command line.",
-        "desc": "Create a new certificate by supplying all the information in the distinguished name",
-        "creating": "Creating a new certificate",
         "created": "Certificate created",
+        "creating": "Creating a new certificate",
+        "desc": "Create a new certificate by supplying all the information in the distinguished name",
+        "failed": "FAIL",
+        "help":"Create a new SSL Certificate by passing in either a file name containing the distinguished name plus the other needed options, or by passing in all the options individually on the command line.",
         "opt_dn_file": "File name containing a JSON encoded array of the distinguished name parts.",
         "opt_domain": "Host name for the certificate being created",
         "opt_months": "Number of months for which the certificate will be valid",
@@ -25,7 +26,7 @@
         "opt_locality": "DN: The city/locality for the organization",
         "opt_state": "DN:The state for the organization",
         "opt_country":"DN:The two letter country code for the organization",
-        "opt_approver_email":"'domain:email address' for each covered by the certificate",
+        "opt_approver_email":"'domain:email address' for each host name covered by the certificate",
         "opt_organizational_unit": "DN: The department in the organization that owns the certificate",
         "summary_title": "Certificate Creation Summary",
         "summary_key" :{
