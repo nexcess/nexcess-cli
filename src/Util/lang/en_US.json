@@ -70,10 +70,10 @@
           "waiting": "Waiting for Backup to complete..."
         },
         "delete": {
-          "desc" : "Delete a backup by it's file name.",
           "choose_cloud_account_id": "Choose which Cloud Account you want to delete a Backup from:",
           "choose_filename": "Choose a Backup to delete:",
           "deleting": "<info>Deleting</info> {filename}",
+          "desc" : "Delete a backup by it's file name.",
           "done": "Done",
           "help": "Delete a specific backup from the system",
           "usage": "cloud-account:backup:delete --filename file_name.tgz --cloud-account-id 1234"
