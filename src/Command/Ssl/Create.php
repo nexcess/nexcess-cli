@@ -10,14 +10,22 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\Ssl;
 
 use Nexcess\Sdk\ {
-  Resource\CloudAccount\Endpoint,
+  Resource\Ssl\Endpoint,
   Util\Config,
-  Util\Util
+  Util\Util,
+  Resource\Creatable
 };
+
+
 use Nexcess\Sdk\Cli\ {
-  Command\CloudAccount\GetsPackageChoices,
-  Command\Create as CreateCommand
+  Command\Ssl\GetsPackageChoices,
+  Command\Ssl\ParseApproverEmail,
+  Command\Create as CreateCommand,
+  Command\SslException,
+  Console
+
 };
+
 use Symfony\Component\Console\ {
   Input\InputArgument as Arg,
   Input\InputInterface as Input,
@@ -29,48 +37,49 @@ use Symfony\Component\Console\ {
  * Creates a new Cloud Account.
  */
 class Create extends CreateCommand {
-  use GetsPackageChoices;
+  use GetsPackageChoices, ParseApproverEmail;
 
   /** {@inheritDoc} */
-  const ARGS = ['app' => [Arg::OPTIONAL]];
+  const ARGS = [];
 
   /** {@inheritDoc} */
   const ENDPOINT = Endpoint::class;
 
   /** {@inheritDoc} */
-  const INPUTS = [
-    'app_id' => Util::FILTER_INT,
-    'cloud_id' => Util::FILTER_INT,
-    'domain' => null,
-    'install_app' => Util::FILTER_BOOL,
-    'package_id' => Util::FILTER_INT
-  ];
+  const INPUTS = [];
 
   /** {@inheritDoc} */
   const NAME = 'ssl:create';
 
   /** {@inheritDoc} */
   const OPTS = [
-    'app-id' => [OPT::VALUE_REQUIRED],
-    'cloud-id' => [OPT::VALUE_REQUIRED],
+    'dn-file' => [OPT::VALUE_REQUIRED],
     'domain' => [OPT::VALUE_REQUIRED],
-    'install-app' => [OPT::VALUE_NONE],
-    'package-id' => [OPT::VALUE_REQUIRED]
+    'months' => [OPT::VALUE_REQUIRED],
+    'package-id' => [OPT::VALUE_REQUIRED],
+    'organization' => [OPT::VALUE_REQUIRED],
+    'street'  => [OPT::VALUE_REQUIRED],
+    'locality'  => [OPT::VALUE_REQUIRED],
+    'state'  => [OPT::VALUE_REQUIRED],
+    'country'  => [OPT::VALUE_REQUIRED],
+    'organizational_unit'  => [OPT::VALUE_REQUIRED],
+    'approver-email' => [OPT::VALUE_REQUIRED|OPT::VALUE_IS_ARRAY]
   ];
 
   /** {@inheritDoc} */
   const RESTRICT_TO = [Config::COMPANY_NEXCESS];
+
+  /** @var array list of domains and the approver email **/
+  protected  $_approver_email = [];
 
   /**
    * {@inheritDoc}
    */
   public function initialize(Input $input, Output $output) {
     parent::initialize($input, $output);
-
-    $app = $input->getArgument('app');
-    if ($app !== null) {
-      $this->_lookupChoice('app_id', $app);
-    }
+    $this->_approver_email = $this->_parseApproverEmail(
+      $input->getOption('approver-email')
+    );
   }
 
   /**
@@ -78,10 +87,6 @@ class Create extends CreateCommand {
    */
   protected function _getChoices(string $name, bool $format = true) : array {
     switch ($name) {
-      case 'app_id':
-        return $this->_getAppChoices($format);
-      case 'cloud_id':
-        return $this->_getCloudChoices($format);
       case 'package_id':
         return $this->_getPackageChoices($format);
       default:
@@ -89,81 +94,110 @@ class Create extends CreateCommand {
     }
   }
 
-  protected function _getAppChoices(bool $format) : array {
-    if (empty($this->_choices['app_id'])) {
-      $this->_choices['app_id'] = array_column(
-        $this->_getEndpoint('App')->list()->toArray(true),
-        'name',
-        'id'
-      );
-      // @todo this is hacky
-      uasort(
-        $this->_choices['app_id'],
-        function ($a, $b) {
-          if (strpos($a, 'Flexible') !== false) {
-            return -1;
-          }
-          if (strpos($b, 'Flexible') !== false) {
-            return 1;
-          }
-          return $a <=> $b;
-        }
-      );
-    }
-    $apps = $this->_choices['app_id'];
+  public function execute(Input $input, Output $output) {
+    $console = $this->getConsole();
+    $endpoint = $this->_getEndpoint();
+    assert($endpoint instanceof Creatable);
 
-    if ($format) {
-      $max = max(array_map('strlen', $apps));
-      foreach ($apps as $id => $app) {
-        $apps[$id] = $this->getPhrase(
-          'app_desc',
-          ['app' => ' ' . str_pad($app, $max) . ' ']
-        );
+    $console->say($this->getPhrase('creating'));
+
+    $months = Util::filter($input->getOption('months'), Util::FILTER_INT);
+    $domain = $input->getOption('domain');
+    $package_id = Util::filter($input->getOption('package-id'), Util::FILTER_INT);
+
+    $dn = ! empty($this->_readFile($input->getOption('dn-file'))) ?
+      json_decode($this->_readFile($input->getOption('dn-file')),true) :
+      null;
+    
+    // Failsafe
+    if (json_last_error()) {
+      $dn = null;
+    }
+
+    // ok, if the file-read didn't produce an array, assemble one.
+    if (! is_array($dn) || empty($dn)) {
+      $dn = [
+        'organization' => $input->getOption('organization'),
+        'street' => $input->getOption('street'),
+        'locality' => $input->getOption('locality'),
+        'state' => $input->getOption('state'),
+        'country' => $input->getOption('country'),
+        'organizational_unit' => $input->getOption('unit'),
+        'approver_email'  => $this->_approver_email
+      ];
+    }
+
+    try {
+      // @phan-suppress-next-line PhanUndeclaredMethod
+      $model = $endpoint->create(
+        $domain,
+        $dn,
+        $months,
+        $package_id,
+        $this->_approver_email
+      );
+    } catch (ApiException $e) {
+      switch ($e->getCode()) {
+        case ApiException::CREATE_FAILED:
+          // @todo Open a support ticket?
+          $console->say($this->getPhrase('failed'));
+          return Console::EXIT_API_ERROR;
+        default:
+          throw $e;
       }
     }
 
-    return $apps;
-  }
 
-  protected function _getCloudChoices(bool $format) : array {
-    if (empty($this->_choices['cloud_id'])) {
-      $this->_choices['cloud_id'] = array_column(
-        $this->_getEndpoint('Cloud')
-          ->list(['status' => 'active'])
-          ->toArray(true),
-        null,
-        'id'
-      );
-    }
-    $clouds = $this->_choices['cloud_id'];
-
-    if ($format) {
-      $max = max(array_map('strlen', array_column($clouds, 'location')));
-      foreach ($clouds as $id => $cloud) {
-        $cloud['location'] = ' ' . str_pad($cloud['location'], $max) . ' ';
-        $clouds[$id] = $this->getPhrase('cloud_desc', $cloud);
-      }
-      return $clouds;
-    }
-
-    foreach ($clouds as $id => $cloud) {
-      $clouds[$id] = $cloud['location_code'];
-    }
-    return $clouds;
+    $console->say($this->getPhrase('created', ['id' => $model->getId()]));
+    $this->_saySummary($model->toArray(false), $input->getOption('json'));
+    return Console::EXIT_SUCCESS;
   }
 
   /**
    * {@inheritDoc}
    */
   protected function _getSummary(array $details) : array {
-    return [
-      'state' => $details['state'],
-      'domain' => $details['domain'],
-      'temp_domain' => $details['temp_domain'],
-      'app' => $details['app']->get('identity'),
-      'cloud' => $details['location']->get('identity'),
-      'service_level' => $details['service']->get('description'),
-      'service_status' => $details['service']->get('status')
-    ];
+    $details = parent::_getSummary($details);
+
+    if (empty($details['alt_names'])) {
+      unset($details['alt_names']);
+    }
+
+    unset($details['approver_email']);
+    unset($details['chain']);
+    unset($details['crt']);
+    unset($details['is_expired']);
+    unset($details['is_installable']);
+    unset($details['is_multi_domain']);
+    unset($details['is_wildcard']);
+    unset($details['key']);
+    unset($details['domain']);
+    unset($details['months']);
+    unset($details['package_id']);
+    unset($details['client_id']);
+    unset($details['identity']);
+
+    if (!is_null($details['valid_from_date'])) {
+      $details['valid_from_date'] = (new \DateTimeImmutable(date('Y-m-d h:i:s',$details['valid_from_date'])))->format('Y-m-d h:i:s');
+    } else {
+      unset($details['valid_from_date']);
+    }
+    
+    if (!is_null($details['valid_to_date'])) {
+      $details['valid_to_date'] = (new \DateTimeImmutable(date('Y-m-d h:i:s',$details['valid_to_date'])))->format('Y-m-d h:i:s');
+    } else {
+      unset($details['valid_to_date']);
+    }
+    
+    return $details;
   }
+
+  protected function _readfile(string $filename) : string {
+    if (! file_exists($filename)) {
+        throw new \Exception('File does not exist');
+    }
+
+    return file_get_contents($filename);
+  }
+
 }
