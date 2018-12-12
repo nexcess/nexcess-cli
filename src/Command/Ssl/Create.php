@@ -94,6 +94,9 @@ class Create extends CreateCommand {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public function execute(Input $input, Output $output) {
     $console = $this->getConsole();
     $endpoint = $this->_getEndpoint();
@@ -114,7 +117,6 @@ class Create extends CreateCommand {
       $dn = null;
     }
 
-    // ok, if the file-read didn't produce an array, assemble one.
     if (! is_array($dn) || empty($dn)) {
       $dn = [
         'organization' => $input->getOption('organization'),
