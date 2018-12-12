@@ -133,7 +133,7 @@ abstract class ShowList extends Command {
     $keys = (count($details) > 0 ? array_keys($details) : static::SUMMARY_KEYS);
 
     foreach ($keys as $header) {
-      $returnValue[] = $this->getPhrase($header);
+      $returnValue[] = $this->getPhrase("summary_key.{$header}");
     }
 
     return $returnValue;
