@@ -70,6 +70,7 @@
           "waiting": "Waiting for Backup to complete..."
         },
         "delete": {
+          "desc" : "Delete a backup by it's file name.",
           "choose_cloud_account_id": "Choose which Cloud Account you want to delete a Backup from:",
           "choose_filename": "Choose a Backup to delete:",
           "deleting": "<info>Deleting</info> {filename}",
@@ -81,6 +82,7 @@
           "ask_download_path": "Where do you want to save your Backup?",
           "choose_cloud_account_id": "Choose which Cloud Account you want to download a Backup from:",
           "choose_filename": "Choose a Backup to download:",
+          "desc" : "Download a specified backup",
           "done": "Done",
           "downloading" : "<info>Downloading</info> {filename} <info>to</info> {download_path}",
           "help": "Download a specific backup",
