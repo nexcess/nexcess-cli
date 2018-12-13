@@ -4,7 +4,10 @@
       "list": {
         "desc": "Lists your API Tokens",
         "help": "You may provide one or more filters like 'filter:value'",
-        "summary_item": "  <info>#{id}</info>: '{name}'",
+        "summary_key": {
+          "id": "Token ID",
+          "name": "Token Name"
+        },
         "summary_title": "Api Tokens:",
         "usage": "api-token:list"
       }
@@ -114,13 +117,15 @@
           "usage": "cloud-account:backup:download -d /path/to/place/download/in -f file_name.tgz -c 1234"
         },
         "list": {
-          "complete": "Complete",
           "desc" : "List all backups for a given cloud account.",
           "help": "Outputs a list of all the backups for a given cloud account",
-          "filedate": "File Date",
-          "filename": "File Name",
-          "filesize": "File Size",
           "opt_cloud_account_id": "Cloud Account ID",
+          "summary_key": {
+            "complete": "Complete",
+            "filedate": "File Date",
+            "filename": "File Name",
+            "filesize": "File Size"
+          },
           "summary_title": "Backups",
           "usage": "cloud-account:backup:list --cloud-account-id 1234",
           "done": "Done"
@@ -182,7 +187,11 @@
       "list": {
         "desc": "Lists your Cloud Accounts",
         "help": "You may proivde one or more filters in the form 'filter:value'.",
-        "summary_item": "  #{id}: {domain} ({ip})",
+        "summary_key": {
+          "domain": "Domain Name",
+          "id": "Cloud Account ID",
+          "ip": "Public IP Address"
+        },
         "summary_title": "Cloud Accounts:",
         "usage": "cloud-account:list\n  cloud-account:list --filter service.status:enabled"
       },
