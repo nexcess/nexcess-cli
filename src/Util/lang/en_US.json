@@ -18,7 +18,7 @@
         "failed": "FAIL",
         "help":"Create a new SSL Certificate by passing in either a file name containing the distinguished name plus the other needed options, or by passing in all the options individually on the command line.",
         "opt_country":"DN:The two letter country code for the organization",
-        "opt_dn_file": "File name containing a JSON encoded array of the distinguished name parts.",
+        "opt_dn_file": "Name of file containing a JSON encoded array of the distinguished name parts.",
         "opt_domain": "Host name for the certificate being created",
         "opt_locality": "DN: The city/locality for the organization",
         "opt_months": "Number of months for which the certificate will be valid",
@@ -27,6 +27,22 @@
         "opt_package_id": "NoxWorx Package ID for the certificate type to be generated",
         "opt_state": "DN:The state for the organization",
         "opt_street": "DN: Street address for the organization",
+        "opt_approver_email":"'domain:email address' for each host name covered by the certificate",
+        "summary_title": "Certificate Creation Summary",
+        "summary_key" :{
+          "id": "Certificate Id",
+          "common_name": "Common Name"
+        }
+      },
+      "createFromCsr": {
+        "created": "Certificate <info>#{id}</info> created",
+        "creating": "Creating a new certificate from a CSR",
+        "desc": "Create a new certificate by supplying a Certificate Signing Request and private key.",
+        "failed": "FAIL",
+        "help":"Create a new SSL Certificate by passing in the file name for a Certificate Signing Request and private key.",
+        "opt_csr_file": "Name of file containing the CSR"
+        "opt_key_file": "Name of file containing the private key"
+        "opt_package_id": "NoxWorx Package ID for the certificate type to be generated",
         "opt_approver_email":"'domain:email address' for each host name covered by the certificate",
         "summary_title": "Certificate Creation Summary",
         "summary_key" :{
