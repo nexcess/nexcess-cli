@@ -95,6 +95,14 @@ class Import extends CreateCommand {
     $details = parent::_getSummary($details);
     $details['valid_from_date'] = $details['valid_from_date']->format('Y-m-d h:i:s');
     $details['valid_to_date'] = $details['valid_to_date']->format('Y-m-d h:i:s');
+    unset($details['crt']);
+    unset($details['key']);
+    unset($details['chain']);
+    unset($details['identity']);
+    unset($details['domain']);
+    unset($details['months']);
+    unset($details['package_id']);
+    unset($details['approver_email']);
     return $details;
   }
 
