@@ -33,6 +33,33 @@ use Symfony\Component\Console\ {
 abstract class CommandTestCase extends TestCase {
 
   /**
+   * @covers Command::_formatSummary
+   */
+  public function testFormatSummary() {
+    $stub = new class() extends Command {
+      public function __construct() {}
+      public function getPhrase(string $key, array $context = []) : string {
+        return [
+          'summary_key.a' => 'A',
+          'summary_key.b' => 'B',
+          'summary_title' => 'Test Summary'
+        ][$key];
+      }
+    };
+
+    $summary = $this->_invokeNonpublicMethod(
+      $stub,
+      '_formatSummary',
+      ['a' => 'foo', 'b' => 'bar']
+    );
+    $this->assertEquals(
+      "Test Summary\n<info>  A</info>: foo\n<info>  B</info>: bar",
+      $summary,
+      'properly translates and indents summary items'
+    );
+  }
+
+  /**
    * @group integration
    * @dataProvider runProvider
    *
