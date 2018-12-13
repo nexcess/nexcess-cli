@@ -197,7 +197,8 @@ abstract class Command extends SymfonyCommand {
     $depth += 1;
     $details = [];
     foreach ($summary as $key => $value) {
-      $summary_key = 'summary_key.' . strtr($key, ['.' => '_']);
+      $summary_key = 'summary_key.' .
+        (is_string($key) ? strtr($key, ['.' => '_']) : $key);
       $translated_key = $this->getPhrase($summary_key);
       if ($translated_key === $summary_key) {
         $translated_key = $key;

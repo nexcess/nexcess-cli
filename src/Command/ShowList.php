@@ -133,7 +133,10 @@ abstract class ShowList extends Command {
     $keys = (count($details) > 0 ? array_keys($details) : static::SUMMARY_KEYS);
 
     foreach ($keys as $header) {
-      $returnValue[] = $this->getPhrase($header);
+      $phrase = $this->getPhrase("summary_key.{$header}");
+      $returnValue[] = ($phrase === "summary_key.{$header}") ?
+        $header :
+        $phrase;
     }
 
     return $returnValue;
@@ -148,6 +151,6 @@ abstract class ShowList extends Command {
     $tableStyle
       ->setCellRowFormat('<fg=white;options=bold>%s</>')
       ->setCellHeaderFormat('<fg=yellow;options=bold>%s</>');
-      return $tableStyle;
+    return $tableStyle;
   }
 }
