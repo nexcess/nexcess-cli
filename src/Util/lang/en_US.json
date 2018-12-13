@@ -12,7 +12,7 @@
     "banner": "Command Line Interface for the Nexcess.net / Thermo.io API Client\nⓒ 2018 Nexcess.net, LLC\n",
     "ssl": {
       "create": {
-        "created": "Certificate created",
+        "created": "Certificate <info>#{id}</info> created",
         "creating": "Creating a new certificate",
         "desc": "Create a new certificate by supplying all the information in the distinguished name",
         "failed": "FAIL",
