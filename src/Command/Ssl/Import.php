@@ -103,6 +103,7 @@ class Import extends CreateCommand {
     unset($details['months']);
     unset($details['package_id']);
     unset($details['approver_email']);
+    unset($details['client_id']);
     return $details;
   }
 

@@ -54,9 +54,30 @@
           "common_name": "Common Name"
         }
       },
+      "import": {
+        "created": "Certificate imported",
+        "creating": "Importing new certificate",
+        "desc": "Import an existing certificate into the system.",
+        "failed": "FAIL",
+        "help":"Import an existing SSL certificate into the system.",
+        "opt_crt_file": "Name of file containing the CRT",
+        "opt_key_file": "Name of file containing the private key",
+        "opt_chain_file": "Name of file containing the optional chain certificate",
+        "summary_title": "Import Results",
+        "summary_key" :{
+          "id": "Certificate Id",
+          "common_name": "Common Name",
+          "alt_names": "Additional host names included in the certificate",
+          "is_expired": "Expired",
+          "is_installable": "Installable",
+          "is_multi_domain": "Multi-Domain certificate",
+          "is_wildcard": "Wild card certificate",
+          "valid_from_date": "Valid from",
+          "valid_to_date": "Valid until"
+        }
+      },
       "list": {
         "summary_title" : "List of Certificates:",
-        "summary_item": "  <info>#{id}</info>: '{name}'",
         "summary_key" :{
           "id": "Certificate Id",
           "common_name": "Common Name"
