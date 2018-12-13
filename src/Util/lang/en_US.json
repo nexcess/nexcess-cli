@@ -42,6 +42,7 @@
         "help":"Create a new SSL Certificate by passing in the file name for a Certificate Signing Request and private key.",
         "opt_csr_file": "Name of file containing the CSR",
         "opt_key_file": "Name of file containing the private key",
+        "opt_months": "Number of months for which the certificate will be valid",
         "opt_package_id": "NoxWorx Package ID for the certificate type to be generated",
         "opt_approver_email":"'domain:email address' for each host name covered by the certificate",
         "summary_title": "Certificate Creation Summary",
