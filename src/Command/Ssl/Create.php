@@ -23,7 +23,6 @@ use Nexcess\Sdk\Cli\ {
   Command\Create as CreateCommand,
   Command\SslException,
   Console
-
 };
 
 use Symfony\Component\Console\ {
