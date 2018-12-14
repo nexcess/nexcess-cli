@@ -63,7 +63,7 @@ class Create extends SslCreateCommand {
     $months = Util::filter($input->getOption('months'), Util::FILTER_INT);
     $package_id = Util::filter($input->getOption('package-id'), Util::FILTER_INT);
 
-    $dn = ! empty($this->_readFile($input->getOption('dn-file'))) ?
+    $dn = ! empty($input->getOption('dn-file')) ?
       json_decode($this->_readFile($input->getOption('dn-file')),true) :
       null;
     
