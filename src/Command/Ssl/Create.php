@@ -29,7 +29,7 @@ use Symfony\Component\Console\ {
 };
 
 /**
- * Creates a new Cloud Account.
+ * Creates a new SSL Certificate.
  */
 class Create extends SslCreateCommand {
 
