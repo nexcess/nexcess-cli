@@ -36,7 +36,7 @@ use Symfony\Component\Console\ {
  * Creates a new Cloud Account.
  */
 class SslCreateCommand extends CreateCommand {
-  use GetsPackageChoices, ParseApproverEmail;
+  use GetsPackageChoices, ParsesApproverEmail;
 
   /** {@inheritDoc} */
   const ARGS = [];
@@ -64,7 +64,7 @@ class SslCreateCommand extends CreateCommand {
    */
   public function initialize(Input $input, Output $output) {
     parent::initialize($input, $output);
-    $this->_approver_email = $this->_parseApproverEmail(
+    $this->_approver_email = $this->_parsesApproverEmail(
       $input->getOption('approver-email')
     );
   }

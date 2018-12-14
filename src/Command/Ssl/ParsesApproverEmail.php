@@ -11,10 +11,10 @@ namespace Nexcess\Sdk\Cli\Command\Ssl;
 
 use Nexcess\Sdk\Cli\Command\Ssl\SslException;
 
-trait ParseApproverEmail {
+trait ParsesApproverEmail {
 
 
-  protected function _parseApproverEmail(array $approver_emails_raw) : array {
+  protected function _parsesApproverEmail(array $approver_emails_raw) : array {
     if (empty($approver_emails_raw)) {
         throw new SslException(SslException::NO_APPROVER_EMAIL);
     }
