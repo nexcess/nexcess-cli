@@ -57,7 +57,7 @@ class SslCreateCommand extends CreateCommand {
   const RESTRICT_TO = [Config::COMPANY_NEXCESS];
 
   /** @var array list of domains and the approver email **/
-  protected  $_approver_email = [];
+  protected $_approver_email = [];
 
   /**
    * {@inheritDoc}
@@ -105,12 +105,12 @@ class SslCreateCommand extends CreateCommand {
       $details['package_id'],
       $details['client_id'],
       $details['identity']
-  );
+    );
 
     if (!is_null($details['valid_from_date'])) {
       $details['valid_from_date'] = (
         new \DateTimeImmutable(
-          date('Y-m-d h:i:s',$details['valid_from_date'])
+          date('Y-m-d h:i:s', $details['valid_from_date'])
         ))->format('Y-m-d h:i:s');
     } else {
       unset($details['valid_from_date']);
@@ -118,7 +118,7 @@ class SslCreateCommand extends CreateCommand {
     
     if (!is_null($details['valid_to_date'])) {
       $details['valid_to_date'] = (new \DateTimeImmutable(
-        date('Y-m-d h:i:s',$details['valid_to_date'])
+        date('Y-m-d h:i:s', $details['valid_to_date'])
       ))->format('Y-m-d h:i:s');
     } else {
       unset($details['valid_to_date']);
@@ -137,7 +137,7 @@ class SslCreateCommand extends CreateCommand {
   protected function _readfile(string $filename) : string {
     if (! file_exists($filename)) {
         throw new SslException(
-          SslException::INVALID_FILENAME,['filename'=>$filename]
+          SslException::INVALID_FILENAME, ['filename' => $filename]
         );
     }
     return file_get_contents($filename);

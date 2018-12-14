@@ -57,7 +57,8 @@ class Import extends CreateCommand {
   /** {@inheritDoc} */
   const RESTRICT_TO = [Config::COMPANY_NEXCESS];
 
-  public function execute(Input $input, Output $output) {
+  /** {@inheritDoc} */
+  public function execute(Input $input, Output $output) : int{
     $console = $this->getConsole();
     $endpoint = $this->_getEndpoint();
     assert($endpoint instanceof Creatable);
@@ -93,8 +94,10 @@ class Import extends CreateCommand {
    */
   protected function _getSummary(array $details) : array {
     $details = parent::_getSummary($details);
-    $details['valid_from_date'] = $details['valid_from_date']->format('Y-m-d h:i:s');
-    $details['valid_to_date'] = $details['valid_to_date']->format('Y-m-d h:i:s');
+    $details['valid_from_date'] =
+      $details['valid_from_date']->format('Y-m-d h:i:s');
+    $details['valid_to_date'] =
+      $details['valid_to_date']->format('Y-m-d h:i:s');
     unset($details['crt']);
     unset($details['key']);
     unset($details['chain']);

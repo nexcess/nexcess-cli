@@ -54,7 +54,10 @@ class CreateFromCsr extends SslCreateCommand {
     $console->say($this->getPhrase('creating'));
 
     $months = Util::filter($input->getOption('months'), Util::FILTER_INT);
-    $package_id = Util::filter($input->getOption('package-id'), Util::FILTER_INT);
+    $package_id = Util::filter(
+      $input->getOption('package-id'),
+      Util::FILTER_INT
+    );
     
     $key = $this->_readFile($input->getOption('key-file'));
     $csr = $this->_readFile($input->getOption('csr-file'));

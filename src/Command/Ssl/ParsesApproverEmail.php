@@ -20,8 +20,8 @@ trait ParsesApproverEmail {
     }
 
     $returnValue = [];
-    foreach($approver_emails_raw as $approver) {
-      if (substr_count($approver,':') !== 1) {
+    foreach ($approver_emails_raw as $approver) {
+      if (substr_count($approver, ':') !== 1) {
         throw new SslException(
           SslException::INVALID_APPROVER_EMAIL,
           ['approver' => $approver]

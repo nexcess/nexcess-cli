@@ -12,7 +12,8 @@ namespace Nexcess\Sdk\Cli\Command\Ssl;
 use Nexcess\Sdk\ {
   Resource\Ssl\Endpoint,
   Util\Config,
-  Util\Util};
+  Util\Util
+};
 
 use Nexcess\Sdk\Cli\ {
   Command\Ssl\SslCreateCommand,
@@ -46,7 +47,7 @@ class Create extends SslCreateCommand {
     'state'  => [OPT::VALUE_REQUIRED],
     'country'  => [OPT::VALUE_REQUIRED],
     'organizational_unit'  => [OPT::VALUE_REQUIRED],
-    'approver-email' => [OPT::VALUE_REQUIRED|OPT::VALUE_IS_ARRAY]
+    'approver-email' => [OPT::VALUE_REQUIRED | OPT::VALUE_IS_ARRAY]
   ];
 
   /**
@@ -61,10 +62,13 @@ class Create extends SslCreateCommand {
     $console->say($this->getPhrase('creating'));
 
     $months = Util::filter($input->getOption('months'), Util::FILTER_INT);
-    $package_id = Util::filter($input->getOption('package-id'), Util::FILTER_INT);
+    $package_id = Util::filter(
+      $input->getOption('package-id'),
+      Util::FILTER_INT
+    );
 
     $dn = ! empty($input->getOption('dn-file')) ?
-      json_decode($this->_readFile($input->getOption('dn-file')),true) :
+      Util::readJsonFile($input->getOption('dn-file')) :
       null;
     
     // Failsafe
