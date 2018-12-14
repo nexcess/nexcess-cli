@@ -53,9 +53,6 @@ class SslCreateCommand extends CreateCommand {
   /** {@inheritDoc} */
   const OPTS = [];
 
-  /** {@inheritDoc} */
-  const RESTRICT_TO = [Config::COMPANY_NEXCESS];
-
   /** @var array list of domains and the approver email **/
   protected $_approver_email = [];
 
