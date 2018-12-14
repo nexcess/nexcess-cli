@@ -12,9 +12,7 @@ namespace Nexcess\Sdk\Cli\Command\Ssl;
 use Nexcess\Sdk\ {
   Resource\Ssl\Endpoint,
   Util\Config,
-  Util\Util,
-  Resource\Creatable
-};
+  Util\Util};
 
 use Nexcess\Sdk\Cli\ {
   Command\Ssl\SslCreateCommand,
@@ -51,7 +49,7 @@ class CreateFromCsr extends SslCreateCommand {
   public function execute(Input $input, Output $output) {
     $console = $this->getConsole();
     $endpoint = $this->_getEndpoint();
-    assert($endpoint instanceof Creatable);
+    assert($endpoint instanceof Endpoint);
 
     $console->say($this->getPhrase('creating'));
 
