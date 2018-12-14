@@ -11,7 +11,7 @@ namespace Nexcess\Sdk\Cli\Command\Ssl;
 
 use Nexcess\Sdk\ {
   Resource\Ssl\Endpoint,
-  Util\Config,
+  ApiException,
   Util\Util
 };
 
@@ -21,7 +21,6 @@ use Nexcess\Sdk\Cli\ {
 };
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
   Input\InputOption as Opt,
   Output\OutputInterface as Output

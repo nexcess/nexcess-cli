@@ -10,25 +10,19 @@ declare(strict_types = 1);
 namespace Nexcess\Sdk\Cli\Command\Ssl;
 
 use Nexcess\Sdk\ {
-  Resource\Ssl\Endpoint,
-  Util\Config,
-  Util\Util,
-  Resource\Creatable
+  Resource\Ssl\Endpoint
 };
 
 
 use Nexcess\Sdk\Cli\ {
   Command\Ssl\GetsPackageChoices,
-  Command\Ssl\ParseApproverEmail,
+  Command\Ssl\ParsesApproverEmail,
   Command\Create as CreateCommand,
-  Command\Ssl\SslException,
-  Console
+  Command\Ssl\SslException
 };
 
 use Symfony\Component\Console\ {
-  Input\InputArgument as Arg,
   Input\InputInterface as Input,
-  Input\InputOption as Opt,
   Output\OutputInterface as Output
 };
 
@@ -36,7 +30,8 @@ use Symfony\Component\Console\ {
  * Creates a new Cloud Account.
  */
 class SslCreateCommand extends CreateCommand {
-  use GetsPackageChoices, ParsesApproverEmail;
+  use GetsPackageChoices,
+    ParsesApproverEmail;
 
   /** {@inheritDoc} */
   const ARGS = [];

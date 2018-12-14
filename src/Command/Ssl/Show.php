@@ -9,7 +9,7 @@ declare(strict_types = 1);
 
 namespace Nexcess\Sdk\Cli\Command\Ssl;
 
-use DateTimeImmutable as DateTime;
+use DateTimeImmutable;
 
 use Nexcess\Sdk\ {
   Resource\Ssl\Endpoint,
@@ -87,7 +87,7 @@ class Show extends ShowCommand {
     $details = parent::_getSummary($details);
 
     if (!is_null($details['valid_from_date'])) {
-      $details['valid_from_date'] = (new \DateTimeImmutable(
+      $details['valid_from_date'] = (new DateTimeImmutable(
         date('Y-m-d h:i:s', $details['valid_from_date'])
       ))->format('Y-m-d h:i:s');
     } else {
@@ -95,7 +95,7 @@ class Show extends ShowCommand {
     }
     
     if (!is_null($details['valid_to_date'])) {
-      $details['valid_to_date'] = (new \DateTimeImmutable(
+      $details['valid_to_date'] = (new DateTimeImmutable(
         date('Y-m-d h:i:s', $details['valid_to_date'])
       ))->format('Y-m-d h:i:s');
     } else {
