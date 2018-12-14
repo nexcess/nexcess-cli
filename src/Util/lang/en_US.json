@@ -54,6 +54,11 @@
           "common_name": "Common Name"
         }
       },
+      "exception" : {
+        "invalid_filename": "{filename} is an invalid file name",
+        "no_approver_email": "This command requires that you supply a valid approver email.",
+        "invalid_approver_email": "You must supply one of the pre-selected approver email addresses for this command."
+      },
       "import": {
         "created": "Certificate imported",
         "creating": "Importing new certificate",

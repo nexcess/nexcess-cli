@@ -22,23 +22,19 @@ class SslException extends Exception {
   /** @var int Ambiguous lookup value. */
   const NO_APPROVER_EMAIL = 2;
 
-  /** @var int Missing argument or option. */
-  const MISSING_INPUT = 3;
-
-  /** @var int Asked for an input that doesn't exist. */
-  const NO_SUCH_INPUT = 4;
-
-  /** @var int Malformatted list filter input. */
-  const INVALID_LIST_FILTER = 5;
+  /** @var int Invalid file name passed in. */
+  const INVALID_FILENAME = 3;
 
   /** {@inheritDoc} */
   const INFO = [
-    self::INVALID_APPROVER_EMAIL => ['message' => 'console.command.ssl.invalid_approver_email'],
-    self::NO_APPROVER_EMAIL =>
-      ['message' => 'console.command.ssl.no_approver_email'],
-    self::MISSING_INPUT => ['message' => 'console.command.missing_input'],
-    self::NO_SUCH_INPUT => ['message' => 'console.command.no_such_input'],
-    self::INVALID_LIST_FILTER =>
-      ['message' => 'console.command.invalid_list_filter']
+    self::INVALID_APPROVER_EMAIL => [
+      'message' => 'console.ssl.exception.invalid_approver_email'
+    ],
+    self::NO_APPROVER_EMAIL => [
+      'message' => 'console.ssl.exception.no_approver_email'
+    ],
+    self::INVALID_FILENAME => [
+      'message' => 'console.ssl.exception.invalid_filename' // not translating
+    ]
   ];
 }

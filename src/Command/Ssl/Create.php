@@ -16,12 +16,8 @@ use Nexcess\Sdk\ {
   Resource\Creatable
 };
 
-
 use Nexcess\Sdk\Cli\ {
-  Command\Ssl\GetsPackageChoices,
-  Command\Ssl\ParseApproverEmail,
-  Command\Create as CreateCommand,
-  Command\SslException,
+  Command\Ssl\SslCreateCommand,
   Console
 };
 
@@ -35,17 +31,7 @@ use Symfony\Component\Console\ {
 /**
  * Creates a new Cloud Account.
  */
-class Create extends CreateCommand {
-  use GetsPackageChoices, ParseApproverEmail;
-
-  /** {@inheritDoc} */
-  const ARGS = [];
-
-  /** {@inheritDoc} */
-  const ENDPOINT = Endpoint::class;
-
-  /** {@inheritDoc} */
-  const INPUTS = [];
+class Create extends SslCreateCommand {
 
   /** {@inheritDoc} */
   const NAME = 'ssl:create';
@@ -65,38 +51,11 @@ class Create extends CreateCommand {
     'approver-email' => [OPT::VALUE_REQUIRED|OPT::VALUE_IS_ARRAY]
   ];
 
-  /** {@inheritDoc} */
-  const RESTRICT_TO = [Config::COMPANY_NEXCESS];
-
-  /** @var array list of domains and the approver email **/
-  protected  $_approver_email = [];
-
-  /**
-   * {@inheritDoc}
-   */
-  public function initialize(Input $input, Output $output) {
-    parent::initialize($input, $output);
-    $this->_approver_email = $this->_parseApproverEmail(
-      $input->getOption('approver-email')
-    );
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  protected function _getChoices(string $name, bool $format = true) : array {
-    switch ($name) {
-      case 'package_id':
-        return $this->_getPackageChoices($format);
-      default:
-        return parent::_getChoices($name, $format);
-    }
-  }
-
   /**
    * {@inheritDoc}
    */
   public function execute(Input $input, Output $output) {
+
     $console = $this->getConsole();
     $endpoint = $this->_getEndpoint();
     assert($endpoint instanceof Creatable);
@@ -104,7 +63,6 @@ class Create extends CreateCommand {
     $console->say($this->getPhrase('creating'));
 
     $months = Util::filter($input->getOption('months'), Util::FILTER_INT);
-    $domain = $input->getOption('domain');
     $package_id = Util::filter($input->getOption('package-id'), Util::FILTER_INT);
 
     $dn = ! empty($this->_readFile($input->getOption('dn-file'))) ?
@@ -128,6 +86,8 @@ class Create extends CreateCommand {
       ];
     }
 
+    $domain = $input->getOption('domain');
+
     try {
       // @phan-suppress-next-line PhanUndeclaredMethod
       $model = $endpoint->create(
@@ -148,57 +108,9 @@ class Create extends CreateCommand {
       }
     }
 
-
     $console->say($this->getPhrase('created', ['id' => $model->getId()]));
     $this->_saySummary($model->toArray(false), $input->getOption('json'));
     return Console::EXIT_SUCCESS;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  protected function _getSummary(array $details) : array {
-    $details = parent::_getSummary($details);
-
-    if (empty($details['alt_names'])) {
-      unset($details['alt_names']);
-    }
-
-    unset($details['approver_email']);
-    unset($details['chain']);
-    unset($details['crt']);
-    unset($details['is_expired']);
-    unset($details['is_installable']);
-    unset($details['is_multi_domain']);
-    unset($details['is_wildcard']);
-    unset($details['key']);
-    unset($details['domain']);
-    unset($details['months']);
-    unset($details['package_id']);
-    unset($details['client_id']);
-    unset($details['identity']);
-
-    if (!is_null($details['valid_from_date'])) {
-      $details['valid_from_date'] = (new \DateTimeImmutable(date('Y-m-d h:i:s',$details['valid_from_date'])))->format('Y-m-d h:i:s');
-    } else {
-      unset($details['valid_from_date']);
-    }
-    
-    if (!is_null($details['valid_to_date'])) {
-      $details['valid_to_date'] = (new \DateTimeImmutable(date('Y-m-d h:i:s',$details['valid_to_date'])))->format('Y-m-d h:i:s');
-    } else {
-      unset($details['valid_to_date']);
-    }
-    
-    return $details;
-  }
-
-  protected function _readfile(string $filename) : string {
-    if (! file_exists($filename)) {
-        throw new \Exception('File does not exist');
-    }
-
-    return file_get_contents($filename);
   }
 
 }
