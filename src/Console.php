@@ -236,8 +236,18 @@ class Console extends SymfonyApplication {
     string $message,
     int $verbosity = Output::VERBOSITY_DEBUG
   ) : Console {
-    $this->say($message, [self::SAY_OPT_OPTIONS => $verbosity]);
-
+    foreach (explode("\n", $message) as $line) {
+      $output = json_decode($line);
+      // output decoded json if possible
+      if (json_last_error()) {
+        $this->say($line, [self::SAY_OPT_OPTIONS => $verbosity]);
+      } else {
+        $this->say(
+          print_r(json_decode($line), true),
+          [self::SAY_OPT_OPTIONS => $verbosity]
+        );
+      }
+    }
     return $this;
   }
 

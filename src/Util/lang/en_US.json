@@ -13,6 +13,82 @@
       }
     },
     "banner": "Command Line Interface for the Nexcess.net / Thermo.io API Client\nⓒ 2018 Nexcess.net, LLC\n",
+    "ssl": {
+      "create": {
+        "created": "Certificate <info>#{id}</info> created",
+        "creating": "Creating a new certificate",
+        "desc": "Create a new certificate by supplying all the information in the distinguished name",
+        "failed": "FAIL",
+        "help":"Create a new SSL Certificate by passing in either a file name containing the distinguished name plus the other needed options, or by passing in all the options individually on the command line.",
+        "opt_country":"DN:The two letter country code for the organization",
+        "opt_dn_file": "Name of file containing a JSON encoded array of the distinguished name parts.",
+        "opt_domain": "Host name for the certificate being created",
+        "opt_locality": "DN: The city/locality for the organization",
+        "opt_months": "Number of months for which the certificate will be valid",
+        "opt_organization": "DN: Name of the organization that will own the certificate",
+        "opt_organizational_unit": "DN: The department in the organization that owns the certificate",
+        "opt_package_id": "NoxWorx Package ID for the certificate type to be generated",
+        "opt_state": "DN:The state for the organization",
+        "opt_street": "DN: Street address for the organization",
+        "opt_approver_email":"'domain:email address' for each host name covered by the certificate",
+        "summary_title": "Certificate Creation Summary",
+        "summary_key" :{
+          "id": "Certificate Id",
+          "common_name": "Common Name"
+        }
+      },
+      "createFromCsr": {
+        "created": "Certificate <info>#{id}</info> created",
+        "creating": "Creating a new certificate from a CSR",
+        "desc": "Create a new certificate by supplying a Certificate Signing Request and private key.",
+        "failed": "FAIL",
+        "help":"Create a new SSL Certificate by passing in the file name for a Certificate Signing Request and private key.",
+        "opt_csr_file": "Name of file containing the CSR",
+        "opt_key_file": "Name of file containing the private key",
+        "opt_months": "Number of months for which the certificate will be valid",
+        "opt_package_id": "NoxWorx Package ID for the certificate type to be generated",
+        "opt_approver_email":"'domain:email address' for each host name covered by the certificate",
+        "summary_title": "Certificate Creation Summary",
+        "summary_key" :{
+          "id": "Certificate Id",
+          "common_name": "Common Name"
+        }
+      },
+      "exception" : {
+        "invalid_filename": "{filename} is an invalid file name",
+        "no_approver_email": "This command requires that you supply a valid approver email.",
+        "invalid_approver_email": "You must supply one of the pre-selected approver email addresses for this command."
+      },
+      "import": {
+        "created": "Certificate imported",
+        "creating": "Importing new certificate",
+        "desc": "Import an existing certificate into the system.",
+        "failed": "FAIL",
+        "help":"Import an existing SSL certificate into the system.",
+        "opt_crt_file": "Name of file containing the CRT",
+        "opt_key_file": "Name of file containing the private key",
+        "opt_chain_file": "Name of file containing the optional chain certificate",
+        "summary_title": "Import Results",
+        "summary_key" :{
+          "id": "Certificate Id",
+          "common_name": "Common Name",
+          "alt_names": "Additional host names included in the certificate",
+          "is_expired": "Expired",
+          "is_installable": "Installable",
+          "is_multi_domain": "Multi-Domain certificate",
+          "is_wildcard": "Wild card certificate",
+          "valid_from_date": "Valid from",
+          "valid_to_date": "Valid until"
+        }
+      },
+      "list": {
+        "summary_title" : "List of Certificates:",
+        "summary_key" :{
+          "id": "Certificate Id",
+          "common_name": "Common Name"
+        }
+      }
+    },
     "cloud_account": {
       "backup" : {
         "choices": {
@@ -51,6 +127,7 @@
           "choose_cloud_account_id": "Choose which Cloud Account you want to delete a Backup from:",
           "choose_filename": "Choose a Backup to delete:",
           "deleting": "<info>Deleting</info> {filename}",
+          "desc" : "Delete a backup by it's file name.",
           "done": "Done",
           "help": "Delete a specific backup from the system",
           "usage": "cloud-account:backup:delete --filename file_name.tgz --cloud-account-id 1234"
@@ -59,6 +136,7 @@
           "ask_download_path": "Where do you want to save your Backup?",
           "choose_cloud_account_id": "Choose which Cloud Account you want to download a Backup from:",
           "choose_filename": "Choose a Backup to download:",
+          "desc" : "Download a specified backup",
           "done": "Done",
           "downloading" : "<info>Downloading</info> {filename} <info>to</info> {download_path}",
           "help": "Download a specific backup",
